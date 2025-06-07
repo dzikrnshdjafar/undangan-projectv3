@@ -17,7 +17,6 @@ class InvitationTheme extends Model
         'slug',
         'description',
         'preview_image_path',
-        'view_name',
     ];
 
     /**

@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\InvitationCategory;
-use App\Models\InvitationTheme;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Models\InvitationTheme;
+use Illuminate\Database\Seeder;
+use App\Models\InvitationCategory;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class InvitationThemeSeeder extends Seeder
 {
@@ -24,22 +25,38 @@ class InvitationThemeSeeder extends Seeder
                     'name' => 'Elegant Blue Wedding',
                     'description' => 'Tema pernikahan elegan dengan nuansa biru dan emas.',
                     'preview_image_path' => '/images/themes/previews/elegant-blue-wedding.jpg',
-                    'view_name' => 'themes.dynamic', // Ganti ke view dinamis
-                    'background_image_path' => '/images/themes/backgrounds/elegant-blue.png',
+                    'background_image_path' => '/images/themes/backgrounds/elegant-blue.webp',
                     'sections_json' => json_encode([
                         [
                             'type' => 'opening',
-                            'title' => 'Selamat Datang di Pernikahan Kami',
-                            'content' => 'Kami mengundang Anda untuk hadir dalam hari bahagia kami.'
+                            'title' => [
+                                'text' => 'Selamat Datang di Pernikahan Kami',
+                                'size' => '24px', // atau angka saja seperti 24
+                                'color' => '#000000' // atau nama warna seperti 'black'
+                            ],
+                            'content' => [
+                                'text' => 'Kami mengundang Anda untuk hadir dalam hari bahagia kami.',
+                                'size' => '16px',
+                                'color' => '#F08080'
+                            ],
+                            'content2' => [
+                                'text' => 'Kami mengundang Anda untuk hadir dalam hari bahagia kami.',
+                                'size' => '16px',
+                                'color' => '#F08080'
+                            ]
                         ],
                         [
-                            'type' => 'mempelai',
-                            'title' => 'Mempelai',
-                            'content' => 'Andi & Bunga'
+                            'type' => 'couple',
+                            'title' => 'Pasangan Mempelai',
+                            'bride' => 'Bunga',
+                            'groom' => 'Budi'
                         ],
                         [
-                            'type' => 'waktu-acara',
+                            'type' => 'event',
                             'title' => 'Waktu & Tempat',
+                            'date' => Carbon::create(2025, 6, 15)->format('Y-m-d'),
+                            'time' => Carbon::createFromTime(9, 0, 0)->format('H:i:s'),
+                            'place' => 'Gedung Serbaguna',
                             'content' => 'Sabtu, 10 Juni 2025, 10:00 WIB di Gedung Serbaguna'
                         ],
                         [
@@ -55,7 +72,7 @@ class InvitationThemeSeeder extends Seeder
                             'title' => 'Konfirmasi Kehadiran'
                         ],
                         [
-                            'type' => 'salam',
+                            'type' => 'closing',
                             'title' => 'Salam Penutup',
                             'content' => 'Terima kasih atas doa dan restunya.'
                         ]
@@ -69,7 +86,6 @@ class InvitationThemeSeeder extends Seeder
                     'name' => 'Rustic Floral Wedding',
                     'description' => 'Tema pernikahan rustic dengan dekorasi bunga yang hangat.',
                     'preview_image_path' => '/images/themes/previews/rustic-floral-wedding.jpg',
-                    'view_name' => 'themes.dynamic',
                     'background_image_path' => '/images/themes/backgrounds/rustic-floral.png',
                     'sections_json' => json_encode([
                         [
@@ -78,13 +94,17 @@ class InvitationThemeSeeder extends Seeder
                             'content' => 'Kami mengundang Anda untuk hadir dalam hari bahagia kami.'
                         ],
                         [
-                            'type' => 'mempelai',
-                            'title' => 'Mempelai',
-                            'content' => 'Budi & Ani'
+                            'type' => 'couple',
+                            'title' => 'Pasangan Mempelai',
+                            'bride' => 'Yanti',
+                            'groom' => 'Yanto'
                         ],
                         [
-                            'type' => 'waktu-acara',
+                            'type' => 'event',
                             'title' => 'Waktu & Tempat',
+                            'date' => Carbon::create(2025, 7, 20)->format('Y-m-d'),
+                            'time' => Carbon::createFromTime(14, 30, 0)->format('H:i:s'),
+                            'place' => 'Aula Cinta Kasih',
                             'content' => 'Selasa, 15 Juli 2025, 09:00 WIB di Aula Cinta Kasih'
                         ],
                         [
@@ -100,7 +120,7 @@ class InvitationThemeSeeder extends Seeder
                             'title' => 'Konfirmasi Kehadiran'
                         ],
                         [
-                            'type' => 'salam',
+                            'type' => 'closing',
                             'title' => 'Salam Penutup',
                             'content' => 'Kami sekeluarga mengucapkan terima kasih atas kehadiran dan doa restu Anda.'
                         ]
@@ -115,7 +135,6 @@ class InvitationThemeSeeder extends Seeder
                     'name' => 'Superhero Blast Birthday',
                     'description' => 'Tema ulang tahun seru dengan karakter superhero.',
                     'preview_image_path' => '/images/themes/previews/superhero-blast-birthday.jpg',
-                    'view_name' => 'themes.dynamic',
                     'background_image_path' => '/images/themes/backgrounds/superhero-blast.png',
                     'sections_json' => json_encode([
                         [
@@ -124,8 +143,11 @@ class InvitationThemeSeeder extends Seeder
                             'content' => 'Bergabunglah dalam pesta ulang tahun penuh aksi!'
                         ],
                         [
-                            'type' => 'waktu-acara',
+                            'type' => 'event',
                             'title' => 'Waktu & Tempat',
+                            'date' => Carbon::create(2025, 8, 5)->format('Y-m-d'),
+                            'time' => Carbon::createFromTime(18, 45, 0)->format('H:i:s'),
+                            'place' => 'Rumah Superhero',
                             'content' => 'Minggu, 20 Agustus 2025, 15:00 WIB di Rumah Superhero'
                         ],
                         [
@@ -141,7 +163,7 @@ class InvitationThemeSeeder extends Seeder
                             'title' => 'Konfirmasi Kehadiran'
                         ],
                         [
-                            'type' => 'salam',
+                            'type' => 'closing',
                             'title' => 'Salam Penutup',
                             'content' => 'Sampai jumpa di pesta ulang tahun super seru!'
                         ]
@@ -156,7 +178,6 @@ class InvitationThemeSeeder extends Seeder
                     'name' => 'Modern Corporate Seminar',
                     'description' => 'Tema seminar profesional dan modern.',
                     'preview_image_path' => '/images/themes/previews/modern-corporate-seminar.jpg',
-                    'view_name' => 'themes.dynamic',
                     'background_image_path' => '/images/themes/backgrounds/modern-corporate.png',
                     'sections_json' => json_encode([
                         [
@@ -165,8 +186,11 @@ class InvitationThemeSeeder extends Seeder
                             'content' => 'Mari tingkatkan pengetahuan bersama di seminar ini.'
                         ],
                         [
-                            'type' => 'waktu-acara',
+                            'type' => 'event',
                             'title' => 'Waktu & Tempat',
+                            'date' => Carbon::create(2025, 9, 12)->format('Y-m-d'),
+                            'time' => Carbon::createFromTime(10, 15, 0)->format('H:i:s'),
+                            'place' => 'Ballroom Hotel Mewah',
                             'content' => 'Sabtu, 5 Oktober 2025, 09:00 WIB di Ballroom Hotel Mewah'
                         ],
                         [
@@ -182,7 +206,7 @@ class InvitationThemeSeeder extends Seeder
                             'title' => 'Konfirmasi Kehadiran'
                         ],
                         [
-                            'type' => 'salam',
+                            'type' => 'closing',
                             'title' => 'Penutup',
                             'content' => 'Terima kasih atas partisipasi Anda.'
                         ]

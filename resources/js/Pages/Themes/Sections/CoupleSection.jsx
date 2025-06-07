@@ -1,10 +1,13 @@
 import React from 'react';
 
-export default function SalamSection({ section, backgroundImageUrl }) {
+export default function CoupleSection({ section, backgroundImageUrl }) {
+
     return (
         <div style={{backgroundImage: `url(${backgroundImageUrl})`}} className='section-gallery text-center h-screen bg-cover bg-center py-8'>
             <h2>{section.title}</h2>
-            <p>{section.content}</p>
+
+            <p>Mempelai Wanita : {section.bride}</p>
+            <p>Mempelai Pria : {section.groom}</p>
         </div>
     );
 }

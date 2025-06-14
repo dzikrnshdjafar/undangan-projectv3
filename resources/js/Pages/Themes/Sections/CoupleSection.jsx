@@ -73,86 +73,75 @@ export default function CoupleSection({ section, themeId, sectionIndex }) {
         setTextModalOpen(false);
         setImageModalOpen(false);
     };
-
-    const renderField = (fieldName, fieldData, isInWrapper = false) => {
-        if (typeof fieldData !== 'object' || fieldData === null) return null;
-
-        const isImage = fieldData.path !== undefined;
-        const animationName = fieldData.animation;
-        const zIndexValue = fieldData.zIndex || 'auto';
-
-        // Cek apakah ini adalah wrapper
-        const isWrapper = fieldData.children !== undefined;
-        
-        // Hanya gunakan posisi absolute jika bukan di dalam wrapper
-        const position = isInWrapper ? 'relative' : (fieldData.position || 'absolute');
-
-        let transformString = fieldData.padding?.transform || '';
-        if (fieldData.flipX) {
-            transformString += ' scaleX(-1)';
-        }
-        
-        const elementStyle = {
-            position: position,
-            zIndex: zIndexValue,
-            width: isImage ? fieldData.size : 'auto',
-            ...(fieldData.padding || {}),
-            transform: transformString.trim(),
-        };
-
-        // Jika ini adalah wrapper, render sebagai div dengan children di dalamnya
-        if (isWrapper) {
-            return (
-                <div
-                    key={fieldName}
-                    className='absolute cursor-pointer border-dashed border border-transparent hover:border-blue-500 rounded transition-all'
-                    style={elementStyle}
-                    onClick={() => handleEditClick(fieldName)}
-                >
-                    {Object.entries(fieldData.children || {}).map(([childName, childData]) => (
-                        renderField(`${fieldName}.${childName}`, childData, true)
-                    ))}
-                </div>
-            );
-        }
-        
-        // Jika bukan wrapper, render seperti biasa
-        return (
-            <div
-                key={fieldName}
-                className={`${isInWrapper ? 'relative' : 'absolute'} cursor-pointer border-dashed border border-transparent hover:border-blue-500 rounded transition-all`}
-                style={elementStyle}
-                onClick={() => handleEditClick(fieldName)}
-            >
-                <motion.div
-                    className="w-full h-full"
-                    animate={fieldData.animation ? animationVariants[fieldData.animation] : {}}
-                >
-                    {isImage ? (
-                        <img
-                            src={`/storage${fieldData.path}`}
-                            alt={fieldName}
-                            style={fieldData.style || {}}
-                            className="w-full h-full object-cover pointer-events-none"
-                        />
-                    ) : (
-                        <div className="relative whitespace-pre-line text-center" style={{ ...fieldData.style, color: fieldData.color, fontSize: fieldData.size, }}>
-                            {fieldData.text || `[Edit ${fieldName}]`}
-                        </div>
-                    )}
-                </motion.div>
-            </div>
-        );
-    };
    
     const renderableFields = Object.keys(currentSectionData).filter(key => key !== 'type' && key !== 'height' && key !== 'minHeight');
 
     return (
         <>
             
-            {renderableFields.map((fieldName) => {
+             {renderableFields.map((fieldName) => {
                 const fieldData = currentSectionData[fieldName];
-                return renderField(fieldName, fieldData);
+                if (typeof fieldData !== 'object' || fieldData === null) return null;
+
+                const isImage = fieldData.path !== undefined;
+                const animationName = fieldData.animation;
+                const animateProps = animationName ? animationVariants[animationName] : {};
+                const zIndexValue = fieldData.zIndex || 'auto';
+
+                // ===================================
+                // PERBAIKAN LOGIKA TRANSFORM DAN STYLE
+                // ===================================
+
+                // 1. Ambil nilai transform dari data (jika ada, cth: 'translateX(-50%)')
+                let transformString = fieldData.padding?.transform || '';
+
+                // 2. Jika fieldData.flipX bernilai true, tambahkan 'scaleX(-1)'
+                if (fieldData.flipX) {
+                    transformString += ' scaleX(-1)';
+                }
+                
+                // 3. Bangun objek style akhir
+                const elementStyle = {
+                    position: fieldData.position || 'absolute', // Gunakan 'layout' jika ada, default ke 'absolute'
+                    zIndex: zIndexValue,
+                    width: isImage ? fieldData.size : 'auto',
+                    // Gunakan spread operator untuk menerapkan top, bottom, left, right dari data
+                    ...(fieldData.padding || {}),
+                    // Timpa/atur properti transform dengan string yang sudah kita bangun
+                    transform: transformString.trim(), 
+                    
+                };
+
+                
+                
+                return (
+                    // Elemen 1 (Luar): Mengatur Posisi & Ukuran. TIDAK ADA ANIMASI.
+                    <div
+                        key={fieldName}
+                        className='absolute cursor-pointer border-dashed border border-transparent hover:border-blue-500 rounded transition-all'
+                         style={elementStyle} 
+                        onClick={() => handleEditClick(fieldName)}
+                    >
+                           <motion.div
+                            className="w-full h-full"
+                           animate={fieldData.animation ? animationVariants[fieldData.animation] : {}}
+                        >
+                            {isImage ? (
+                                <img
+                                    src={`/storage${fieldData.path}`}
+                                    alt={fieldName}
+                                    // Terapkan style masking di sini
+                                    style={fieldData.style || {}}
+                                    className="w-full h-full object-cover pointer-events-none" // Ubah ke 'object-cover' agar foto mengisi penuh
+                                />
+                            ) : (
+                                <div className="relative whitespace-pre-line text-center" style={{ ...fieldData.style, color: fieldData.color, fontSize: fieldData.size, }}>
+                                    {fieldData.text || `[Edit ${fieldName}]`}
+                                </div>
+                            )}
+                        </motion.div>
+                    </div>
+                );
             })}
 
 

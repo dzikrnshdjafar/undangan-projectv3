@@ -6,12 +6,9 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
     const [color, setColor] = useState('#000000');
     const [size, setSize] = useState('16px');
     const [zIndex, setZIndex] = useState(1);
-    const [padding, setPadding] = useState({}); 
+    const [position, setPosition] = useState({}); 
     const [animation, setAnimation] = useState('');
-    const [flipX, setFlipX] = useState(false); // <-- State baru untuk flipX
-    const [styleJson, setStyleJson] = useState(''); // State untuk menampung string JSON
-    const [position, setPosition] = useState(''); // State untuk position
-         
+         const [flipX, setFlipX] = useState(false); // <-- State baru untuk flipX
 
     useEffect(() => {
         if (open && initialValue) {
@@ -19,11 +16,8 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
             setColor(initialValue.color || '#000000');
             setSize(initialValue.size || '16px');
             setZIndex(initialValue.zIndex || 1);
-           setPadding(initialValue.padding || {});
+           setPosition(initialValue.position || {});
            setAnimation(initialValue.animation || '');
-            setPosition(initialValue.position || ''); // Inisialisasi position
-              setFlipX(initialValue.flipX || false);
-            setStyleJson(JSON.stringify(initialValue.style || {}, null, 2)); // Inisialisasi dengan string JSON
         }
     }, [initialValue, open]);
 
@@ -31,41 +25,33 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
         useEffect(() => {
             // Jangan kirim update saat modal baru dibuka (initialValue sedang di-set)
             if (!open) return;
-
-            let styleObject;
-        try {
-            styleObject = JSON.parse(styleJson);
-        } catch (error) {
-            // Jika JSON tidak valid, gunakan objek kosong agar tidak crash
-            styleObject = {};
-        }
     
             // Panggil onLiveUpdate dengan semua state saat ini
-            onLiveUpdate({text, color, size, padding, animation, zIndex, flipX, position, style: styleObject });
+            onLiveUpdate({text, color, size, position, animation, zIndex, flipX });
     
-        }, [ text, color, size, padding, animation, zIndex, flipX, styleJson, position]); // Bergantung pada semua state yang bisa diedit
+        }, [ text, color, size, position, animation, zIndex, flipX]); // Bergantung pada semua state yang bisa diedit
 
     const animationOptions = Object.keys(animationVariants);
 
     if (!open) return null;
 
-    const handlepaddingChange = (e) => {
+    const handlePositionChange = (e) => {
         const { name, value } = e.target;
-        setPadding(prev => ({ ...prev, [name]: value }));
+        setPosition(prev => ({ ...prev, [name]: value }));
     };
 
     // const handleSaveClick = () => {
-    //     // Sertakan 'padding' saat menyimpan
-    //     onSave({ text, color, size, padding, zIndex, animation });
+    //     // Sertakan 'position' saat menyimpan
+    //     onSave({ text, color, size, position, zIndex, animation });
     // };
 
-    // 1. Dapatkan status "checked" langsung dari state 'padding'
-    const isCenteredH = padding.left === '50%' && (padding.transform || '').includes('translateX(-50%)');
-    const isCenteredV = padding.top === '50%' && (padding.transform || '').includes('translateY(-50%)');
+    // 1. Dapatkan status "checked" langsung dari state 'position'
+    const isCenteredH = position.left === '50%' && (position.transform || '').includes('translateX(-50%)');
+    const isCenteredV = position.top === '50%' && (position.transform || '').includes('translateY(-50%)');
 
     // 2. Handler untuk mengubah status centering
     const handleToggleCenter = (axis, isChecked) => {
-        setPadding(prevPos => {
+        setPosition(prevPos => {
             let newPos = { ...prevPos };
             let transformParts = (newPos.transform || '').split(' ').filter(Boolean);
 
@@ -97,46 +83,31 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
     };
 
     return (
-       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-2">
-            <div className="bg-white rounded shadow-lg w-full max-w-md flex flex-col max-h-[60vh]">
-                <div className="p-6 border-b flex-shrink-0">
-                    <h2 className="text-xl font-bold">{label}</h2>
-                </div>
-                 <div className="p-6 overflow-y-auto">
-
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="bg-white rounded shadow-lg p-6 w-full max-w-md">
+                <h2 className="text-xl font-bold mb-4">{label}</h2>
                 <textarea
                     className="border p-2 w-full mb-4"
                     value={text}
                     onChange={e => setText(e.target.value)}
                     rows={4}
-                    />
+                />
                 <div className="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label className="block text-sm mb-1">Warna</label>
                         <input type="color" value={color} onChange={e => setColor(e.target.value)} />
                     </div>
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-semibold mb-1">position</label>
-                    <input 
-                        type="text" 
-                        value={position} 
-                        onChange={e => setPosition(e.target.value)} 
-                        className="border p-2 w-full rounded" 
-                        placeholder="cth: 150px atau 20%"
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-semibold mb-1">Ukuran</label>
-                    <input 
-                        type="text" 
-                        value={size} 
-                        onChange={e => setSize(e.target.value)} 
-                        className="border p-2 w-full rounded" 
-                        placeholder="cth: 150px atau 20%"
+                    <div>
+                        <label className="block text-sm mb-1">Ukuran (px)</label>
+                        <input
+                            type="number"
+                            min={8}
+                            max={72}
+                            value={parseInt(size)}
+                            onChange={e => setSize(e.target.value + 'px')}
+                            className="border p-1 w-20"
                         />
+                    </div>
                 </div>
 
                 <div className="mb-4">
@@ -145,7 +116,7 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
                         value={animation} 
                         onChange={e => setAnimation(e.target.value)} 
                         className="border p-2 w-full rounded bg-white"
-                        >
+                    >
                         <option value="">Tidak Ada</option>
                         {animationOptions.map(animName => (
                             <option key={animName} value={animName}>
@@ -153,18 +124,6 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
                             </option>
                         ))}
                     </select>
-                </div>
-
-                 <div className="mb-4">
-                    <label className="flex items-center gap-2">
-                        <input 
-                            type="checkbox" 
-                            checked={flipX} 
-                            onChange={e => setFlipX(e.target.checked)}
-                            className="rounded"
-                            />
-                        <span className="text-sm font-semibold">Balik Gambar (Flip Horizontal)</span>
-                    </label>
                 </div>
 
                 {/* Input untuk Posisi X dan Y */}
@@ -182,19 +141,19 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
                 <div className="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label className="block text-sm mb-1">Top</label>
-                        <input type="text" name="top" value={padding.top || ''} onChange={handlepaddingChange} className="border p-1 w-full rounded" placeholder="20%"/>
+                        <input type="text" name="top" value={position.top || ''} onChange={handlePositionChange} className="border p-1 w-full rounded" placeholder="20%"/>
                     </div>
                     <div>
                         <label className="block text-sm mb-1">Bottom</label>
-                        <input type="text" name="bottom" value={padding.bottom || ''} onChange={handlepaddingChange} className="border p-1 w-full rounded" placeholder="0px"/>
+                        <input type="text" name="bottom" value={position.bottom || ''} onChange={handlePositionChange} className="border p-1 w-full rounded" placeholder="0px"/>
                     </div>
                      <div>
                         <label className="block text-sm mb-1">Left</label>
-                        <input type="text" name="left" value={padding.left || ''} onChange={handlepaddingChange} className="border p-1 w-full rounded" placeholder="50%"/>
+                        <input type="text" name="left" value={position.left || ''} onChange={handlePositionChange} className="border p-1 w-full rounded" placeholder="50%"/>
                     </div>
                     <div>
                         <label className="block text-sm mb-1">Right</label>
-                        <input type="text" name="right" value={padding.right || ''} onChange={handlepaddingChange} className="border p-1 w-full rounded" placeholder="5%"/>
+                        <input type="text" name="right" value={position.right || ''} onChange={handlePositionChange} className="border p-1 w-full rounded" placeholder="5%"/>
                     </div>
                 </div>
                     <div className='mb-4'>
@@ -205,22 +164,11 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
                         onChange={e => setZIndex(parseInt(e.target.value) || 0)} 
                         className="border p-1 w-full" 
                         placeholder="cth: 1"
-                        />
-                </div>
-
-                {/* <div className="mb-4">
-                    <label className="block text-sm font-semibold mb-1">Custom Style (JSON)</label>
-                    <textarea 
-                    value={styleJson}
-                    onChange={e => setStyleJson(e.target.value)}
-                    className="border p-2 w-full rounded font-mono text-sm h-32"
-                    placeholder={`{\n  "borderRadius": "50%",\n  "opacity": 0.8\n}`}
                     />
-                    </div> */}
+                </div>
                
 
-                    </div>
-                <div className="flex justify-end gap-2 p-4">
+                <div className="flex justify-end gap-2">
                     <button onClick={onSave} className="px-4 py-2 bg-blue-600 text-white rounded">
                         Simpan
                     </button>

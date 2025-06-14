@@ -74,12 +74,71 @@ export default function OpeningSection({ section, themeId, sectionIndex }) {
         setImageModalOpen(false);
     };
    
-    const renderableFields = Object.keys(currentSectionData).filter(key => key !== 'type' && key !== 'height' && key !== 'minHeight');
+    const renderableFields = Object.keys(currentSectionData).filter(key => 
+        key !== 'type' && 
+        key !== 'height' && 
+        key !== 'minHeight' && 
+        key !== 'layout'
+    );
+
+    // ✅ Pisahkan field yang perlu relative vs absolute
+    const relativeFields = renderableFields.filter(fieldName => {
+        const fieldData = currentSectionData[fieldName];
+        return fieldData && !fieldData.position; // Field tanpa position = relative
+    });
+
+    const absoluteFields = renderableFields.filter(fieldName => {
+        const fieldData = currentSectionData[fieldName];
+        return fieldData && fieldData.position; // Field dengan position = absolute
+    });
 
     return (
         <>
+            <div className="relative w-full p-4 space-y-4 z-10">
+                {relativeFields.map((fieldName) => {
+                    const fieldData = currentSectionData[fieldName];
+                    if (typeof fieldData !== 'object' || fieldData === null) return null;
+
+                    const isImage = fieldData.path !== undefined;
+                    const animationName = fieldData.animation;
+                    const animateProps = animationName ? animationVariants[animationName] : {};
+
+                    return (
+                        <motion.div
+                            key={fieldName}
+                            className={`cursor-pointer border-dashed border border-transparent hover:border-blue-500 ${editingField === fieldName ? 'ring-2 ring-blue-500' : ''}`} 
+                            style={{ zIndex: fieldData.zIndex || 'auto' }}
+                            onClick={() => handleEditClick(fieldName)}
+                            {...animateProps}
+                        >
+                            {isImage ? (
+                                <img
+                                    src={`/storage${fieldData.path}`}
+                                    alt={fieldName}
+                                    className="w-full h-full object-cover pointer-events-none"
+                                    style={{ 
+                                        width: fieldData.size,
+                                        ...(fieldData.style || {})
+                                    }}
+                                />
+                            ) : (
+                                <div 
+                                    className="whitespace-pre-line" 
+                                    style={{ 
+                                        color: fieldData.color, 
+                                        fontSize: fieldData.size,
+                                        ...(fieldData.style || {})
+                                    }}
+                                >
+                                    {fieldData.text || `[Edit ${fieldName}]`}
+                                </div>
+                            )}
+                        </motion.div>
+                    );
+                })}
+            </div>
             
-             {renderableFields.map((fieldName) => {
+             {absoluteFields.map((fieldName) => {
                 const fieldData = currentSectionData[fieldName];
                 if (typeof fieldData !== 'object' || fieldData === null) return null;
 
@@ -93,7 +152,7 @@ export default function OpeningSection({ section, themeId, sectionIndex }) {
                 // ===================================
 
                 // 1. Ambil nilai transform dari data (jika ada, cth: 'translateX(-50%)')
-                let transformString = fieldData.padding?.transform || '';
+                let transformString = fieldData.position?.transform || '';
 
                 // 2. Jika fieldData.flipX bernilai true, tambahkan 'scaleX(-1)'
                 if (fieldData.flipX) {
@@ -102,11 +161,11 @@ export default function OpeningSection({ section, themeId, sectionIndex }) {
                 
                 // 3. Bangun objek style akhir
                 const elementStyle = {
-                    position: fieldData.position || 'absolute', // Gunakan 'layout' jika ada, default ke 'absolute'
+                    position: 'absolute',
                     zIndex: zIndexValue,
                     width: isImage ? fieldData.size : 'auto',
                     // Gunakan spread operator untuk menerapkan top, bottom, left, right dari data
-                    ...(fieldData.padding || {}),
+                    ...(fieldData.position || {}),
                     // Timpa/atur properti transform dengan string yang sudah kita bangun
                     transform: transformString.trim(), 
                     

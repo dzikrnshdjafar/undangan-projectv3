@@ -23,10 +23,6 @@ return new class extends Migration
             $table->string('background_image_path')->nullable()->comment('Background image for the theme');
             // Anda bisa menambahkan kolom lain seperti 'colors_json', 'fonts_json' jika diperlukan
             $table->timestamps();
-
-            // Unique constraint untuk kombinasi category_id dan name/slug jika diperlukan
-            // $table->unique(['invitation_category_id', 'name']);
-            // $table->unique(['invitation_category_id', 'slug']);
         });
     }
 

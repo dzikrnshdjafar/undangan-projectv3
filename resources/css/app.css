@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Responsive height untuk section */
+.responsive-height {
+    /* Default untuk mobile/tablet: gunakan rem */
+    min-height: 60rem;
+}
+
+/* Untuk layar besar (1440px ke atas): gunakan vh */
+@media (min-width: 1440px) {
+    .responsive-height {
+        min-height: 100vh;
+    }
+}
+
+/* Untuk zoom tinggi: paksa gunakan rem */
+@media (min-resolution: 2dppx) {
+    .responsive-height {
+        min-height: 60rem !important;
+    }
+}

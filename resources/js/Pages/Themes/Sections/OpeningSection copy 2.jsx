@@ -10,15 +10,16 @@ export default function OpeningSection({ section, themeId, sectionIndex }) {
     const [currentSectionData, setCurrentSectionData] = useState(section);
     const [textModalOpen, setTextModalOpen] = useState(false);
     const [imageModalOpen, setImageModalOpen] = useState(false);
+     // State untuk menyimpan nama field yang sedang diedit
     const [editingField, setEditingField] = useState(null);
+    // State untuk menyimpan data "draf" yang sedang di-edit secara live
+    const [liveEditingData, setLiveEditingData] = useState(null);
 
-   // State untuk menyimpan data asli sebelum diedit (untuk fitur 'Batal')
-    const [originalFieldData, setOriginalFieldData] = useState(null);
 
     const handleEditClick = (fieldName) => {
         setEditingField(fieldName);
-        // Simpan data asli dari field yang akan diedit
-        setOriginalFieldData(currentSectionData[fieldName]);
+        // Salin data asli ke state live-editing saat modal dibuka
+        setLiveEditingData(currentSectionData[fieldName]); 
 
         if (currentSectionData[fieldName]?.path !== undefined) {
             setImageModalOpen(true);
@@ -26,63 +27,55 @@ export default function OpeningSection({ section, themeId, sectionIndex }) {
             setTextModalOpen(true);
         }
     };
-
-    // Fungsi BARU untuk menerima update real-time dari modal
-    const handleLiveUpdate = (newValues) => {
-        if (!editingField) return;
-        setCurrentSectionData(prevData => ({
-            ...prevData,
-            [editingField]: {
-                ...prevData[editingField], // Gabungkan dengan properti lama
-                ...newValues
-            }
-        }));
+    
+    // Fungsi ini dipanggil setiap kali ada perubahan di modal
+    const handleLiveChange = (newValue) => {
+        setLiveEditingData(newValue);
     };
 
-    const handleSave = () => {
-        const fieldName = editingField;
-        const payloadData = { ...currentSectionData[fieldName] };
-        if (!payloadData.path) { // Jika ini adalah field teks
-            payloadData.text = (payloadData.text || '').replace(/\n/g, '\\n');
-        }
-        const payload = { fieldName, data: payloadData };
+    // Fungsi untuk membatalkan perubahan
+    const handleCancel = () => {
+        setEditingField(null);
+        setLiveEditingData(null);
+        setTextModalOpen(false);
+        setImageModalOpen(false);
+    }
+
+    // Fungsi ini hanya dipanggil saat tombol "Simpan" di modal diklik
+    const handleFinalSave = () => {
+        if (!editingField || !liveEditingData) return;
+
+        const payload = { 
+            fieldName: editingField, 
+            data: liveEditingData 
+        };
 
         router.put(`/themes/${themeId}/sections/${sectionIndex}`, payload, {
             preserveScroll: true,
             onSuccess: () => {
-                // Tidak perlu update state lagi karena sudah live
-                setEditingField(null);
-                setOriginalFieldData(null);
-                setTextModalOpen(false);
-                setImageModalOpen(false);
+                // Update state utama dengan data dari live-editing
+                setCurrentSectionData(prevData => ({ 
+                    ...prevData, 
+                    [editingField]: liveEditingData 
+                }));
+                handleCancel(); // Tutup modal dan reset state
             },
         });
     };
-
-    // Fungsi BARU untuk membatalkan perubahan
-    const handleCancel = () => {
-        if (originalFieldData) {
-            // Kembalikan data ke state aslinya
-            setCurrentSectionData(prevData => ({
-                ...prevData,
-                [editingField]: originalFieldData
-            }));
-        }
-        setEditingField(null);
-        setOriginalFieldData(null);
-        setTextModalOpen(false);
-        setImageModalOpen(false);
-    };
    
-    const renderableFields = Object.keys(currentSectionData).filter(key => key !== 'type' && key !== 'height' && key !== 'minHeight');
+    const renderableFields = Object.keys(currentSectionData).filter(key => key !== 'type' && key !== 'height');
+
 
     return (
-        <>
+        <div className="relative section-gallery h-full w-full bg-cover bg-center overflow-hidden">
             
              {renderableFields.map((fieldName) => {
-                const fieldData = currentSectionData[fieldName];
-                if (typeof fieldData !== 'object' || fieldData === null) return null;
+                // Saat me-render, cek apakah field ini yang sedang diedit.
+                // Jika ya, gunakan data dari 'liveEditingData'. Jika tidak, gunakan data asli.
+                const isCurrentlyEditing = editingField === fieldName;
+                const fieldData = isCurrentlyEditing ? liveEditingData : currentSectionData[fieldName];
 
+                if (typeof fieldData !== 'object' || fieldData === null) return null;
                 const isImage = fieldData.path !== undefined;
                 const animationName = fieldData.animation;
                 const animateProps = animationName ? animationVariants[animationName] : {};
@@ -93,7 +86,7 @@ export default function OpeningSection({ section, themeId, sectionIndex }) {
                 // ===================================
 
                 // 1. Ambil nilai transform dari data (jika ada, cth: 'translateX(-50%)')
-                let transformString = fieldData.padding?.transform || '';
+                let transformString = fieldData.position?.transform || '';
 
                 // 2. Jika fieldData.flipX bernilai true, tambahkan 'scaleX(-1)'
                 if (fieldData.flipX) {
@@ -102,18 +95,15 @@ export default function OpeningSection({ section, themeId, sectionIndex }) {
                 
                 // 3. Bangun objek style akhir
                 const elementStyle = {
-                    position: fieldData.position || 'absolute', // Gunakan 'layout' jika ada, default ke 'absolute'
+                    position: 'absolute',
                     zIndex: zIndexValue,
                     width: isImage ? fieldData.size : 'auto',
                     // Gunakan spread operator untuk menerapkan top, bottom, left, right dari data
-                    ...(fieldData.padding || {}),
+                    ...(fieldData.position || {}),
                     // Timpa/atur properti transform dengan string yang sudah kita bangun
                     transform: transformString.trim(), 
-                    
                 };
 
-                
-                
                 return (
                     // Elemen 1 (Luar): Mengatur Posisi & Ukuran. TIDAK ADA ANIMASI.
                     <div
@@ -124,18 +114,16 @@ export default function OpeningSection({ section, themeId, sectionIndex }) {
                     >
                            <motion.div
                             className="w-full h-full"
-                           animate={fieldData.animation ? animationVariants[fieldData.animation] : {}}
+                            animate={animateProps}
                         >
                             {isImage ? (
                                 <img
                                     src={`/storage${fieldData.path}`}
                                     alt={fieldName}
-                                    // Terapkan style masking di sini
-                                    style={fieldData.style || {}}
-                                    className="w-full h-full object-cover pointer-events-none" // Ubah ke 'object-cover' agar foto mengisi penuh
+                                    className="w-full h-full object-contain pointer-events-none"
                                 />
                             ) : (
-                                <div className="relative whitespace-pre-line text-center" style={{ ...fieldData.style, color: fieldData.color, fontSize: fieldData.size, }}>
+                                <div className="whitespace-pre-line text-center" style={{ color: fieldData.color, fontSize: fieldData.size }}>
                                     {fieldData.text || `[Edit ${fieldName}]`}
                                 </div>
                             )}
@@ -146,22 +134,22 @@ export default function OpeningSection({ section, themeId, sectionIndex }) {
 
 
             {/* ... Modal-modal tetap sama ... */}
-            <ModalEditField
+           <ModalEditField
                 open={textModalOpen}
-                initialValue={editingField ? currentSectionData[editingField] : {}}
                 label={`Edit Teks ${editingField}`}
-                onClose={handleCancel} // Gunakan handleCancel
-                onSave={handleSave}     // Gunakan handleSave
-                onLiveUpdate={handleLiveUpdate} // Prop BARU untuk update real-time
+                value={liveEditingData} // Kirim data draf
+                onLiveChange={handleLiveChange} // Kirim fungsi untuk live update
+                onClose={handleCancel} // Batal dan reset
+                onSave={handleFinalSave} // Simpan final ke backend
             />
             <ModalEditImage
                 open={imageModalOpen}
-                initialValue={editingField ? currentSectionData[editingField] : {}}
                 label={`Edit Gambar ${editingField}`}
-                onClose={handleCancel} // Gunakan handleCancel
-                onSave={handleSave}     // Gunakan handleSave
-                onLiveUpdate={handleLiveUpdate} // Prop BARU untuk update real-time
+                value={liveEditingData} // Kirim data draf
+                onLiveChange={handleLiveChange} // Kirim fungsi untuk live update
+                onClose={handleCancel} // Batal dan reset
+                onSave={handleFinalSave} // Simpan final ke backend
             />
-        </>
+        </div>
     );
 }

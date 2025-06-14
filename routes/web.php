@@ -20,7 +20,6 @@ Route::get('/invitation/{slug}', [InvitationController::class, 'show'])->name('i
 Route::get('/themes/{slug}', [InvitationThemeController::class, 'show'])->name('themes.show');
 
 Route::put('/themes/{theme}/sections/{index}', [InvitationThemeController::class, 'updateSection']);
-Route::put('/themes/{themeId}/sections/{index}/all', [InvitationThemeController::class, 'updateEntireSection'])->name('themes.sections.update.all');
 
 Route::get('/themes', [InvitationThemeController::class, 'index'])->name('themes.index');
 Route::get('/plans', [PlanController::class, 'index'])->name('plans.inertia');

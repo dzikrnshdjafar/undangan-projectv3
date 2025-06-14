@@ -88,31 +88,6 @@ class InvitationThemeController extends Controller
         return back()->with('success', ucfirst($fieldName) . ' updated successfully!');
     }
 
-    public function updateEntireSection(Request $request, $themeId, $index)
-    {
-        $theme = InvitationTheme::findOrFail($themeId);
-        $sections = json_decode($theme->sections_json, true);
-
-        // Validasi bahwa data yang dikirim adalah array (objek section)
-        $request->validate([
-            'sectionData' => 'required|array'
-        ]);
-
-        // Periksa apakah section-nya ada
-        if (isset($sections[$index])) {
-            // Langsung ganti seluruh objek section dengan data baru
-            $sections[$index] = $request->input('sectionData');
-        } else {
-            return back()->with('error', 'Section not found!');
-        }
-
-        $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $theme->save();
-
-        return back()->with('success', 'Section updated successfully!');
-    }
-
-
     public function show($slug)
     {
         $theme = InvitationTheme::where('slug', $slug)->firstOrFail();

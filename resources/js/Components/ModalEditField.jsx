@@ -208,7 +208,7 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
                         />
                 </div>
 
-                {/* <div className="mb-4">
+                <div className="mb-4">
                     <label className="block text-sm font-semibold mb-1">Custom Style (JSON)</label>
                     <textarea 
                     value={styleJson}
@@ -216,7 +216,7 @@ export default function ModalEditField({ open, initialValue, onClose, onSave, on
                     className="border p-2 w-full rounded font-mono text-sm h-32"
                     placeholder={`{\n  "borderRadius": "50%",\n  "opacity": 0.8\n}`}
                     />
-                    </div> */}
+                    </div>
                
 
                     </div>

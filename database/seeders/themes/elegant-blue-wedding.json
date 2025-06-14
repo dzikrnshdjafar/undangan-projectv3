@@ -1,0 +1,222 @@
+{
+  "category_slug": "pernikahan",
+  "name": "Elegant Blue Wedding",
+  "slug": "elegant-blue-wedding",
+  "description": "Tema pernikahan elegan dengan nuansa biru dan emas.",
+  "preview_image_path": "/images/themes/__SLUG__/preview.webp",
+  "background_image_path": "/images/themes/__SLUG__/bg.webp",
+  "sections": [
+    {
+      "type": "opening",
+      "minHeight": "clamp(50rem, 100vh, 80rem)",
+      "title": {
+        "text": "Wedding Invitation",
+        "size": "clamp(14px, 2vw, 22px)",
+        "color": "#ffffff",
+        "zIndex": 2,
+        "position": "relative",
+        "padding": {
+          "top": "4rem",
+          "left": "0%",
+          "right": "0%"
+        },
+        "style": {
+          "fontWeight": "bold",
+          "textShadow": "4px 4px 2px rgba(0, 0, 0, 0.5)"
+        }
+      },
+      "couple": {
+        "text": "Adam & Eve",
+        "size": "clamp(32px, 5vw, 60px)",
+        "color": "#F08080",
+        "zIndex": 2,
+        "position": "relative",
+        "padding": {
+          "top": "4rem",
+          "left": "0%",
+          "right": "0%"
+        },
+        "style": {
+          "fontWeight": "bold"
+        }
+      },
+      "content": {
+        "text": "July 04th, 2025",
+        "size": "2rem",
+        "color": "#F08080",
+        "zIndex": 2,
+        "position": "relative",
+        "padding": {
+          "top": "4rem",
+          "left": "0%",
+          "right": "0%"
+        }
+      },
+      "photo": {
+        "path": "/images/themes/__SLUG__/photo.webp",
+        "size": "clamp(320px, 65%, 25vw)",
+        "zIndex": 1,
+        "padding": {
+          "bottom": "0%",
+          "left": "50%",
+          "transform": "translateX(-50%)"
+        },
+        "style": {
+          "borderTopLeftRadius": "200px",
+          "borderTopRightRadius": "200px",
+          "border": "2px solid #f08080",
+          "padding": "10px"
+        }
+      },
+      "ornamenttop1": {
+        "path": "/images/themes/__SLUG__/ranting-pohon.webp",
+        "size": "clamp(20vh, 60%, 300px)",
+        "zIndex": 1,
+        "padding": {
+          "top": "-5%",
+          "right": "-5%"
+        },
+        "flipX": true,
+        "animation": "waveOut"
+      },
+      "ornamenttop2": {
+        "path": "/images/themes/__SLUG__/awan1.webp",
+        "size": "35vh",
+        "zIndex": 3,
+        "padding": {
+          "top": "4%",
+          "left": "-20%"
+        },
+        "flipX": true,
+        "animation": "marquee"
+      },
+      "ornamenttop3": {
+        "path": "/images/themes/__SLUG__/awan2.webp",
+        "size": "35%",
+        "zIndex": 3,
+        "padding": {
+          "top": "20%",
+          "right": "20%"
+        },
+        "flipX": true,
+        "animation": "marquee"
+      },
+      "ornamentbottom1": {
+        "path": "/images/themes/__SLUG__/daun4.webp",
+        "size": "100%",
+        "zIndex": 1,
+        "padding": {
+          "bottom": "-1%",
+          "left": "50%",
+          "transform": "translateX(-50%)"
+        },
+        "flipX": false
+      },
+      "ornamentbottom2": {
+        "path": "/images/themes/__SLUG__/bunga2.webp",
+        "size": "27%",
+        "zIndex": 1,
+        "padding": {
+          "bottom": "-2%",
+          "left": "-2%"
+        },
+        "flipX": true,
+        "animation": "waveOut"
+      },
+      "ornamentbottom3": {
+        "path": "/images/themes/__SLUG__/bunga3.webp",
+        "size": "20%",
+        "zIndex": 1,
+        "padding": {
+          "bottom": "-2%",
+          "left": "30%"
+        },
+        "flipX": false,
+        "animation": "waveOut"
+      },
+      "ornamentbottom4": {
+        "path": "/images/themes/__SLUG__/bunga1.webp",
+        "size": "50%",
+        "zIndex": 1,
+        "padding": {
+          "bottom": "0%",
+          "right": "-10%"
+        },
+        "flipX": false,
+        "animation": "waveOut"
+      }
+    },
+    {
+      "type": "couple",
+     "minHeight": "clamp(50rem, 200vh, 80rem)",
+     "title": {
+        "text": "Wedding Invitation",
+        "size": "clamp(14px, 2vw, 22px)",
+        "color": "#ffffff",
+        "zIndex": 2,
+        "position": "relative",
+        "padding": {
+          "top": "4rem",
+          "left": "0%",
+          "right": "0%"
+        },
+        "style": {
+          "fontWeight": "bold",
+          "textShadow": "4px 4px 2px rgba(0, 0, 0, 0.5)"
+        }
+      },
+      "wanita": {
+        "path": "/images/themes/__SLUG__/wanita.webp",
+        "size": "clamp(320px, 40%, 25vw)",
+        "zIndex": 3,
+        "padding": {
+          "top": "10%",
+          "left": "50%",
+          "transform": "translateX(-50%)"
+        },
+        "style": {
+          "borderRadius": "50%",
+          "border": "2px solid #f08080",
+          "padding": "10px"
+        }
+      },
+      "kupupink": {
+        "path": "/images/themes/__SLUG__/kupupink.webp",
+        "size": "7rem",
+        "zIndex": 3,
+        "padding": {
+          "top": "8%",
+          "left": "7vh"
+        }
+      },
+     "pria": {
+        "path": "/images/themes/__SLUG__/pria.webp",
+        "size": "clamp(320px, 10%, 25vw)",
+        "zIndex": 3,
+        "padding": {
+          "bottom": "10%",
+          "left": "50%",
+          "transform": "translateX(-50%)"
+        },
+        "style": {
+          "borderRadius": "50%",
+          "border": "2px solid #f08080",
+          "padding": "10px"
+        }
+      },
+     "kupuputih": {
+        "path": "/images/themes/__SLUG__/kupuputih.webp",
+        "size": "7rem",
+        "zIndex": 3,
+        "padding": {
+          "bottom": "28%",
+          "right": "10%"
+        }
+      }
+    },
+    {
+      "type": "event",
+      "title": "Waktu & Tempat"
+    }
+  ]
+}

@@ -38,7 +38,11 @@ export default function SectionWrapper({ section, themeId, sectionIndex, isEditi
             case 'event':
                 return <EventSection section={section} />;
             case 'couple':
-                return <CoupleSection section={section} />;
+                return <CoupleSection section={section}
+                    themeId={themeId}
+                    sectionIndex={sectionIndex}
+                    isEditing={isEditing}
+                />;
             case 'gallery':
                 return <GallerySection section={section} />;
             case 'rsvp':

@@ -172,71 +172,72 @@ class InvitationThemeSeeder extends Seeder
                         ],
 
                         [
-                            'type' => 'couple',
-                            'height' => '100vh',
-                            // 'color' => '#41fa06',
-                            'title' => [
-                                'text' => 'Selamat Datang di Pernikahan Kami',
-                                'size' => '24px',
-                                'color' => '#000000',
-                                'zIndex' => 1,
-                                'padding' => [
-                                    'x' => 50, // 50% dari kiri
-                                    'y' => 10  // 20% dari atas
+                            "type" => "couple",
+                            "minHeight" => "clamp(50rem, 200vh, 80rem)",
+                            "title" => [
+                                "text" => "Wedding Invitation",
+                                "size" => "clamp(14px, 2vw, 22px)",
+                                "color" => "#ffffff",
+                                "zIndex" => 2,
+                                "position" => "relative",
+                                "padding" => [
+                                    "top" => "4rem",
+                                    "left" => "0%",
+                                    "right" => "0%"
+                                ],
+                                "style" => [
+                                    "fontWeight" => "bold",
+                                    "textShadow" => "4px 4px 2px rgba(0, 0, 0, 0.5)"
                                 ]
                             ],
-                            'content' => [
-                                'text' => 'Kami mengundang Anda untuk hadir...',
-                                'size' => '16px',
-                                'color' => '#F08080',
-                                'zIndex' => 1,
-                                'padding' => [
-                                    'x' => 50,
-                                    'y' => 35
+                            "wanita" => [
+                                "path" => "/images/themes/{$slug}/wanita.webp",
+                                "size" => "clamp(320px, 40%, 25vw)",
+                                "zIndex" => 3,
+                                "padding" => [
+                                    "top" => "10%",
+                                    "left" => "50%",
+                                    "transform" => "translateX(-50%)"
                                 ],
-                                'animation' => 'bounce'
-                            ],
-                            'welcome' => [
-                                'text' => 'Kepada Yth. Bapak/Ibu/Saudara/i',
-                                'size' => '16px',
-                                'color' => '#F08080',
-                                'zIndex' => 1,
-                                'padding' => [
-                                    'x' => 50,
-                                    'y' => 85
+                                "style" => [
+                                    "borderRadius" => "50%",
+                                    "border" => "2px solid #f08080",
+                                    "padding" => "10px"
                                 ]
                             ],
-                            'decoration' => [
-                                'path' => "/images/themes/{$slug}/flower2.png",
-                                'size' => '50%',
-                                'zIndex' => 20,
-                                'padding' => [
-                                    'x' => 50,
-                                    'y' => 50
-                                ],
-                                'animation' => 'bounce',
+                            "kupupink" => [
+                                "path" => "/images/themes/{$slug}/kupupink.webp",
+                                "size" => "7rem",
+                                "zIndex" => 3,
+                                "padding" => [
+                                    "top" => "8%",
+                                    "left" => "7vh"
+                                ]
                             ],
-                            'decoration2' => [
-                                'path' => "/images/themes/{$slug}/leaf.webp",
-                                'size' => '50%',
-                                'zIndex' => 1,
-                                'padding' => [
-                                    'x' => 82, // Posisi horizontal dalam pixel dari tengah
-                                    'y' => 50 // Posisi vertikal dalam pixel dari tengah
+                            "pria" => [
+                                "path" => "/images/themes/{$slug}/pria.webp",
+                                "size" => "clamp(320px, 10%, 25vw)",
+                                "zIndex" => 3,
+                                "padding" => [
+                                    "bottom" => "10%",
+                                    "left" => "50%",
+                                    "transform" => "translateX(-50%)"
                                 ],
-                                'animation' => 'sway',
+                                "style" => [
+                                    "borderRadius" => "50%",
+                                    "border" => "2px solid #f08080",
+                                    "padding" => "10px"
+                                ]
                             ],
-                            'decoration3' => [
-                                'path' => "/images/themes/{$slug}/leaf2.webp",
-                                'size' => '50%',
-                                'zIndex' => 1,
-                                'padding' => [
-                                    'x' => 18, // Posisi horizontal dalam pixel dari tengah
-                                    'y' => 50 // Posisi vertikal dalam pixel dari tengah
-                                ],
-                                // 'animation' => 'shake',
-
-                            ],
+                            "kupuputih" => [
+                                "path" => "/images/themes/{$slug}/kupuputih.webp",
+                                "size" => "7rem",
+                                "zIndex" => 3,
+                                "padding" => [
+                                    "bottom" => "28%",
+                                    "right" => "10%"
+                                ]
+                            ]
                         ],
                         [
                             'type' => 'event',

@@ -14,14 +14,13 @@ return new class extends Migration
         Schema::create('invitation_themes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invitation_category_id')->constrained()->onDelete('cascade');
-            $table->string('name'); // e.g., "Elegant Blue", "Funky Birthday Blast"
-            $table->string('slug')->unique(); // e.g., "elegant-blue", "funky-birthday-blast"
+            $table->string('name');
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->string('preview_image_path')->nullable(); // Path to a thumbnail/preview image
+            $table->string('preview_image_path')->nullable();
             $table->json('sections_json')->nullable()->comment('Section structure for dynamic rendering');
 
             $table->string('background_image_path')->nullable()->comment('Background image for the theme');
-            // Anda bisa menambahkan kolom lain seperti 'colors_json', 'fonts_json' jika diperlukan
             $table->timestamps();
         });
     }

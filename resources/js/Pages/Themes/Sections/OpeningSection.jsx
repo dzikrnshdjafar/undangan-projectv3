@@ -1,167 +1,236 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { router } from '@inertiajs/react';
-import { motion } from 'framer-motion'; 
+import { motion } from 'framer-motion';
 import ModalEditField from '../../../Components/ModalEditField';
 import ModalEditImage from '../../../Components/ModalEditImage';
 import { animationVariants } from '../../../Utils/animations';
 
-export default function OpeningSection({ section, themeId, sectionIndex }) {
-    // ... (State dan semua fungsi handle Anda tetap sama)
-    const [currentSectionData, setCurrentSectionData] = useState(section);
-    const [textModalOpen, setTextModalOpen] = useState(false);
-    const [imageModalOpen, setImageModalOpen] = useState(false);
-    const [editingField, setEditingField] = useState(null);
+/**
+ * Komponen rekursif untuk me-render sebuah field atau sebuah wrapper.
+ */
+const RenderFieldOrWrapper = ({ fieldName, fieldData, path, onEditClick }) => {
+    if (typeof fieldData !== 'object' || fieldData === null) return null;
 
-   // State untuk menyimpan data asli sebelum diedit (untuk fitur 'Batal')
+    // Definisikan kunci-kunci yang merupakan properti konfigurasi/styling,
+    // bukan elemen anak yang bisa dirender, meskipun nilainya adalah objek.
+    const nonRenderableChildKeys = ['wrapperStyle', 'imageStyle', 'textStyle', 'order']; // Updated keys
+
+    // Cek apakah ini wrapper. Wrapper adalah objek yang tidak memiliki 'path' atau 'text'
+    // tapi memiliki child yang merupakan objek (dan bukan salah satu dari nonRenderableChildKeys).
+    const childKeys = Object.keys(fieldData).filter(key =>
+        typeof fieldData[key] === 'object' &&
+        fieldData[key] !== null &&
+        !nonRenderableChildKeys.includes(key) // Pastikan kunci ini bukan untuk styling/konfigurasi objek induk
+    );
+
+    // isWrapper ditentukan jika tidak ada 'path' atau 'text' (bukan field daun)
+    // DAN memiliki childKeys yang valid untuk dirender.
+    const isWrapper = !('path' in fieldData) && !('text' in fieldData) && childKeys.length > 0;
+
+    // --- Kalkulasi Style ---
+    let transformString = '';
+    if (fieldData.flipX) {
+        transformString = 'scaleX(-1)';
+    }
+
+    // Tentukan style berdasarkan jenis field
+    let elementStyle = {};
+    
+    if (isWrapper) {
+        // Untuk wrapper, gunakan wrapperStyle
+        elementStyle = {
+            ...fieldData.wrapperStyle,
+            ...(transformString && { transform: `${fieldData.wrapperStyle?.transform || ''} ${transformString}`.trim() })
+        };
+    } else if ('path' in fieldData) {
+        // Untuk gambar, gunakan imageStyle
+        elementStyle = {
+            ...fieldData.imageStyle,
+            ...(transformString && { transform: `${fieldData.imageStyle?.transform || ''} ${transformString}`.trim() })
+        };
+    } else {
+        // Untuk teks, gunakan textStyle
+        elementStyle = {
+            ...fieldData.textStyle,
+            ...(transformString && { transform: `${fieldData.textStyle?.transform || ''} ${transformString}`.trim() })
+        };
+    }
+
+    if (isWrapper) {
+        // Ini adalah WRAPPER. Render sebuah div dan panggil komponen ini lagi untuk anak-anaknya.
+        return (
+            <div
+                style={elementStyle}
+                className="cursor-pointer border-2 border-dashed border-transparent hover:border-red-500 transition-all p-1"
+                onClick={(e) => { e.stopPropagation(); onEditClick(path, fieldData); }}
+            >
+                <div className="relative w-full h-full">
+                    {childKeys.map(key => (
+                        <RenderFieldOrWrapper
+                            key={key}
+                            fieldName={key}
+                            fieldData={fieldData[key]}
+                            path={[...path, key]} // Tambahkan key ke path
+                            onEditClick={onEditClick}
+                        />
+                    ))}
+                </div>
+            </div>
+        );
+    } else {
+        // Ini adalah FIELD BIASA (gambar atau teks). Render seperti sebelumnya.
+        const isImage = 'path' in fieldData;
+        const animateProps = fieldData.animation ? animationVariants[fieldData.animation] : {};
+
+        return (
+            <div
+                key={fieldName}
+                className="absolute cursor-pointer border-dashed border-2 border-transparent hover:border-blue-500 rounded transition-all"
+                style={elementStyle}
+                onClick={(e) => { e.stopPropagation(); onEditClick(path, fieldData); }}
+            >
+                <motion.div className="w-full h-full" animate={animateProps}>
+                    {isImage ? (
+                        <img
+                            src={`/storage${fieldData.path}`}
+                            alt={fieldName}
+                            className="w-full h-full object-cover pointer-events-none rounded"
+                            
+                        />
+                    ) : (
+                        <div
+                            className="relative whitespace-pre-line text-center"
+                        >
+                            {fieldData.text || `[Edit ${fieldName}]`}
+                        </div>
+                    )}
+                </motion.div>
+            </div>
+        );
+    }
+};
+
+export default function OpeningSection({ section, themeId, sectionIndex }) {
+    const [currentSectionData, setCurrentSectionData] = useState(section);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalType, setModalType] = useState('text'); // 'text' or 'image'
+    const [editingFieldPath, setEditingFieldPath] = useState([]);
     const [originalFieldData, setOriginalFieldData] = useState(null);
 
-    const handleEditClick = (fieldName) => {
-        setEditingField(fieldName);
-        // Simpan data asli dari field yang akan diedit
-        setOriginalFieldData(currentSectionData[fieldName]);
-
-        if (currentSectionData[fieldName]?.path !== undefined) {
-            setImageModalOpen(true);
-        } else {
-            setTextModalOpen(true);
-        }
-    };
-
-    // Fungsi BARU untuk menerima update real-time dari modal
-    const handleLiveUpdate = (newValues) => {
-        if (!editingField) return;
-        setCurrentSectionData(prevData => ({
-            ...prevData,
-            [editingField]: {
-                ...prevData[editingField], // Gabungkan dengan properti lama
+    // Helper untuk update state secara nested
+    const updateNestedState = (path, newValues) => {
+        setCurrentSectionData(prev => {
+            const newState = JSON.parse(JSON.stringify(prev)); // Deep copy
+            let current = newState;
+            path.slice(0, -1).forEach(key => {
+                current = current[key];
+            });
+            current[path[path.length - 1]] = {
+                ...current[path[path.length - 1]],
                 ...newValues
-            }
-        }));
-    };
-
-    const handleSave = () => {
-        const fieldName = editingField;
-        const payloadData = { ...currentSectionData[fieldName] };
-        if (!payloadData.path) { // Jika ini adalah field teks
-            payloadData.text = (payloadData.text || '').replace(/\n/g, '\\n');
-        }
-        const payload = { fieldName, data: payloadData };
-
-        router.put(`/themes/${themeId}/sections/${sectionIndex}`, payload, {
-            preserveScroll: true,
-            onSuccess: () => {
-                // Tidak perlu update state lagi karena sudah live
-                setEditingField(null);
-                setOriginalFieldData(null);
-                setTextModalOpen(false);
-                setImageModalOpen(false);
-            },
+            };
+            return newState;
         });
     };
 
-    // Fungsi BARU untuk membatalkan perubahan
+    const handleEditClick = useCallback((path, fieldData) => {
+        setEditingFieldPath(path);
+        setOriginalFieldData(fieldData);
+        setModalType('path' in fieldData ? 'image' : 'text');
+        setModalOpen(true);
+    }, []);
+
+    const handleLiveUpdate = useCallback((newValues) => {
+        if (!editingFieldPath.length) return;
+        updateNestedState(editingFieldPath, newValues);
+    }, [editingFieldPath]);
+
+    const handleSave = () => {
+        const fieldData = editingFieldPath.reduce((acc, key) => acc[key], currentSectionData);
+        const payloadData = { ...fieldData };
+
+        if (!payloadData.path) {
+            payloadData.text = (payloadData.text || '').replace(/\n/g, '\\n');
+        }
+
+        router.put(`/themes/${themeId}/sections/${sectionIndex}`, {
+            fieldName: editingFieldPath.join('.'), // Kirim path dengan notasi titik
+            data: payloadData,
+        }, {
+            preserveScroll: true,
+            onSuccess: () => closeModal(),
+        });
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setEditingFieldPath([]);
+        setOriginalFieldData(null);
+    };
+
     const handleCancel = () => {
         if (originalFieldData) {
-            // Kembalikan data ke state aslinya
-            setCurrentSectionData(prevData => ({
-                ...prevData,
-                [editingField]: originalFieldData
-            }));
+            updateNestedState(editingFieldPath, originalFieldData);
         }
-        setEditingField(null);
-        setOriginalFieldData(null);
-        setTextModalOpen(false);
-        setImageModalOpen(false);
+        closeModal();
     };
-   
-    const renderableFields = Object.keys(currentSectionData).filter(key => key !== 'type' && key !== 'height' && key !== 'minHeight');
 
+     // Ambil semua key level atas dari data section
+    const allTopLevelKeys = Object.keys(currentSectionData).filter(
+        key => !['type', 'height', 'minHeight'].includes(key)
+    );
+
+    // Urutkan keys berdasarkan properti 'order' pada data fieldnya
+    // Field tanpa 'order' atau dengan 'order' yang tidak valid akan diletakkan di akhir
+    const sortedFieldNames = allTopLevelKeys.sort((keyA, keyB) => {
+        const orderA = currentSectionData[keyA]?.order;
+        const orderB = currentSectionData[keyB]?.order;
+
+        // Handle jika order tidak ada atau bukan angka
+        if (typeof orderA !== 'number' && typeof orderB !== 'number') return 0; // Pertahankan urutan asli jika keduanya tidak punya order
+        if (typeof orderA !== 'number') return 1; // Taruh A di akhir jika tidak punya order
+        if (typeof orderB !== 'number') return -1; // Taruh B di akhir jika tidak punya order
+
+        return orderA - orderB;
+    });
+
+    const getFieldDataByPath = (path) => {
+        return path.reduce((acc, key) => acc[key], currentSectionData);
+    };
+    
     return (
         <>
-            
-             {renderableFields.map((fieldName) => {
-                const fieldData = currentSectionData[fieldName];
-                if (typeof fieldData !== 'object' || fieldData === null) return null;
+            {sortedFieldNames.map(fieldName => (
+                <RenderFieldOrWrapper
+                    key={fieldName}
+                    fieldName={fieldName}
+                    fieldData={currentSectionData[fieldName]}
+                    path={[fieldName]}
+                    onEditClick={handleEditClick}
+                />
+            ))}
 
-                const isImage = fieldData.path !== undefined;
-                const animationName = fieldData.animation;
-                const animateProps = animationName ? animationVariants[animationName] : {};
-                const zIndexValue = fieldData.zIndex || 'auto';
-
-                // ===================================
-                // PERBAIKAN LOGIKA TRANSFORM DAN STYLE
-                // ===================================
-
-                // 1. Ambil nilai transform dari data (jika ada, cth: 'translateX(-50%)')
-                let transformString = fieldData.padding?.transform || '';
-
-                // 2. Jika fieldData.flipX bernilai true, tambahkan 'scaleX(-1)'
-                if (fieldData.flipX) {
-                    transformString += ' scaleX(-1)';
-                }
-                
-                // 3. Bangun objek style akhir
-                const elementStyle = {
-                    position: fieldData.position || 'absolute', // Gunakan 'layout' jika ada, default ke 'absolute'
-                    zIndex: zIndexValue,
-                    width: isImage ? fieldData.size : 'auto',
-                    // Gunakan spread operator untuk menerapkan top, bottom, left, right dari data
-                    ...(fieldData.padding || {}),
-                    // Timpa/atur properti transform dengan string yang sudah kita bangun
-                    transform: transformString.trim(), 
-                    
-                };
-
-                
-                
-                return (
-                    // Elemen 1 (Luar): Mengatur Posisi & Ukuran. TIDAK ADA ANIMASI.
-                    <div
-                        key={fieldName}
-                        className='absolute cursor-pointer border-dashed border border-transparent hover:border-blue-500 rounded transition-all'
-                         style={elementStyle} 
-                        onClick={() => handleEditClick(fieldName)}
-                    >
-                           <motion.div
-                            className="w-full h-full"
-                           animate={fieldData.animation ? animationVariants[fieldData.animation] : {}}
-                        >
-                            {isImage ? (
-                                <img
-                                    src={`/storage${fieldData.path}`}
-                                    alt={fieldName}
-                                    // Terapkan style masking di sini
-                                    style={fieldData.style || {}}
-                                    className="w-full h-full object-cover pointer-events-none" // Ubah ke 'object-cover' agar foto mengisi penuh
-                                />
-                            ) : (
-                                <div className="relative whitespace-pre-line text-center" style={{ ...fieldData.style, color: fieldData.color, fontSize: fieldData.size, }}>
-                                    {fieldData.text || `[Edit ${fieldName}]`}
-                                </div>
-                            )}
-                        </motion.div>
-                    </div>
-                );
-            })}
-
-
-            {/* ... Modal-modal tetap sama ... */}
-            <ModalEditField
-                open={textModalOpen}
-                initialValue={editingField ? currentSectionData[editingField] : {}}
-                label={`Edit Teks ${editingField}`}
-                onClose={handleCancel} // Gunakan handleCancel
-                onSave={handleSave}     // Gunakan handleSave
-                onLiveUpdate={handleLiveUpdate} // Prop BARU untuk update real-time
-            />
-            <ModalEditImage
-                open={imageModalOpen}
-                initialValue={editingField ? currentSectionData[editingField] : {}}
-                label={`Edit Gambar ${editingField}`}
-                onClose={handleCancel} // Gunakan handleCancel
-                onSave={handleSave}     // Gunakan handleSave
-                onLiveUpdate={handleLiveUpdate} // Prop BARU untuk update real-time
-            />
+            {modalOpen && (
+                modalType === 'image' ? (
+                    <ModalEditImage
+                        open={modalOpen}
+                        initialValue={getFieldDataByPath(editingFieldPath)}
+                        label={`Edit Gambar ${editingFieldPath.join(' > ')}`}
+                        onClose={handleCancel}
+                        onSave={handleSave}
+                        onLiveUpdate={handleLiveUpdate}
+                    />
+                ) : (
+                    <ModalEditField
+                        open={modalOpen}
+                        initialValue={getFieldDataByPath(editingFieldPath)}
+                        label={`Edit Teks ${editingFieldPath.join(' > ')}`}
+                        onClose={handleCancel}
+                        onSave={handleSave}
+                        onLiveUpdate={handleLiveUpdate}
+                    />
+                )
+            )}
         </>
     );
 }

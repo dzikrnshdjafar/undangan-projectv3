@@ -32,7 +32,6 @@ class InvitationThemeSeeder extends Seeder
                             'type' => 'opening',
                             'minHeight' => 'clamp(50rem, 100vh, 80rem)',
                             'heroTextWrapper' => [
-                                'order' => 1,
                                 'wrapperStyle' => [
                                     'position' => 'relative',
                                     'top' => '2rem',
@@ -49,13 +48,13 @@ class InvitationThemeSeeder extends Seeder
                                     'text' => 'Wedding Invitation',
                                     'order' => 1,
                                     'textStyle' => [
+                                        'fontSize' => '2rem',
+                                        'color' => '#ffffff',
+                                        'zIndex' => 2,
                                         'position' => 'relative',
                                         'left' => '50%',
                                         'transform' => 'translateX(-50%)',
                                         'width' => '100%',
-                                        'fontSize' => '2rem',
-                                        'color' => '#ffffff',
-                                        'zIndex' => 2,
                                         'fontWeight' => 'bold',
                                         'textShadow' => '4px 4px 2px rgba(0, 0, 0, 0.5)',
                                     ]
@@ -64,64 +63,61 @@ class InvitationThemeSeeder extends Seeder
                                     'text' => 'Adam & Eve',
                                     'order' => 2,
                                     'textStyle' => [
+                                        'fontSize' => '3rem',
+                                        'color' => '#F08080',
+                                        'zIndex' => 2,
                                         'position' => 'relative',
                                         'left' => '50%',
                                         'transform' => 'translateX(-50%)',
                                         'width' => '100%',
-                                        'fontSize' => '3rem',
-                                        'color' => '#F08080',
-                                        'zIndex' => 2,
                                         'fontWeight' => 'bold',
                                     ]
                                 ],
                                 'content' => [
                                     'text' => 'July 04th, 2025',
-                                    'order' => 3,
                                     'textStyle' => [
+                                        'fontSize' => '2rem',
+                                        'color' => '#F08080',
+                                        'zIndex' => 3,
                                         'position' => 'relative',
                                         'left' => '50%',
                                         'transform' => 'translateX(-50%)',
                                         'width' => '100%',
-                                        'fontSize' => '2rem',
-                                        'color' => '#F08080',
-                                        'zIndex' => 3,
                                     ]
                                 ]
                             ],
                             'ornamentRanting' => [
                                 'path' => "/images/themes/{$slug}/ranting-pohon.webp",
-                                'order' => 2,
                                 'flipX' => true,
                                 'animation' => 'waveOut',
                                 'imageStyle' => [
+                                    'width' => '35vh',
+                                    'height' => '35vh',
                                     'position' => 'absolute',
+                                    'zIndex' => 1,
                                     'top' => '-5%',
                                     'right' => '-5%',
-                                    'width' => '35vh',
-                                    'height' => 'auto',
-                                    'zIndex' => 1,
                                 ]
                             ],
                             'ornamentAwanWrapper' => [
-                                'order' => 3,
                                 'wrapperStyle' => [
                                     'position' => 'absolute',
+                                    'zIndex' => 3,
                                     'top' => '10%',
                                     'left' => '50%',
                                     'transform' => 'translateX(-50%)',
                                     'width' => '100%',
-                                    'zIndex' => 3,
                                 ],
                                 'awan1' => [
                                     'path' => "/images/themes/{$slug}/awan2.webp",
                                     'flipX' => true,
                                     'animation' => 'marquee',
                                     'imageStyle' => [
+                                        'width' => '35%',
+                                        'height' => 'auto',
                                         'position' => 'relative',
                                         'top' => '20%',
                                         'right' => '20%',
-                                        'width' => '35%',
-                                        'height' => 'auto',
                                     ]
                                 ],
                                 'awan2' => [
@@ -129,24 +125,27 @@ class InvitationThemeSeeder extends Seeder
                                     'flipX' => true,
                                     'animation' => 'marquee',
                                     'imageStyle' => [
-                                        'position' => 'relative',
-                                        'left' => '10rem',
                                         'width' => '40%',
                                         'height' => 'auto',
+                                        'position' => 'relative',
+                                        'left' => '10rem',
                                     ]
                                 ],
                             ],
-
                             'photo' => [
                                 'path' => "/images/themes/{$slug}/photo.webp",
-                                'order' => 4,
                                 'imageStyle' => [
+                                    'transform' => 'translateX(-50%)',
+                                    'borderTopLeftRadius' => '190px',
+                                    'borderTopRightRadius' => '190px',
+                                    'objectFit' => 'cover',
+                                ],
+                                'containerStyle' => [
                                     'position' => 'absolute',
+                                    'width' => '60%',
                                     'bottom' => '0%',
                                     'left' => '50%',
                                     'transform' => 'translateX(-50%)',
-                                    'width' => '40vh',
-                                    'height' => 'auto',
                                     'zIndex' => 1,
                                     'borderTopLeftRadius' => '200px',
                                     'borderTopRightRadius' => '200px',
@@ -155,25 +154,25 @@ class InvitationThemeSeeder extends Seeder
                                 ]
                             ],
                             'ornamentbottom_wrapper' => [
-                                'order' => 5,
                                 'wrapperStyle' => [
                                     'position' => 'absolute',
+                                    'zIndex' => 3,
                                     'bottom' => '-1%',
-                                    'left' => '-5%',
-                                    'right' => '-5%',
-                                    'zIndex' => 1,
+                                    'left' => '50%',
+                                    'transform' => 'translateX(-50%)',
+                                    'width' => '100%',
                                 ],
                                 'ornamentbottom1' => [
                                     'path' => "/images/themes/{$slug}/daun4.webp",
                                     'flipX' => false,
                                     'imageStyle' => [
-                                        'position' => 'absolute',
+                                        'width' => '100%',
+                                        'height' => 'auto',
+                                        'position' => 'relative',
+                                        'zIndex' => 1,
                                         'bottom' => '-1%',
                                         'left' => '50%',
                                         'transform' => 'translateX(-50%)',
-                                        'width' => '100%',
-                                        'height' => 'auto',
-                                        'zIndex' => 1,
                                     ]
                                 ],
                                 'ornamentbottom2' => [
@@ -181,12 +180,12 @@ class InvitationThemeSeeder extends Seeder
                                     'flipX' => true,
                                     'animation' => 'waveOut',
                                     'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'bottom' => '-2%',
-                                        'left' => '-2%',
                                         'width' => '27%',
                                         'height' => 'auto',
+                                        'position' => 'absolute',
                                         'zIndex' => 1,
+                                        'bottom' => '-2%',
+                                        'left' => '-2%',
                                     ]
                                 ],
                                 'ornamentbottom3' => [
@@ -194,12 +193,12 @@ class InvitationThemeSeeder extends Seeder
                                     'flipX' => false,
                                     'animation' => 'waveOut',
                                     'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'bottom' => '-2%',
-                                        'left' => '30%',
                                         'width' => '20%',
                                         'height' => 'auto',
                                         'zIndex' => 1,
+                                        'position' => 'absolute',
+                                        'bottom' => '-2%',
+                                        'left' => '30%',
                                     ]
                                 ],
                                 'ornamentbottom4' => [
@@ -207,12 +206,12 @@ class InvitationThemeSeeder extends Seeder
                                     'flipX' => false,
                                     'animation' => 'waveOut',
                                     'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'bottom' => '0%',
-                                        'right' => '-10%',
                                         'width' => '50%',
                                         'height' => 'auto',
                                         'zIndex' => 1,
+                                        'position' => 'absolute',
+                                        'bottom' => '0%',
+                                        'right' => '-10%',
                                     ]
                                 ],
                             ],

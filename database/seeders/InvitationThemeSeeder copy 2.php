@@ -32,315 +32,265 @@ class InvitationThemeSeeder extends Seeder
                             'type' => 'opening',
                             'minHeight' => 'clamp(50rem, 100vh, 80rem)',
                             'heroTextWrapper' => [
-                                'order' => 1,
-                                'wrapperStyle' => [
-                                    'position' => 'relative',
+                                'position' => 'relative',
+                                'padding' => [
                                     'top' => '2rem',
                                     'left' => '50%',
                                     'transform' => 'translateX(-50%)',
                                     'width' => '100%',
                                     'height' => '100%',
+                                ],
+                                'style' => [
                                     'textAlign' => 'center',
                                     'color' => '#ffffff',
                                     'backgroundColor' => 'rgba(0, 0, 0, 0.5)',
-                                    'zIndex' => 2,
                                 ],
+                                'zIndex' => 2,
                                 'title' => [
                                     'text' => 'Wedding Invitation',
+                                    'size' => '2rem',
                                     'order' => 1,
-                                    'textStyle' => [
-                                        'position' => 'relative',
+                                    'color' => '#ffffff',
+                                    'zIndex' => 2,
+                                    'position' => 'relative',
+                                    'padding' => [
                                         'left' => '50%',
                                         'transform' => 'translateX(-50%)',
                                         'width' => '100%',
-                                        'fontSize' => '2rem',
-                                        'color' => '#ffffff',
-                                        'zIndex' => 2,
+                                    ],
+                                    'style' => [
                                         'fontWeight' => 'bold',
                                         'textShadow' => '4px 4px 2px rgba(0, 0, 0, 0.5)',
+                                        'width' => '100%',
                                     ]
                                 ],
                                 'couple' => [
                                     'text' => 'Adam & Eve',
+                                    'size' => '3rem',
                                     'order' => 2,
-                                    'textStyle' => [
-                                        'position' => 'relative',
+                                    'color' => '#F08080',
+                                    'zIndex' => 2,
+                                    'position' => 'relative',
+                                    'padding' => [
                                         'left' => '50%',
                                         'transform' => 'translateX(-50%)',
                                         'width' => '100%',
-                                        'fontSize' => '3rem',
-                                        'color' => '#F08080',
-                                        'zIndex' => 2,
+                                    ],
+                                    'style' => [
                                         'fontWeight' => 'bold',
+
                                     ]
                                 ],
                                 'content' => [
                                     'text' => 'July 04th, 2025',
-                                    'order' => 3,
-                                    'textStyle' => [
-                                        'position' => 'relative',
+                                    'size' => '2rem',
+                                    'color' => '#F08080',
+                                    'zIndex' => 3,
+                                    'position' => 'relative',
+                                    'padding' => [
                                         'left' => '50%',
                                         'transform' => 'translateX(-50%)',
                                         'width' => '100%',
-                                        'fontSize' => '2rem',
-                                        'color' => '#F08080',
-                                        'zIndex' => 3,
-                                    ]
+                                    ],
                                 ]
                             ],
                             'ornamentRanting' => [
                                 'path' => "/images/themes/{$slug}/ranting-pohon.webp",
-                                'order' => 2,
-                                'flipX' => true,
-                                'animation' => 'waveOut',
-                                'imageStyle' => [
-                                    'position' => 'absolute',
+                                'size' => '35vh',
+                                'position' => 'absolute',
+                                'zIndex' => 1,
+                                'padding' => [
                                     'top' => '-5%',
                                     'right' => '-5%',
-                                    'width' => '35vh',
-                                    'height' => 'auto',
-                                    'zIndex' => 1,
-                                ]
+                                ],
+                                'flipX' => true,
+                                'animation' => 'waveOut',
                             ],
                             'ornamentAwanWrapper' => [
-                                'order' => 3,
-                                'wrapperStyle' => [
-                                    'position' => 'absolute',
+                                'position' => 'absolute',
+                                'zIndex' => 3,
+                                'padding' => [
                                     'top' => '10%',
                                     'left' => '50%',
                                     'transform' => 'translateX(-50%)',
                                     'width' => '100%',
-                                    'zIndex' => 3,
                                 ],
                                 'awan1' => [
                                     'path' => "/images/themes/{$slug}/awan2.webp",
-                                    'flipX' => true,
-                                    'animation' => 'marquee',
-                                    'imageStyle' => [
-                                        'position' => 'relative',
+                                    'size' => '35%',
+                                    'position' => 'relative',
+                                    'padding' => [
                                         'top' => '20%',
                                         'right' => '20%',
-                                        'width' => '35%',
-                                        'height' => 'auto',
-                                    ]
+                                    ],
+                                    'flipX' => true,
+                                    'animation' => 'marquee',
                                 ],
                                 'awan2' => [
                                     'path' => "/images/themes/{$slug}/awan1.webp",
+                                    'size' => '40%',
+                                    'position' => 'relative',
+                                    'padding' => [
+                                        'left' => '10rem',
+                                    ],
                                     'flipX' => true,
                                     'animation' => 'marquee',
-                                    'imageStyle' => [
-                                        'position' => 'relative',
-                                        'left' => '10rem',
-                                        'width' => '40%',
-                                        'height' => 'auto',
-                                    ]
                                 ],
                             ],
-
                             'photo' => [
                                 'path' => "/images/themes/{$slug}/photo.webp",
-                                'order' => 4,
-                                'imageStyle' => [
-                                    'position' => 'absolute',
-                                    'bottom' => '0%',
-                                    'left' => '50%',
-                                    'transform' => 'translateX(-50%)',
-                                    'width' => '40vh',
-                                    'height' => 'auto',
-                                    'zIndex' => 1,
-                                    'borderTopLeftRadius' => '200px',
-                                    'borderTopRightRadius' => '200px',
-                                    'border' => '2px solid #f08080',
-                                    'padding' => '10px',
+                                'size' => '40vh',
+                                'zIndex' => 1,
+                                'position' => 'absolute',
+                                'padding' => [
+                                    'bottom' => '0%', // Menempel di atas
+                                    'left' => '50%', // Menempel di kanan
+                                    'transform' => 'translateX(-50%)', // Pindahkan ke tengah
+                                ],
+                                'style' => [
+                                    "borderTopLeftRadius" => "200px",
+                                    "borderTopRightRadius" => "200px",
+                                    'border' => '2px solid #f08080', // Menambahkan border putih
+                                    'padding' => '10px', // Menambahkan padding border
                                 ]
                             ],
                             'ornamentbottom_wrapper' => [
-                                'order' => 5,
-                                'wrapperStyle' => [
-                                    'position' => 'absolute',
+                                'position' => 'absolute',
+                                'zIndex' => 1,
+                                'padding' => [
                                     'bottom' => '-1%',
                                     'left' => '-5%',
                                     'right' => '-5%',
-                                    'zIndex' => 1,
                                 ],
                                 'ornamentbottom1' => [
                                     'path' => "/images/themes/{$slug}/daun4.webp",
-                                    'flipX' => false,
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
+                                    'size' => '100%',
+                                    'position' => 'absolute',
+                                    'zIndex' => 1,
+                                    'padding' => [
                                         'bottom' => '-1%',
                                         'left' => '50%',
                                         'transform' => 'translateX(-50%)',
-                                        'width' => '100%',
-                                        'height' => 'auto',
-                                        'zIndex' => 1,
-                                    ]
+                                    ],
+                                    'flipX' => false,
                                 ],
                                 'ornamentbottom2' => [
                                     'path' => "/images/themes/{$slug}/bunga2.webp",
-                                    'flipX' => true,
-                                    'animation' => 'waveOut',
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
+                                    'size' => '27%',
+                                    'position' => 'absolute',
+                                    'zIndex' => 1,
+                                    'padding' => [
                                         'bottom' => '-2%',
                                         'left' => '-2%',
-                                        'width' => '27%',
-                                        'height' => 'auto',
-                                        'zIndex' => 1,
-                                    ]
+                                    ],
+                                    'flipX' => true,
+                                    'animation' => 'waveOut',
                                 ],
                                 'ornamentbottom3' => [
                                     'path' => "/images/themes/{$slug}/bunga3.webp",
-                                    'flipX' => false,
-                                    'animation' => 'waveOut',
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
+                                    'size' => '20%',
+                                    'zIndex' => 1,
+                                    'position' => 'absolute',
+                                    'padding' => [
                                         'bottom' => '-2%',
                                         'left' => '30%',
-                                        'width' => '20%',
-                                        'height' => 'auto',
-                                        'zIndex' => 1,
-                                    ]
+                                    ],
+                                    'flipX' => false,
+                                    'animation' => 'waveOut',
                                 ],
                                 'ornamentbottom4' => [
                                     'path' => "/images/themes/{$slug}/bunga1.webp",
-                                    'flipX' => false,
-                                    'animation' => 'waveOut',
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
+                                    'size' => '50%',
+                                    'zIndex' => 1,
+                                    'position' => 'absolute',
+                                    'padding' => [
                                         'bottom' => '0%',
                                         'right' => '-10%',
-                                        'width' => '50%',
-                                        'height' => 'auto',
-                                        'zIndex' => 1,
-                                    ]
+                                    ],
+                                    'flipX' => false,
+                                    'animation' => 'waveOut',
                                 ],
                             ],
+
                         ],
+
                         [
                             "type" => "couple",
                             "minHeight" => "clamp(50rem, 150vh, 80rem)",
                             "title" => [
                                 "text" => "Pasangan Mempelai",
+                                "size" => "2rem",
                                 "order" => 1,
-                                "textStyle" => [
-                                    "fontSize" => "2rem",
-                                    "color" => "#333",
-                                    "zIndex" => 2,
-                                    "position" => "relative",
-                                    "top" => "20px",
-                                    "left" => "50%",
-                                    "transform" => "translateX(-50%)",
-                                    "width" => "100%"
-                                ]
+                                "color" => "#333",
+                                "zIndex" => 2,
+                                "position" => "relative",
+                                "padding" => ["top" => "20px", "left" => "50%", "transform" => "translateX(-50%)", "width" => "100%"],
                             ],
                             "bride_wrapper" => [
+                                "position" => "relative",
+                                "size" => "70%",
                                 "order" => 2,
-                                "wrapperStyle" => [
-                                    "position" => "relative",
-                                    "width" => "70%",
-                                    "height" => "100%",
-                                    "zIndex" => 2,
-                                    "top" => "2rem",
-                                    "left" => "50%",
-                                    "transform" => "translateX(-50%)"
-                                ],
+                                "zIndex" => 2,
+                                "padding" => ["top" => "2rem", "left" => "50%", "transform" => "translateX(-50%)", 'height' => '100%'],
                                 "wanita" => [
                                     "path" => "/images/themes/{$slug}/wanita.webp",
-                                    "imageStyle" => [
-                                        "width" => "100%",
-                                        "height" => "auto",
-                                        "zIndex" => 3,
-                                        "position" => "relative",
-                                        "borderRadius" => "50%",
-                                        "border" => "2px solid #f08080",
-                                        "padding" => "10px"
-                                    ]
+                                    "size" => "100%",
+                                    "zIndex" => 3,
+                                    "position" => "relative",
+                                    "style" => ["borderRadius" => "50%", "border" => "2px solid #f08080", "padding" => "10px"]
                                 ],
                                 "kupupink" => [
                                     "path" => "/images/themes/{$slug}/kupupink.webp",
-                                    "imageStyle" => [
-                                        "width" => "20%",
-                                        "height" => "auto",
-                                        "zIndex" => 4,
-                                        "position" => "absolute",
-                                        "top" => "5px",
-                                        "left" => "20%"
-                                    ]
+                                    "size" => "20%",
+                                    "zIndex" => 4,
+                                    "position" => "absolute",
+                                    "padding" => ["top" => "5px", "left" => "20%"]
                                 ],
                                 "bride_name" => [
                                     "text" => "Aisyah",
-                                    "textStyle" => [
-                                        "fontSize" => "clamp(20px, 3vw, 32px)",
-                                        "color" => "#F08080",
-                                        "zIndex" => 4,
-                                        "position" => "relative",
-                                        "top" => "10px",
-                                        "left" => "50%",
-                                        "transform" => "translateX(-50%)",
-                                        "width" => "100%"
-                                    ]
+                                    "size" => "clamp(20px, 3vw, 32px)",
+                                    "color" => "#F08080",
+                                    "zIndex" => 4,
+                                    "position" => "relative",
+                                    "padding" => ["top" => "10px", "left" => "50%", "transform" => "translateX(-50%)", "width" => "100%"],
                                 ]
                             ],
                             "content" => [
                                 "text" => "Akan Menikah Dengan",
+                                "size" => "2rem",
                                 "order" => 3,
-                                "textStyle" => [
-                                    "fontSize" => "2rem",
-                                    "color" => "#333",
-                                    "zIndex" => 2,
-                                    "position" => "relative",
-                                    "top" => "30px",
-                                    "left" => "50%",
-                                    "transform" => "translateX(-50%)",
-                                    "width" => "100%"
-                                ]
+                                "color" => "#333",
+                                "zIndex" => 2,
+                                "position" => "relative",
+                                "padding" => ["top" => "30px", "left" => "50%", "transform" => "translateX(-50%)", "width" => "100%"],
                             ],
                             "groom_wrapper" => [
+                                "position" => "relative",
+                                "zIndex" => 2,
                                 "order" => 4,
-                                "wrapperStyle" => [
-                                    "position" => "relative",
-                                    "zIndex" => 2,
-                                    "width" => "70%",
-                                    "top" => "30px",
-                                    "left" => "50%",
-                                    "transform" => "translateX(-50%)"
-                                ],
+                                "size" => "70%",
+                                "padding" => ["top" => "30px", "left" => "50%", "transform" => "translateX(-50%)"],
                                 "pria" => [
                                     "path" => "/images/themes/{$slug}/pria.webp",
-                                    "imageStyle" => [
-                                        "width" => "100%",
-                                        "height" => "auto",
-                                        "zIndex" => 3,
-                                        "position" => "relative",
-                                        "borderRadius" => "50%",
-                                        "border" => "2px solid #f08080",
-                                        "padding" => "10px"
-                                    ]
+                                    "size" => "100%",
+                                    "zIndex" => 3,
+                                    "position" => "relative",
+                                    "style" => ["borderRadius" => "50%", "border" => "2px solid #f08080", "padding" => "10px"]
                                 ],
                                 "kupuputih" => [
                                     "path" => "/images/themes/{$slug}/kupuputih.webp",
-                                    "imageStyle" => [
-                                        "width" => "20%",
-                                        "height" => "auto",
-                                        "zIndex" => 4,
-                                        "position" => "absolute",
-                                        "top" => "5px",
-                                        "right" => "20%"
-                                    ]
+                                    "size" => "20%",
+                                    "zIndex" => 4,
+                                    "position" => "absolute",
+                                    "padding" => ["top" => "5px", "right" => "20%"]
                                 ],
                                 "groom_name" => [
                                     "text" => "Dzikri",
-                                    "textStyle" => [
-                                        "fontSize" => "clamp(20px, 3vw, 32px)",
-                                        "color" => "#F08080",
-                                        "zIndex" => 4,
-                                        "position" => "relative",
-                                        "top" => "10px",
-                                        "left" => "50%",
-                                        "transform" => "translateX(-50%)",
-                                        "width" => "100%"
-                                    ]
+                                    "size" => "clamp(20px, 3vw, 32px)",
+                                    "color" => "#F08080",
+                                    "zIndex" => 4,
+                                    "position" => "relative",
+                                    "padding" => ["top" => "10px", "left" => "50%", "transform" => "translateX(-50%)", "width" => "100%"],
                                 ]
                             ]
                         ],

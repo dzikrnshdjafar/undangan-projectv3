@@ -13,7 +13,7 @@ const RenderFieldOrWrapper = ({ fieldName, fieldData, path, onEditClick }) => {
 
     // Definisikan kunci-kunci yang merupakan properti konfigurasi/styling,
     // bukan elemen anak yang bisa dirender, meskipun nilainya adalah objek.
-    const nonRenderableChildKeys = ['wrapperStyle', 'imageStyle', 'textStyle', 'order']; // Updated keys
+    const nonRenderableChildKeys = ['padding', 'style']; // Tambahkan kunci lain jika ada (misal, 'animationConfig' jika kompleks)
 
     // Cek apakah ini wrapper. Wrapper adalah objek yang tidak memiliki 'path' atau 'text'
     // tapi memiliki child yang merupakan objek (dan bukan salah satu dari nonRenderableChildKeys).
@@ -27,34 +27,22 @@ const RenderFieldOrWrapper = ({ fieldName, fieldData, path, onEditClick }) => {
     // DAN memiliki childKeys yang valid untuk dirender.
     const isWrapper = !('path' in fieldData) && !('text' in fieldData) && childKeys.length > 0;
 
+
     // --- Kalkulasi Style ---
-    let transformString = '';
+    let transformString = fieldData.padding?.transform || '';
     if (fieldData.flipX) {
-        transformString = 'scaleX(-1)';
+        transformString += ' scaleX(-1)';
     }
 
-    // Tentukan style berdasarkan jenis field
-    let elementStyle = {};
-    
-    if (isWrapper) {
-        // Untuk wrapper, gunakan wrapperStyle
-        elementStyle = {
-            ...fieldData.wrapperStyle,
-            ...(transformString && { transform: `${fieldData.wrapperStyle?.transform || ''} ${transformString}`.trim() })
-        };
-    } else if ('path' in fieldData) {
-        // Untuk gambar, gunakan imageStyle
-        elementStyle = {
-            ...fieldData.imageStyle,
-            ...(transformString && { transform: `${fieldData.imageStyle?.transform || ''} ${transformString}`.trim() })
-        };
-    } else {
-        // Untuk teks, gunakan textStyle
-        elementStyle = {
-            ...fieldData.textStyle,
-            ...(transformString && { transform: `${fieldData.textStyle?.transform || ''} ${transformString}`.trim() })
-        };
-    }
+    const elementStyle = {
+        position: fieldData.position || 'relative', // Wrapper bisa relative
+        zIndex: fieldData.zIndex || 'auto',
+        width: fieldData.size || 'auto',
+        height: isWrapper ? fieldData.size : 'auto', // Wrapper butuh height
+        ...(fieldData.padding || {}),
+        transform: transformString.trim(),
+        
+    };
 
     if (isWrapper) {
         // Ini adalah WRAPPER. Render sebuah div dan panggil komponen ini lagi untuk anak-anaknya.
@@ -94,11 +82,13 @@ const RenderFieldOrWrapper = ({ fieldName, fieldData, path, onEditClick }) => {
                         <img
                             src={`/storage${fieldData.path}`}
                             alt={fieldName}
+                            style={fieldData.style || {}}
                             className="w-full h-full object-cover pointer-events-none"
                         />
                     ) : (
                         <div
                             className="relative whitespace-pre-line text-center"
+                            style={{ ...fieldData.style, color: fieldData.color, fontSize: fieldData.size }}
                         >
                             {fieldData.text || `[Edit ${fieldName}]`}
                         </div>
@@ -109,7 +99,7 @@ const RenderFieldOrWrapper = ({ fieldName, fieldData, path, onEditClick }) => {
     }
 };
 
-export default function CoupleSection({ section, themeId, sectionIndex }) {
+export default function OpeningSection({ section, themeId, sectionIndex }) {
     const [currentSectionData, setCurrentSectionData] = useState(section);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalType, setModalType] = useState('text'); // 'text' or 'image'
@@ -135,7 +125,7 @@ export default function CoupleSection({ section, themeId, sectionIndex }) {
     const handleEditClick = useCallback((path, fieldData) => {
         setEditingFieldPath(path);
         setOriginalFieldData(fieldData);
-        setModalType('path' in fieldData ? 'image' : 'text');
+        setModalType('path' in fieldData || 'wanita' in fieldData ? 'image' : 'text');
         setModalOpen(true);
     }, []);
 

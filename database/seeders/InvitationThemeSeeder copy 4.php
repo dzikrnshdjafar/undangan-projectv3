@@ -33,11 +33,12 @@ class InvitationThemeSeeder extends Seeder
                             'minHeight' => 'clamp(50rem, 100vh, 80rem)',
                             'heroTextWrapper' => [
                                 'order' => 1,
+                                'animation' => 'bounce',
                                 'wrapperStyle' => [
                                     'position' => 'relative',
                                     'top' => '2rem',
                                     'left' => '50%',
-                                    'transform' => 'translateX(-50%)',
+                                    'transform' => 'translateX(-50%) scaleX(-1)',
                                     'width' => '100%',
                                     'height' => '100%',
                                     'textAlign' => 'center',
@@ -88,20 +89,26 @@ class InvitationThemeSeeder extends Seeder
                                     ]
                                 ]
                             ],
-
-                            'ornamentRanting' => [
-                                'path' => "/images/themes/{$slug}/ranting-pohon.webp",
-                                'animation' => 'waveOut',
-                                'imageStyle' => [
+                            'wrapp' => [
+                                'animation' => 'waveIn',
+                                'wrapperStyle' => [
                                     'position' => 'absolute',
                                     'top' => '0%',
                                     'right' => '-5%',
-                                    'width' => '35vh',
                                     'height' => 'auto',
-                                    'zIndex' => 1,
-                                    'transform' => 'scaleX(-1)',
-
-
+                                    // 'width' => '100%',
+                                    'zIndex' => 3,
+                                    'transform' => 'scaleY(-1) translateX(-50%)',
+                                ],
+                                'ornamentRanting' => [
+                                    'path' => "/images/themes/{$slug}/ranting-pohon.webp",
+                                    'imageStyle' => [
+                                        'position' => 'relative',
+                                        'width' => '35vh',
+                                        'height' => 'auto',
+                                        'zIndex' => 1,
+                                        'transform' => 'scaleX(-1)',
+                                    ]
                                 ]
                             ],
                             'ornamentAwanWrapper' => [
@@ -160,7 +167,7 @@ class InvitationThemeSeeder extends Seeder
                                     'bottom' => '-1%',
                                     'left' => '-5%',
                                     'right' => '-5%',
-                                    'zIndex' => 5, // Tingkatkan dari 1 ke 5
+                                    'zIndex' => 2,
                                 ],
                                 'ornamentbottom1' => [
                                     'path' => "/images/themes/{$slug}/daun4.webp",
@@ -171,20 +178,25 @@ class InvitationThemeSeeder extends Seeder
                                         'transform' => 'translateX(-50%)',
                                         'width' => '100%',
                                         'height' => 'auto',
-                                        'zIndex' => 1, // Paling rendah dalam wrapper
+                                        'zIndex' => 3,
                                     ]
                                 ],
-                                'ornamentbottom2' => [
-                                    'path' => "/images/themes/{$slug}/bunga2.webp",
-                                    'animation' => 'waveOut',
-                                    'imageStyle' => [
+                                'wrapper' => [
+                                    'wrapperStyle' => [
                                         'position' => 'absolute',
                                         'bottom' => '-2%',
                                         'left' => '-2%',
                                         'width' => '27%',
-                                        'height' => 'auto',
-                                        'zIndex' => 3, // Lebih tinggi dari ornamentbottom1
-                                        'transform' => 'scaleX(-1)',
+                                        'zIndex' => 4,
+
+                                    ],
+                                    'ornamentbottom2' => [
+                                        'path' => "/images/themes/{$slug}/bunga2.webp",
+                                        'animation' => 'waveOut',
+                                        'imageStyle' => [
+                                            'position' => 'relative',
+                                            'transform' => 'scaleX(-1)',
+                                        ]
                                     ]
                                 ],
                                 'ornamentbottom3' => [
@@ -196,7 +208,7 @@ class InvitationThemeSeeder extends Seeder
                                         'left' => '30%',
                                         'width' => '20%',
                                         'height' => 'auto',
-                                        'zIndex' => 3, // Sama tinggi dengan ornamentbottom2
+                                        'zIndex' => 3,
                                     ]
                                 ],
                                 'ornamentbottom4' => [
@@ -208,7 +220,7 @@ class InvitationThemeSeeder extends Seeder
                                         'right' => '-10%',
                                         'width' => '50%',
                                         'height' => 'auto',
-                                        'zIndex' => 4, // Paling tinggi dalam wrapper
+                                        'zIndex' => 3,
                                     ]
                                 ],
                             ],
@@ -382,237 +394,141 @@ class InvitationThemeSeeder extends Seeder
                     'sections_json' => json_encode([
                         [
                             'type' => 'opening',
-                            'minHeight' => 'clamp(50rem, 100vh, 80rem)',
-                            'heroWrapper' => [
-                                'order' => 1,
-                                'wrapperStyle' => [
-                                    'position' => 'relative',
-                                    'top' => '2rem',
-                                    'left' => '50%',
-                                    'transform' => 'translateX(-50%)',
-                                    'width' => '100%',
-                                    'height' => '100%',
-                                    'textAlign' => 'center',
-                                    'color' => '#000000',
-                                    'backgroundColor' => 'rgba(255, 255, 255, 0.8)',
-                                    'zIndex' => 2,
-                                ],
-                                'photo' => [
-                                    'path' => "/images/themes/{$slug2}/photo.webp",
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'top' => '20%',
-                                        'left' => '25%',
-                                        'width' => '50%',
-                                        'height' => 'auto',
-                                        'zIndex' => 1,
-                                        'borderRadius' => '50%',
-                                        'border' => '3px solid #f08080',
-                                        'padding' => '5px',
-                                    ]
-                                ],
-                                'title' => [
-                                    'text' => 'Ulang Tahun',
-                                    'order' => 1,
-                                    'textStyle' => [
-                                        'position' => 'relative',
-                                        'left' => '50%',
-                                        'transform' => 'translateX(-50%)',
-                                        'width' => '100%',
-                                        'fontSize' => '2rem',
-                                        'color' => '#000000',
-                                        'zIndex' => 2,
-                                        'fontWeight' => 'bold',
-                                        'textShadow' => '2px 2px 4px rgba(0, 0, 0, 0.3)',
-                                    ]
-                                ],
-                                'couple' => [
-                                    'text' => 'Meiske',
-                                    'order' => 2,
-                                    'textStyle' => [
-                                        'position' => 'relative',
-                                        'left' => '50%',
-                                        'transform' => 'translateX(-50%)',
-                                        'width' => '100%',
-                                        'fontSize' => '3rem',
-                                        'color' => '#F08080',
-                                        'zIndex' => 2,
-                                        'fontWeight' => 'bold',
-                                    ]
-                                ],
-                                'content' => [
-                                    'text' => 'Turut Mengundang:',
-                                    'order' => 3,
-                                    'textStyle' => [
-                                        'position' => 'relative',
-                                        'left' => '50%',
-                                        'transform' => 'translateX(-50%)',
-                                        'width' => '100%',
-                                        'fontSize' => '1.5rem',
-                                        'color' => '#F08080',
-                                        'zIndex' => 3,
-                                    ]
-                                ],
-                                'guest' => [
-                                    'text' => 'Anisa',
-                                    'order' => 4,
-                                    'textStyle' => [
-                                        'position' => 'relative',
-                                        'left' => '50%',
-                                        'transform' => 'translateX(-50%)',
-                                        'width' => '100%',
-                                        'fontSize' => '2.5rem',
-                                        'color' => '#F08080',
-                                        'zIndex' => 3,
-                                        'fontWeight' => 'bold',
-                                    ]
+                            'height' => '100vh',
+                            // 'color' => '#41fa06',
+                            'title' => [
+                                'text' => 'Ulang Tahun',
+                                'size' => '24px',
+                                'color' => '#000000',
+                                'zIndex' => 1,
+                                'padding' => [
+                                    'x' => 50, // 50% dari kiri
+                                    'y' => 50  // 20% dari atas
                                 ]
                             ],
-                            'decorationTop' => [
-                                'path' => "/images/themes/{$slug2}/awan.webp",
-                                'imageStyle' => [
-                                    'position' => 'absolute',
-                                    'top' => '0%',
-                                    'left' => '50%',
-                                    'transform' => 'translateX(-50%)',
-                                    'width' => '100%',
-                                    'height' => 'auto',
-                                    'zIndex' => 1,
+                            'name' => [
+                                'text' => 'Meiske',
+                                'size' => '24px',
+                                'color' => '#000000',
+                                'zIndex' => 1,
+                                'padding' => [
+                                    'x' => 50, // 50% dari kiri
+                                    'y' => 60  // 20% dari atas
                                 ]
                             ],
-                            'ornamentbottom_wrapper' => [
-                                'wrapperStyle' => [
-                                    'position' => 'absolute',
-                                    'width' => '100%',
-                                    'height' => 'auto',
-                                    'bottom' => '0%',
-                                    'right' => '0%',
-                                    'zIndex' => 10,
-                                ],
-                                'tungtungsahur' => [
-                                    'path' => "/images/themes/{$slug2}/tungtungsahur.webp",
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'bottom' => '0%',
-                                        'right' => '0%',
-                                        'width' => '20%',
-                                        'height' => 'auto',
-                                        'zIndex' => 1,
-                                    ]
-                                ],
-                                'tungtungsahurbalon' => [
-                                    'path' => "/images/themes/{$slug2}/tungtungsahurbalon.webp",
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'bottom' => '0%',
-                                        'left' => '0%',
-                                        'width' => '35%',
-                                        'height' => 'auto',
-                                        'zIndex' => 2,
-                                    ]
-                                ],
+                            'invited' => [
+                                'text' => 'Turut Mengundang:',
+                                'size' => '16px',
+                                'color' => '#F08080',
+                                'zIndex' => 1,
+                                'padding' => [
+                                    'x' => 50,
+                                    'y' => 85
+                                ]
                             ],
+                            'guest' => [
+                                'text' => 'Anisa',
+                                'size' => '40px',
+                                'color' => '#F08080',
+                                'zIndex' => 1,
+                                'padding' => [
+                                    'x' => 50,
+                                    'y' => 90
+                                ]
+                            ],
+                            'photo' => [
+                                'path' => "/images/themes/{$slug2}/photo.webp", // <-- Gunakan gambar yang sama
+                                'size' => '50%',
+                                'zIndex' => 1,
+                                'padding' => ['x' => 25, 'y' => 20],
+                                // 'animation' => 'waveIn',
+                            ],
+                            'decorationtop' => [
+                                'path' => "/images/themes/{$slug2}/awan.webp", // <-- Gunakan gambar yang sama
+                                'size' => '100%',
+                                'zIndex' => 1,
+                                'padding' => ['x' => 50, 'y' => 0],
+                                // 'animation' => 'waveIn',
+                            ],
+                            'decorationbottom1' => [
+                                'path' => "/images/themes/{$slug2}/tungtungsahur.webp", // <-- Gunakan gambar yang sama
+                                'size' => '50%',
+                                'zIndex' => 10,
+                                'padding' => ['x' => 85, 'y' => 83],
+                            ],
+                            'decorationbottom2' => [
+                                'path' => "/images/themes/{$slug2}/tungtungsahurbalon.webp", // <-- Gunakan gambar yang sama
+                                'size' => '50%',
+                                'zIndex' => 10,
+                                'padding' => ['x' => 85, 'y' => 83],
+                            ]
                         ],
                         [
-                            "type" => "couple",
-                            "minHeight" => "clamp(50rem, 150vh, 80rem)",
-                            "title" => [
-                                "text" => "Selamat Datang di Pernikahan Kami",
-                                "order" => 1,
-                                "textStyle" => [
-                                    "fontSize" => "2rem",
-                                    "color" => "#333",
-                                    "zIndex" => 2,
-                                    "position" => "relative",
-                                    "top" => "20px",
-                                    "left" => "50%",
-                                    "transform" => "translateX(-50%)",
-                                    "width" => "100%"
+                            'type' => 'couple',
+                            'height' => '100vh',
+                            // 'color' => '#41fa06',
+                            'title' => [
+                                'text' => 'Selamat Datang di Pernikahan Kami',
+                                'size' => '24px',
+                                'color' => '#000000',
+                                'zIndex' => 1,
+                                'padding' => [
+                                    'x' => 50, // 50% dari kiri
+                                    'y' => 10  // 20% dari atas
                                 ]
                             ],
-                            "content_wrapper" => [
-                                "order" => 2,
-                                "wrapperStyle" => [
-                                    "position" => "relative",
-                                    "width" => "80%",
-                                    "height" => "100%",
-                                    "zIndex" => 2,
-                                    "top" => "2rem",
-                                    "left" => "50%",
-                                    "transform" => "translateX(-50%)"
+                            'content' => [
+                                'text' => 'Kami mengundang Anda untuk hadir...',
+                                'size' => '16px',
+                                'color' => '#F08080',
+                                'zIndex' => 1,
+                                'padding' => [
+                                    'x' => 50,
+                                    'y' => 35
                                 ],
-                                "welcome_text" => [
-                                    "text" => "Kepada Yth. Bapak/Ibu/Saudara/i",
-                                    "textStyle" => [
-                                        "fontSize" => "1.5rem",
-                                        "color" => "#F08080",
-                                        "zIndex" => 4,
-                                        "position" => "relative",
-                                        "top" => "10px",
-                                        "left" => "50%",
-                                        "transform" => "translateX(-50%)",
-                                        "width" => "100%"
-                                    ]
-                                ],
-                                "content_text" => [
-                                    "text" => "Kami mengundang Anda untuk hadir...",
-                                    "textStyle" => [
-                                        "fontSize" => "1.2rem",
-                                        "color" => "#F08080",
-                                        "zIndex" => 4,
-                                        "position" => "relative",
-                                        "top" => "20px",
-                                        "left" => "50%",
-                                        "transform" => "translateX(-50%)",
-                                        "width" => "100%"
-                                    ]
+                                'animation' => 'bounce'
+                            ],
+                            'welcome' => [
+                                'text' => 'Kepada Yth. Bapak/Ibu/Saudara/i',
+                                'size' => '16px',
+                                'color' => '#F08080',
+                                'zIndex' => 1,
+                                'padding' => [
+                                    'x' => 50,
+                                    'y' => 85
                                 ]
                             ],
-                            "decoration_wrapper" => [
-                                "order" => 3,
-                                "wrapperStyle" => [
-                                    "position" => "relative",
-                                    "width" => "100%",
-                                    "height" => "100%",
-                                    "zIndex" => 1,
+                            'decoration' => [
+                                'path' => "/images/themes/{$slug2}/flower2.png",
+                                'size' => '50%',
+                                'zIndex' => 20,
+                                'padding' => [
+                                    'x' => 50,
+                                    'y' => 50
                                 ],
-                                "flower2" => [
-                                    "path" => "/images/themes/{$slug2}/flower2.png",
-                                    "imageStyle" => [
-                                        "position" => "absolute",
-                                        "top" => "50%",
-                                        "left" => "50%",
-                                        "transform" => "translate(-50%, -50%)",
-                                        "width" => "50%",
-                                        "height" => "auto",
-                                        "zIndex" => 20,
-                                    ]
+                                'animation' => 'bounce',
+                            ],
+                            'decoration2' => [
+                                'path' => "/images/themes/{$slug2}/leaf.webp",
+                                'size' => '50%',
+                                'zIndex' => 1,
+                                'padding' => [
+                                    'x' => 82, // Posisi horizontal dalam pixel dari tengah
+                                    'y' => 50 // Posisi vertikal dalam pixel dari tengah
                                 ],
-                                "leaf" => [
-                                    "path" => "/images/themes/{$slug2}/leaf.webp",
-                                    "imageStyle" => [
-                                        "position" => "absolute",
-                                        "top" => "50%",
-                                        "right" => "18%",
-                                        "transform" => "translateY(-50%)",
-                                        "width" => "50%",
-                                        "height" => "auto",
-                                        "zIndex" => 1,
-                                    ]
+                                'animation' => 'sway',
+                            ],
+                            'decoration3' => [
+                                'path' => "/images/themes/{$slug2}/leaf2.webp",
+                                'size' => '50%',
+                                'zIndex' => 1,
+                                'padding' => [
+                                    'x' => 18, // Posisi horizontal dalam pixel dari tengah
+                                    'y' => 50 // Posisi vertikal dalam pixel dari tengah
                                 ],
-                                "leaf2" => [
-                                    "path" => "/images/themes/{$slug2}/leaf2.webp",
-                                    "imageStyle" => [
-                                        "position" => "absolute",
-                                        "top" => "50%",
-                                        "left" => "18%",
-                                        "transform" => "translateY(-50%)",
-                                        "width" => "50%",
-                                        "height" => "auto",
-                                        "zIndex" => 1,
-                                    ]
-                                ],
-                            ]
+                                // 'animation' => 'shake',
+
+                            ],
                         ],
                         [
                             'type' => 'event',

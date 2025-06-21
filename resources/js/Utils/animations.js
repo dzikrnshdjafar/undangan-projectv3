@@ -157,10 +157,10 @@ export const animationVariants = {
     transition: { duration: 1, ease: "easeInOut", repeat: Infinity }
 },
   waveIn: {
-  rotate: [10, -4, 10],
+  rotate: [0, -4],
   transformOrigin: "bottom right", // atau "100% 100%"
   transition: { 
-    duration: 8, 
+    duration: 4, 
     ease: "easeInOut", 
     repeat: Infinity,
     repeatType: "reverse"
@@ -176,7 +176,32 @@ export const animationVariants = {
             repeatType: "reverse"
         }
     },
+
+     waveOutFlipped: {
+        rotate: [0, 4],
+        scaleX: -1, // Flip horizontal
+        transformOrigin: "bottom left",
+        transition: { 
+            duration: 4, 
+            ease: "easeInOut", 
+            repeat: Infinity,
+            repeatType: "reverse"
+        }
+    },
+
 marquee: {
+  x: [0, 800],
+  opacity: [0, 1, 1, 1], // Fade in di awal, lalu tetap terlihat
+  transition: {
+    duration: 30,
+    ease: "linear",
+    repeat: Infinity,
+    repeatType: "loop",
+    times: [0, 0.03, 0.97, 1] // Fade in di 3% pertama, fade out di 3% terakhir (opsional)
+  }
+},
+
+marqueeReverse: {
   x: [0, -800],
   opacity: [0, 1, 1, 1], // Fade in di awal, lalu tetap terlihat
   transition: {
@@ -187,4 +212,5 @@ marquee: {
     times: [0, 0.03, 0.97, 1] // Fade in di 3% pertama, fade out di 3% terakhir (opsional)
   }
 }
+
 };

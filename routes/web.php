@@ -19,6 +19,7 @@ Route::get('/', function () {
 Route::get('/invitation/{slug}', [InvitationController::class, 'show'])->name('invitation.show');
 Route::get('/themes/{slug}', [InvitationThemeController::class, 'show'])->name('themes.show');
 
+Route::get('/themes/{slug}/edit', [InvitationThemeController::class, 'edit'])->name('themes.edit'); // Pastikan hanya user terautentikasi yang bisa edit
 Route::put('/themes/{theme}/sections/{index}', [InvitationThemeController::class, 'updateSection']);
 
 Route::get('/themes', [InvitationThemeController::class, 'index'])->name('themes.index');

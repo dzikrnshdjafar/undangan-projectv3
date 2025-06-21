@@ -16,68 +16,98 @@ class InvitationThemeController extends Controller
         ]);
     }
 
+    public function edit($slug)
+    {
+        $theme = InvitationTheme::where('slug', $slug)->firstOrFail();
+
+        $theme->sections = json_decode($theme->sections_json, true);
+        $theme->theme_config = json_decode($theme->theme_config, true);
+
+        $theme->background_image_url = asset("storage" . $theme->background_image_path);
+
+        return Inertia::render('Themes/Editor', [
+            'theme' => $theme,
+            // Tambahkan baris ini
+            'storage_path' => asset('storage')
+        ]);
+    }
+
     public function updateSection(Request $request, $themeId, $index)
     {
         $theme = InvitationTheme::findOrFail($themeId);
         $sections = json_decode($theme->sections_json, true);
 
-        // Validasi tetap sama dan sudah benar
+        // Validasi yang disesuaikan dengan struktur baru
         $request->validate([
             'fieldName' => 'required|string',
             'data' => 'required|array',
-            'data.size' => 'required|string',
-            'data.padding' => 'nullable|array',
-            'data.padding.top' => 'nullable|string',
-            'data.padding.bottom' => 'nullable|string',
-            'data.padding.left' => 'nullable|string',
-            'data.padding.right' => 'nullable|string',
+            'data.order' => 'nullable|integer',
             'data.text' => 'nullable|string',
             'data.path' => 'nullable|string',
-            'data.color' => 'nullable|string',
-            'data.zIndex' => 'nullable|integer',
             'data.animation' => 'nullable|string',
-            'data.flipX' => 'nullable|boolean',
-            'data.style' => 'nullable|array', // <-- TAMBAHKAN INI
-            'data.position' => 'nullable|string', // Tambahkan validasi untuk position
+            'data.textStyle' => 'nullable|array',
+            'data.imageStyle' => 'nullable|array',
+            'data.wrapperStyle' => 'nullable|array',
         ]);
 
         $fieldName = $request->input('fieldName');
         $data = $request->input('data');
 
         if (isset($sections[$index])) {
+            // Mempersiapkan data yang akan disimpan
+            $cleanData = [];
 
-            // ===================================
-            // PERBAIKAN LOGIKA PENYIMPANAN DATA
-            // ===================================
-
-            // 1. Mulai dengan properti yang PASTI ADA dan UMUM untuk semua field
-            $cleanData = [
-                'size' => $data['size'],
-                'padding' => $data['padding'],
-                'position' => $data['position'] ?? '', // Ambil position, beri default string kosong jika tidak ada
-                // Ambil zIndex, beri nilai default 1 jika tidak ada
-                'zIndex' => $data['zIndex'] ?? 1,
-                'flipX' => $data['flipX'] ?? false, // Default ke false jika tidak ada
-                'style' => $data['style'] ?? [], // Ambil style, beri default array kosong jika tidak ada
-            ];
-
-            // 2. Tambahkan properti yang spesifik untuk Tipe Field (teks atau gambar)
-            if (isset($data['path'])) {
-                // Properti khusus untuk gambar
-                $cleanData['path'] = $data['path'];
-            } else {
-                // Properti khusus untuk teks
-                $cleanData['text'] = str_replace('\\n', "\n", $data['text'] ?? '');
-                $cleanData['color'] = $data['color'] ?? '#000000'; // Beri default color
+            // 1. Properti umum
+            if (isset($data['order'])) {
+                $cleanData['order'] = (int) $data['order'];
             }
 
-            // 3. Tambahkan properti OPSIONAL yang bisa ada di semua field (seperti animasi)
             if (isset($data['animation']) && !empty($data['animation'])) {
                 $cleanData['animation'] = $data['animation'];
             }
 
-            // Simpan data yang sudah lengkap dan bersih
-            $sections[$index][$fieldName] = $cleanData;
+            // 2. Konten (text atau path)
+            if (isset($data['text'])) {
+                $cleanData['text'] = $data['text'];
+            }
+
+            if (isset($data['path'])) {
+                $cleanData['path'] = $data['path'];
+            }
+
+            // 3. Style objects
+            if (isset($data['textStyle']) && is_array($data['textStyle'])) {
+                $cleanData['textStyle'] = $data['textStyle'];
+            }
+
+            if (isset($data['imageStyle']) && is_array($data['imageStyle'])) {
+                $cleanData['imageStyle'] = $data['imageStyle'];
+            }
+
+            if (isset($data['wrapperStyle']) && is_array($data['wrapperStyle'])) {
+                $cleanData['wrapperStyle'] = $data['wrapperStyle'];
+            }
+
+            // Navigasi ke nested element menggunakan fieldName
+            $fieldParts = explode('.', $fieldName);
+            $current = &$sections[$index];
+
+            // Traverse ke parent element
+            for ($i = 0; $i < count($fieldParts) - 1; $i++) {
+                if (!isset($current[$fieldParts[$i]])) {
+                    $current[$fieldParts[$i]] = [];
+                }
+                $current = &$current[$fieldParts[$i]];
+            }
+
+            // Update final element
+            $finalKey = end($fieldParts);
+            if (!isset($current[$finalKey])) {
+                $current[$finalKey] = [];
+            }
+
+            // Merge dengan data yang sudah ada (untuk mempertahankan properti lain)
+            $current[$finalKey] = array_merge($current[$finalKey], $cleanData);
         } else {
             return back()->with('error', 'Section not found!');
         }
@@ -96,7 +126,9 @@ class InvitationThemeController extends Controller
         $theme->background_image_url = asset("storage" . $theme->background_image_path);
 
         return Inertia::render('Themes/Show', [
-            'theme' => $theme
+            'theme' => $theme,
+            // Tambahkan baris ini
+            'storage_path' => asset('storage')
         ]);
     }
 }

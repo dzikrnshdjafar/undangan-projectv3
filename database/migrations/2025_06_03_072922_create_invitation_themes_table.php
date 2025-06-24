@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('preview_image_path')->nullable();
             $table->json('sections_json')->nullable()->comment('Section structure for dynamic rendering');
-
             $table->string('background_image_path')->nullable()->comment('Background image for the theme');
             $table->timestamps();
         });

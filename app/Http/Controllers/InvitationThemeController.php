@@ -27,7 +27,6 @@ class InvitationThemeController extends Controller
 
         return Inertia::render('Themes/Editor', [
             'theme' => $theme,
-            // Tambahkan baris ini
             'storage_path' => asset('storage')
         ]);
     }
@@ -37,56 +36,70 @@ class InvitationThemeController extends Controller
         $theme = InvitationTheme::findOrFail($themeId);
         $sections = json_decode($theme->sections_json, true);
 
-        // Validasi yang disesuaikan dengan struktur baru
+        // Validasi yang diperluas untuk mendukung semua tipe element
         $request->validate([
             'fieldName' => 'required|string',
             'data' => 'required|array',
+
+            // Properti umum
+            'data.type' => 'nullable|string|in:wrapper,text,image,button,video,iframe,form,input,select,textarea,list',
             'data.order' => 'nullable|integer',
+            'data.animation' => 'nullable|string',
+
+            // Content properties
             'data.text' => 'nullable|string',
             'data.path' => 'nullable|string',
-            'data.animation' => 'nullable|string',
+            'data.src' => 'nullable|string',
+            'data.href' => 'nullable|string',
+            'data.target' => 'nullable|string|in:_self,_blank,_parent,_top',
+            'data.onClick' => 'nullable|string',
+            'data.alt' => 'nullable|string',
+            'data.title' => 'nullable|string',
+
+            // Form properties
+            'data.action' => 'nullable|string',
+            'data.method' => 'nullable|string|in:GET,POST,PUT,DELETE,PATCH',
+            'data.name' => 'nullable|string',
+            'data.id' => 'nullable|string',
+            'data.placeholder' => 'nullable|string',
+            'data.required' => 'nullable|boolean',
+            'data.inputType' => 'nullable|string',
+            'data.rows' => 'nullable|integer|min:1',
+            'data.options' => 'nullable|array',
+            'data.options.*.value' => 'nullable|string',
+            'data.options.*.label' => 'nullable|string',
+
+            // Video properties
+            'data.controls' => 'nullable|boolean',
+            'data.autoPlay' => 'nullable|boolean',
+            'data.muted' => 'nullable|boolean',
+            'data.loop' => 'nullable|boolean',
+            'data.allowFullScreen' => 'nullable|boolean',
+
+            // List properties
+            'data.ordered' => 'nullable|boolean',
+            'data.items' => 'nullable|array',
+
+            // Style objects
             'data.textStyle' => 'nullable|array',
             'data.imageStyle' => 'nullable|array',
             'data.wrapperStyle' => 'nullable|array',
+            'data.buttonStyle' => 'nullable|array',
+            'data.videoStyle' => 'nullable|array',
+            'data.iframeStyle' => 'nullable|array',
+            'data.formStyle' => 'nullable|array',
+            'data.inputStyle' => 'nullable|array',
+            'data.selectStyle' => 'nullable|array',
+            'data.textareaStyle' => 'nullable|array',
+            'data.listStyle' => 'nullable|array',
+            'data.itemStyle' => 'nullable|array',
         ]);
 
         $fieldName = $request->input('fieldName');
         $data = $request->input('data');
 
         if (isset($sections[$index])) {
-            // Mempersiapkan data yang akan disimpan
-            $cleanData = [];
-
-            // 1. Properti umum
-            if (isset($data['order'])) {
-                $cleanData['order'] = (int) $data['order'];
-            }
-
-            if (isset($data['animation']) && !empty($data['animation'])) {
-                $cleanData['animation'] = $data['animation'];
-            }
-
-            // 2. Konten (text atau path)
-            if (isset($data['text'])) {
-                $cleanData['text'] = $data['text'];
-            }
-
-            if (isset($data['path'])) {
-                $cleanData['path'] = $data['path'];
-            }
-
-            // 3. Style objects
-            if (isset($data['textStyle']) && is_array($data['textStyle'])) {
-                $cleanData['textStyle'] = $data['textStyle'];
-            }
-
-            if (isset($data['imageStyle']) && is_array($data['imageStyle'])) {
-                $cleanData['imageStyle'] = $data['imageStyle'];
-            }
-
-            if (isset($data['wrapperStyle']) && is_array($data['wrapperStyle'])) {
-                $cleanData['wrapperStyle'] = $data['wrapperStyle'];
-            }
+            $cleanData = $this->prepareElementData($data);
 
             // Navigasi ke nested element menggunakan fieldName
             $fieldParts = explode('.', $fieldName);
@@ -118,6 +131,151 @@ class InvitationThemeController extends Controller
         return back()->with('success', ucfirst($fieldName) . ' updated successfully!');
     }
 
+    /**
+     * Prepare and clean element data for all supported element types
+     */
+    private function prepareElementData(array $data): array
+    {
+        $cleanData = [];
+
+        // 1. Properti umum untuk semua element
+        if (isset($data['type'])) {
+            $cleanData['type'] = $data['type'];
+        }
+
+        if (isset($data['order'])) {
+            $cleanData['order'] = (int) $data['order'];
+        }
+
+        if (isset($data['animation']) && !empty($data['animation'])) {
+            $cleanData['animation'] = $data['animation'];
+        }
+
+        // 2. Content properties
+        if (isset($data['text'])) {
+            $cleanData['text'] = $data['text'];
+        }
+
+        if (isset($data['path'])) {
+            $cleanData['path'] = $data['path'];
+        }
+
+        if (isset($data['src'])) {
+            $cleanData['src'] = $data['src'];
+        }
+
+        if (isset($data['href'])) {
+            $cleanData['href'] = $data['href'];
+        }
+
+        if (isset($data['target'])) {
+            $cleanData['target'] = $data['target'];
+        }
+
+        if (isset($data['onClick'])) {
+            $cleanData['onClick'] = $data['onClick'];
+        }
+
+        if (isset($data['alt'])) {
+            $cleanData['alt'] = $data['alt'];
+        }
+
+        if (isset($data['title'])) {
+            $cleanData['title'] = $data['title'];
+        }
+
+        // 3. Form properties
+        if (isset($data['action'])) {
+            $cleanData['action'] = $data['action'];
+        }
+
+        if (isset($data['method'])) {
+            $cleanData['method'] = $data['method'];
+        }
+
+        if (isset($data['name'])) {
+            $cleanData['name'] = $data['name'];
+        }
+
+        if (isset($data['id'])) {
+            $cleanData['id'] = $data['id'];
+        }
+
+        if (isset($data['placeholder'])) {
+            $cleanData['placeholder'] = $data['placeholder'];
+        }
+
+        if (isset($data['required'])) {
+            $cleanData['required'] = (bool) $data['required'];
+        }
+
+        if (isset($data['inputType'])) {
+            $cleanData['inputType'] = $data['inputType'];
+        }
+
+        if (isset($data['rows'])) {
+            $cleanData['rows'] = (int) $data['rows'];
+        }
+
+        if (isset($data['options']) && is_array($data['options'])) {
+            $cleanData['options'] = $data['options'];
+        }
+
+        // 4. Video properties
+        if (isset($data['controls'])) {
+            $cleanData['controls'] = (bool) $data['controls'];
+        }
+
+        if (isset($data['autoPlay'])) {
+            $cleanData['autoPlay'] = (bool) $data['autoPlay'];
+        }
+
+        if (isset($data['muted'])) {
+            $cleanData['muted'] = (bool) $data['muted'];
+        }
+
+        if (isset($data['loop'])) {
+            $cleanData['loop'] = (bool) $data['loop'];
+        }
+
+        if (isset($data['allowFullScreen'])) {
+            $cleanData['allowFullScreen'] = (bool) $data['allowFullScreen'];
+        }
+
+        // 5. List properties
+        if (isset($data['ordered'])) {
+            $cleanData['ordered'] = (bool) $data['ordered'];
+        }
+
+        if (isset($data['items']) && is_array($data['items'])) {
+            $cleanData['items'] = $data['items'];
+        }
+
+        // 6. Style objects - semua tipe style yang didukung
+        $styleTypes = [
+            'textStyle',
+            'imageStyle',
+            'wrapperStyle',
+            'buttonStyle',
+            'videoStyle',
+            'iframeStyle',
+            'formStyle',
+            'inputStyle',
+            'selectStyle',
+            'textareaStyle',
+            'listStyle',
+            'itemStyle'
+        ];
+
+        foreach ($styleTypes as $styleType) {
+            if (isset($data[$styleType]) && is_array($data[$styleType])) {
+                $cleanData[$styleType] = $data[$styleType];
+            }
+        }
+
+        return $cleanData;
+    }
+
     public function show($slug)
     {
         $theme = InvitationTheme::where('slug', $slug)->firstOrFail();
@@ -127,8 +285,96 @@ class InvitationThemeController extends Controller
 
         return Inertia::render('Themes/Show', [
             'theme' => $theme,
-            // Tambahkan baris ini
             'storage_path' => asset('storage')
         ]);
+    }
+
+    /**
+     * Add new element to a section
+     */
+    public function addElement(Request $request, $themeId, $index)
+    {
+        $theme = InvitationTheme::findOrFail($themeId);
+        $sections = json_decode($theme->sections_json, true);
+
+        $request->validate([
+            'parentPath' => 'nullable|string',
+            'elementKey' => 'required|string',
+            'elementType' => 'required|string|in:wrapper,text,image,button,video,iframe,form,input,select,textarea,list',
+            'elementData' => 'required|array',
+        ]);
+
+        if (isset($sections[$index])) {
+            $parentPath = $request->input('parentPath');
+            $elementKey = $request->input('elementKey');
+            $elementData = $this->prepareElementData($request->input('elementData'));
+
+            if ($parentPath) {
+                // Add to nested element
+                $pathParts = explode('.', $parentPath);
+                $current = &$sections[$index];
+
+                foreach ($pathParts as $part) {
+                    if (!isset($current[$part])) {
+                        $current[$part] = [];
+                    }
+                    $current = &$current[$part];
+                }
+
+                $current[$elementKey] = $elementData;
+            } else {
+                // Add to section root
+                $sections[$index][$elementKey] = $elementData;
+            }
+
+            $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            $theme->save();
+
+            return back()->with('success', 'Element added successfully!');
+        }
+
+        return back()->with('error', 'Section not found!');
+    }
+
+    /**
+     * Delete element from a section
+     */
+    public function deleteElement(Request $request, $themeId, $index)
+    {
+        $theme = InvitationTheme::findOrFail($themeId);
+        $sections = json_decode($theme->sections_json, true);
+
+        $request->validate([
+            'elementPath' => 'required|string',
+        ]);
+
+        if (isset($sections[$index])) {
+            $elementPath = $request->input('elementPath');
+            $pathParts = explode('.', $elementPath);
+            $current = &$sections[$index];
+
+            // Navigate to parent
+            for ($i = 0; $i < count($pathParts) - 1; $i++) {
+                if (!isset($current[$pathParts[$i]])) {
+                    return back()->with('error', 'Element path not found!');
+                }
+                $current = &$current[$pathParts[$i]];
+            }
+
+            // Delete final element
+            $finalKey = end($pathParts);
+            if (isset($current[$finalKey])) {
+                unset($current[$finalKey]);
+
+                $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                $theme->save();
+
+                return back()->with('success', 'Element deleted successfully!');
+            }
+
+            return back()->with('error', 'Element not found!');
+        }
+
+        return back()->with('error', 'Section not found!');
     }
 }

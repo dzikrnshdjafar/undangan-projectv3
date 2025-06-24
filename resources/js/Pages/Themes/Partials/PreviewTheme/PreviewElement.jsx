@@ -2,145 +2,81 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { animationVariants } from '../../../../Utils/animations';
 import { usePage } from '@inertiajs/react';
-
-const isElementKey = (key) => !['type', 'order', 'minHeight', 'wrapperStyle', 'textStyle', 'imageStyle', 'text', 'path', 'animation'].includes(key);
+import {
+    detectElementType,
+    isElementKey,
+    cleanStyle,
+    renderImage,
+    renderText,
+    renderButton,
+    renderVideo,
+    renderIframe,
+    renderInput,
+    renderSelect,
+    renderTextarea,
+    renderList,
+    renderForm,
+    renderWrapper
+} from '../../../../Utils/elementRenderers';
 
 export default function PreviewElement({ data, path }) {
-    const { storage_path } = usePage().props;
+    const { storage_path, theme } = usePage().props;
 
     if (!data || typeof data !== 'object') {
         return null;
     }
 
-    // Deteksi tipe element
-    const isImage = 'path' in data;
-    const isText = 'text' in data;
+    // Deteksi tipe element berdasarkan properti yang ada
     const hasChildren = Object.keys(data).some(key => isElementKey(key) && typeof data[key] === 'object');
+    const elementType = data.type || detectElementType(data, hasChildren);
 
     // Setup animasi
     const animation = data.animation;
     const hasAnimation = animation && animationVariants[animation];
     const animateProps = hasAnimation ? animationVariants[animation] : {};
-   
 
-    // UNTUK IMAGE ELEMENT
-    if (isImage && !hasChildren) {
-    const imageStyle = {
-       
-        ...data.imageStyle,
+    // Function untuk render children
+    const renderChildren = () => {
+        const childKeys = Object.keys(data).filter(key => isElementKey(key) && typeof data[key] === 'object');
         
-        width: data.imageStyle?.width || '100%',
-        height: data.imageStyle?.height || '100%',
-        objectFit: data.imageStyle?.objectFit || 'cover',
-        display: 'block',
-        
+        return childKeys.length > 0 && childKeys
+            .sort((a, b) => (data[a].order || 0) - (data[b].order || 0))
+            .map(key => (
+                <PreviewElement
+                    key={key}
+                    data={data[key]}
+                    path={[...path, key]}
+                />
+            ));
     };
 
-    console.log('Image Style:', imageStyle);
-
-    // Hapus properti undefined
-    for (const key in imageStyle) {
-        if (imageStyle[key] === undefined) {
-            delete imageStyle[key];
+    // Render berdasarkan tipe element
+    const renderElement = () => {
+        switch (elementType) {
+            case 'image':
+                return hasChildren ? null : renderImage(data, animateProps, storage_path, theme?.slug);
+            case 'text':
+                return hasChildren ? null : renderText(data, animateProps);
+            case 'button':
+                return renderButton(data, animateProps);
+            case 'video':
+                return renderVideo(data, animateProps);
+            case 'iframe':
+                return renderIframe(data, animateProps);
+            case 'input':
+                return renderInput(data, animateProps);
+            case 'select':
+                return renderSelect(data, animateProps);
+            case 'textarea':
+                return renderTextarea(data, animateProps);
+            case 'list':
+                return renderList(data, animateProps);
+            case 'form':
+                return renderForm(data, animateProps, renderChildren);
+            default:
+                return renderWrapper(data, animateProps, elementType, storage_path, theme?.slug, renderChildren);
         }
-    }
-
-    return (
-        <div
-        style={imageStyle}
-        >
-
-        <motion.img 
-            src={`${storage_path}${data.path.replace('{$slug}', usePage().props.theme?.slug || '')}`} 
-            animate={animateProps}
-            alt="" 
-            style={{borderRadius: 'inherit'}}
-            loading="lazy"
-           
-            />
-            </div>
-    );
-}
-
-    // UNTUK TEXT ELEMENT
-    if (isText && !hasChildren) {
-        const textStyle = {
-            
-            ...data.textStyle,
-            
-            width: '100%',
-            background: 'transparent',
-            wordBreak: 'break-word',
-        };
-
-        // Hapus properti undefined
-        for (const key in textStyle) {
-            if (textStyle[key] === undefined) {
-                delete textStyle[key];
-            }
-        }
-
-        return (
-            <div style={textStyle}>
-            <motion.div 
-                animate={animateProps}
-                dangerouslySetInnerHTML={{ __html: data.text }} 
-                />
-                </div>
-        );
-    }
-
-    // UNTUK WRAPPER ELEMENT (yang punya children)
-    const wrapperStyle = {
-        ...data.wrapperStyle,
-        
     };
 
-    // Hapus properti undefined
-    for (const key in wrapperStyle) {
-        if (wrapperStyle[key] === undefined) {
-            delete wrapperStyle[key];
-        }
-    }
-
-    const childKeys = Object.keys(data).filter(key => isElementKey(key) && typeof data[key] === 'object');
-
-    return (
-        <motion.div 
-            style={wrapperStyle}
-            animate={animateProps}
-        >
-            {/* Render Image di dalam wrapper jika ada */}
-            {isImage && (
-                <div style={imageStyle}>
-                    
-                <img.motion 
-                src={`${storage_path}${data.path.replace('{$slug}', usePage().props.theme?.slug || '')}`} 
-                alt="" 
-                animate={animateProps}
-                loading="lazy"
-                />
-                </div>
-            )}
-
-            {/* Render Text di dalam wrapper jika ada */}
-            {isText && (
-                <div 
-                    style={textStyle} 
-                    dangerouslySetInnerHTML={{ __html: data.text }} 
-                />
-            )}
-
-            {/* Render Child Elements */}
-            {childKeys.length > 0 && childKeys
-                .sort((a, b) => (data[a].order || 0) - (data[b].order || 0))
-                .map(key => (
-                    <PreviewElement
-                        key={key}
-                        data={data[key]}
-                        path={[...path, key]}
-                    />
-            ))}
-        </motion.div>
-    );
+    return renderElement();
 }

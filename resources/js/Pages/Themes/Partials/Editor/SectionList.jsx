@@ -180,12 +180,20 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                         {/* Section Header */}
                         <div className="flex items-center">
                             <button
-                                onClick={() => toggleSection(index)}
+                            onClick={() => onSelectSection(index)}
                                 className="flex-1 text-left p-3 font-medium hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition flex items-center justify-between"
                             >
                                 <span>
                                     Section {index + 1}: {section.type.charAt(0).toUpperCase() + section.type.slice(1)}
                                 </span>
+                            </button>
+                                
+                            <button
+                                
+                                onClick={() => toggleSection(index)}
+                                className="px-3 py-1 text-xs  transition mr-2"
+                                title="Scroll to section"
+                            >
                                 <svg
                                     className={`w-4 h-4 transition-transform ${
                                         expandedSections[index] ? 'rotate-180' : ''
@@ -196,13 +204,6 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                                 >
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                 </svg>
-                            </button>
-                            <button
-                                onClick={() => onSelectSection(index)}
-                                className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition mr-2"
-                                title="Scroll to section"
-                            >
-                                Go
                             </button>
                         </div>
 

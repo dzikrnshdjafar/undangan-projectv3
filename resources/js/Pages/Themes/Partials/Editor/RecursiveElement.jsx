@@ -112,7 +112,7 @@ export default function RecursiveElement({ data, path, onSelectElement, selected
             style={wrapperStyle}
             animate={animateProps}
             {...clickableProps}
-            className='p-2 border-2 border-dashed border-transparent hover:border-green-400 transition-all duration-200'
+            
         >
             {/* Render Image di dalam wrapper */}
             {isImage && (

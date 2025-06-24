@@ -13,6 +13,8 @@ export default function Editor() {
     // State untuk mengetahui elemen mana yang sedang dipilih
     const [selectedElementPath, setSelectedElementPath] = useState(null);
 
+    const [hiddenElements, setHiddenElements] = useState({});
+
     // Memoize data elemen yang dipilih dengan perbaikan path
     const selectedElementData = useMemo(() => {
         if (!selectedElementPath || selectedElementPath.length < 2) return null;
@@ -122,6 +124,13 @@ export default function Editor() {
         );
     };
 
+    const handleToggleElementVisibility = useCallback((pathKey) => {
+        setHiddenElements(prev => ({
+            ...prev,
+            [pathKey]: !prev[pathKey]
+        }));
+    }, []);
+
     return (
         <div className="flex h-screen w-full bg-gray-200">
             {/* Panel Kiri: Daftar Section */}
@@ -134,6 +143,10 @@ export default function Editor() {
                             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }
                     }}
+                    onSelectElement={handleSelectElement}
+                    selectedElementPath={selectedElementPath}
+                    onToggleElementVisibility={handleToggleElementVisibility}
+                    hiddenElements={hiddenElements}
                 />
             </div>
 
@@ -143,6 +156,7 @@ export default function Editor() {
                     theme={themeData}
                     onSelectElement={handleSelectElement}
                     selectedElementPath={selectedElementPath}
+                    hiddenElements={hiddenElements}
                  />
             </div>
 
@@ -161,6 +175,8 @@ export default function Editor() {
                         <strong>DEBUG:</strong><br/>
                         Path: {selectedElementPath.join(' > ')}<br/>
                         Data: {selectedElementData ? 'Found' : 'Not Found'}
+                        <br/>
+                        Hidden Elements: {Object.keys(hiddenElements).filter(key => hiddenElements[key]).join(', ') || 'None'}
                     </div>
                 )}
             </div>

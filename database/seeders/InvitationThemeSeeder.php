@@ -31,19 +31,19 @@ class InvitationThemeSeeder extends Seeder
                         [
                             'type' => 'opening',
                             'minHeight' => 'clamp(50rem, 100vh, 80rem)',
-                            'heroTextWrapper' => [
-                                'order' => 1,
+                            'heroWrapper' => [
                                 'wrapperStyle' => [
-                                    'position' => 'relative',
-                                    'top' => '2rem',
+                                    'position' => 'absolute',
+                                    'top' => '50%',
                                     'left' => '50%',
-                                    'transform' => 'translateX(-50%)',
+                                    'transform' => 'translateX(-50%) translateY(-50%)',
                                     'width' => '100%',
-                                    'height' => '100%',
+                                    'height' => 'auto',
                                     'textAlign' => 'center',
                                     'color' => '#ffffff',
-                                    'backgroundColor' => 'rgba(238, 112, 112, 0.5)',
                                     'zIndex' => 2,
+                                    'whiteSpace' => 'pre-line',
+                                    'lineHeight' => '1'
                                 ],
                                 'title' => [
                                     'text' => 'Wedding Invitation',
@@ -76,7 +76,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 'content' => [
                                     'text' => 'July 04th, 2025',
-                                    'order' => 2,
+                                    'order' => 3,
                                     'textStyle' => [
                                         'position' => 'relative',
                                         'left' => '50%',
@@ -86,7 +86,24 @@ class InvitationThemeSeeder extends Seeder
                                         'color' => '#F08080',
                                         'zIndex' => 3,
                                     ]
-                                ]
+                                ],
+                                'photo' => [
+                                    'path' => "/images/themes/{$slug}/photo.webp",
+                                    'order' => 4,
+                                    'imageStyle' => [
+                                        'position' => 'relative',
+                                        'bottom' => '10%',
+                                        'left' => '50%',
+                                        'transform' => 'translateX(-50%)',
+                                        'width' => '40vh',
+                                        'height' => 'auto',
+                                        'zIndex' => 1,
+                                        'borderTopLeftRadius' => '200px',
+                                        'borderTopRightRadius' => '200px',
+                                        'border' => '2px solid #f08080',
+                                        'padding' => '10px',
+                                    ]
+                                ],
                             ],
 
                             'ornamentRanting' => [
@@ -94,7 +111,7 @@ class InvitationThemeSeeder extends Seeder
                                 'animation' => 'waveOut',
                                 'imageStyle' => [
                                     'position' => 'absolute',
-                                    'top' => '0%',
+                                    'top' => '-2%',
                                     'right' => '-5%',
                                     'width' => '35vh',
                                     'height' => 'auto',
@@ -111,7 +128,6 @@ class InvitationThemeSeeder extends Seeder
                                     'top' => '10%',
                                     'width' => '100%',
                                     'zIndex' => 3,
-                                    'transform' => 'scaleY(-1)',
                                 ],
                                 'awan1' => [
                                     'path' => "/images/themes/{$slug}/awan1.webp",
@@ -138,80 +154,64 @@ class InvitationThemeSeeder extends Seeder
                                     ]
                                 ],
                             ],
-                            'photo' => [
-                                'path' => "/images/themes/{$slug}/photo.webp",
-                                'imageStyle' => [
-                                    'position' => 'absolute',
-                                    'bottom' => '0%',
-                                    'left' => '50%',
-                                    'transform' => 'translateX(-50%)',
-                                    'width' => '40vh',
-                                    'height' => 'auto',
-                                    'zIndex' => 1,
-                                    'borderTopLeftRadius' => '200px',
-                                    'borderTopRightRadius' => '200px',
-                                    'border' => '2px solid #f08080',
-                                    'padding' => '10px',
-                                ]
-                            ],
-                            'ornamentbottom_wrapper' => [
-                                'wrapperStyle' => [
-                                    'position' => 'absolute',
-                                    'bottom' => '-1%',
-                                    'left' => '-5%',
-                                    'right' => '-5%',
-                                    'zIndex' => 5, // Tingkatkan dari 1 ke 5
-                                ],
-                                'ornamentbottom1' => [
-                                    'path' => "/images/themes/{$slug}/daun4.webp",
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'bottom' => '-1%',
-                                        'left' => '50%',
-                                        'transform' => 'translateX(-50%)',
-                                        'width' => '100%',
-                                        'height' => 'auto',
-                                        'zIndex' => 1, // Paling rendah dalam wrapper
-                                    ]
-                                ],
-                                'ornamentbottom2' => [
-                                    'path' => "/images/themes/{$slug}/bunga2.webp",
-                                    'animation' => 'waveOut',
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'bottom' => '-2%',
-                                        'left' => '-2%',
-                                        'width' => '27%',
-                                        'height' => 'auto',
-                                        'zIndex' => 3, // Lebih tinggi dari ornamentbottom1
-                                        'transform' => 'scaleX(-1)',
-                                    ]
-                                ],
-                                'ornamentbottom3' => [
-                                    'path' => "/images/themes/{$slug}/bunga3.webp",
-                                    'animation' => 'waveOut',
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'bottom' => '-2%',
-                                        'left' => '30%',
-                                        'width' => '20%',
-                                        'height' => 'auto',
-                                        'zIndex' => 3, // Sama tinggi dengan ornamentbottom2
-                                    ]
-                                ],
-                                'ornamentbottom4' => [
-                                    'path' => "/images/themes/{$slug}/bunga1.webp",
-                                    'animation' => 'waveOut',
-                                    'imageStyle' => [
-                                        'position' => 'absolute',
-                                        'bottom' => '0%',
-                                        'right' => '-10%',
-                                        'width' => '50%',
-                                        'height' => 'auto',
-                                        'zIndex' => 4, // Paling tinggi dalam wrapper
-                                    ]
-                                ],
-                            ],
+                            // 'ornamentbottom_wrapper' => [
+                            //     'wrapperStyle' => [
+                            //         'position' => 'absolute',
+                            //         'bottom' => '-1%',
+                            //         'left' => '-5%',
+                            //         'right' => '-5%',
+                            //         'zIndex' => 5, // Tingkatkan dari 1 ke 5
+                            //     ],
+                            //     'ornamentbottom1' => [
+                            //         'path' => "/images/themes/{$slug}/daun4.webp",
+                            //         'imageStyle' => [
+                            //             'position' => 'absolute',
+                            //             'bottom' => '-1%',
+                            //             'left' => '50%',
+                            //             'transform' => 'translateX(-50%)',
+                            //             'width' => '100%',
+                            //             'height' => 'auto',
+                            //             'zIndex' => 1, // Paling rendah dalam wrapper
+                            //         ]
+                            //     ],
+                            //     'ornamentbottom2' => [
+                            //         'path' => "/images/themes/{$slug}/bunga2.webp",
+                            //         'animation' => 'waveOut',
+                            //         'imageStyle' => [
+                            //             'position' => 'absolute',
+                            //             'bottom' => '-2%',
+                            //             'left' => '-2%',
+                            //             'width' => '27%',
+                            //             'height' => 'auto',
+                            //             'zIndex' => 3, // Lebih tinggi dari ornamentbottom1
+                            //             'transform' => 'scaleX(-1)',
+                            //         ]
+                            //     ],
+                            //     'ornamentbottom3' => [
+                            //         'path' => "/images/themes/{$slug}/bunga3.webp",
+                            //         'animation' => 'waveOut',
+                            //         'imageStyle' => [
+                            //             'position' => 'absolute',
+                            //             'bottom' => '-2%',
+                            //             'left' => '30%',
+                            //             'width' => '20%',
+                            //             'height' => 'auto',
+                            //             'zIndex' => 3, // Sama tinggi dengan ornamentbottom2
+                            //         ]
+                            //     ],
+                            //     'ornamentbottom4' => [
+                            //         'path' => "/images/themes/{$slug}/bunga1.webp",
+                            //         'animation' => 'waveOut',
+                            //         'imageStyle' => [
+                            //             'position' => 'absolute',
+                            //             'bottom' => '0%',
+                            //             'right' => '-10%',
+                            //             'width' => '50%',
+                            //             'height' => 'auto',
+                            //             'zIndex' => 4, // Paling tinggi dalam wrapper
+                            //         ]
+                            //     ],
+                            // ],
                         ],
                         [
                             "type" => "couple",

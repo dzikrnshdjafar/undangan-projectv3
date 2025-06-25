@@ -213,6 +213,7 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                     <option value="select">Select</option>
                     <option value="textarea">Textarea</option>
                     <option value="list">List</option>
+                    <option value="countdown">Countdown</option>
                 </select>
             </div>
 
@@ -722,6 +723,70 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
   "padding": 0,
   "margin": 0
 }`)}
+
+                {elementType === 'countdown' && (
+    <div className="space-y-4">
+        <div>
+            <label className="block text-sm font-medium mb-1">Tanggal & Waktu Acara</label>
+            <input
+                type="datetime-local"
+                value={data.datetime ? data.datetime.replace(' ', 'T') : ''}
+                onChange={(e) => handleChange('datetime', e.target.value.replace('T', ' ') + ':00')}
+                className="w-full p-2 border rounded bg-gray-700 text-white"
+            />
+        </div>
+
+        {/* Editor untuk countdownStyle */}
+        <div>
+            <h4 className="text-lg font-semibold mt-4 mb-2">Countdown Container Style</h4>
+            {renderStyleEditor('countdownStyle', `{
+  "position": "relative",
+  "width": "90%",
+  "maxWidth": "600px",
+  "margin": "40px auto",
+  "padding": "20px",
+  "backgroundColor": "rgba(255, 255, 255, 0.9)",
+  "borderRadius": "15px",
+  "boxShadow": "0 8px 32px rgba(0, 0, 0, 0.1)",
+  "zIndex": 2,
+  "textAlign": "center"
+}`)}
+        </div>
+
+        {/* Editor untuk titleStyle */}
+        <div>
+            <h4 className="text-lg font-semibold mt-4 mb-2">Title Style</h4>
+            {renderStyleEditor('titleStyle', `{
+  "fontSize": "1.5rem",
+  "color": "#333",
+  "marginBottom": "20px"
+}`)}
+        </div>
+
+        {/* Editor untuk timerStyle */}
+        <div>
+            <h4 className="text-lg font-semibold mt-4 mb-2">Timer Style (Angka)</h4>
+            {renderStyleEditor('timerStyle', `{
+  "display": "flex",
+  "justifyContent": "center",
+  "gap": "15px",
+  "fontSize": "2rem",
+  "fontWeight": "bold",
+  "color": "#F08080",
+  "backgroundColor": "#00ffff"
+}`)}
+        </div>
+
+        {/* Editor untuk unitStyle */}
+        <div>
+            <h4 className="text-lg font-semibold mt-4 mb-2">Unit Style (Teks: Hari, Jam, dll.)</h4>
+            {renderStyleEditor('unitStyle', `{
+  "fontSize": "0.8rem",
+  "color": "#666"
+}`)}
+        </div>
+    </div>
+)}
             </div>
 
             <button

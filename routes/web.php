@@ -27,6 +27,7 @@ Route::delete('/themes/{themeId}/sections/{sectionIndex}/elements', [InvitationT
 Route::delete('/themes/{themeId}/sections/{sectionIndex}', [InvitationThemeController::class, 'deleteSection'])->name('themes.sections.delete');
 
 
+
 Route::get('/themes', [InvitationThemeController::class, 'index'])->name('themes.index');
 Route::get('/plans', [PlanController::class, 'index'])->name('plans.inertia');
 

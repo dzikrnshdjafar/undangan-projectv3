@@ -520,6 +520,41 @@ class InvitationThemeSeeder extends Seeder
                                     ]
                                 ]
                             ],
+                            'countdown' => [
+                                'type' => 'countdown',
+                                'order' => 3, // Urutan setelah event_wrapper
+                                'datetime' => '2026-06-15 09:00:00', // Sesuaikan dengan tanggal dan waktu acara
+                                'countdownStyle' => [
+                                    'position' => 'relative',
+                                    'width' => '90%',
+                                    'maxWidth' => '600px',
+                                    'margin' => '40px auto',
+                                    'padding' => '20px',
+                                    'backgroundColor' => 'rgba(255, 255, 255, 0.9)',
+                                    'borderRadius' => '15px',
+                                    'boxShadow' => '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                    'zIndex' => 2,
+                                    'textAlign' => 'center'
+                                ],
+                                'titleStyle' => [
+                                    'fontSize' => '1.5rem',
+                                    'color' => '#333',
+                                    'marginBottom' => '20px'
+                                ],
+                                'timerStyle' => [
+                                    'display' => 'flex',
+                                    'justifyContent' => 'center',
+                                    'gap' => '15px',
+                                    'fontSize' => '2rem',
+                                    'fontWeight' => 'bold',
+                                    'color' => '#F08080',
+                                    'backgroundColor' => '#00ffff'
+                                ],
+                                'unitStyle' => [
+                                    'fontSize' => '0.8rem',
+                                    'color' => '#666'
+                                ]
+                            ]
                         ],
                         [
                             'type' => 'gallery',

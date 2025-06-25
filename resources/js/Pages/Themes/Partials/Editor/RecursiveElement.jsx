@@ -16,7 +16,8 @@ import {
     renderTextarea,
     renderList,
     renderForm,
-    renderWrapper
+    renderWrapper,
+    renderCountdown
 } from '../../../../Utils/elementRenderers';
 
 export default function RecursiveElement({ data, path, onSelectElement, selectedElementPath, isEditing = false }) {
@@ -85,6 +86,8 @@ export default function RecursiveElement({ data, path, onSelectElement, selected
                 return renderTextarea(data, animateProps, clickableProps);
             case 'list':
                 return renderList(data, animateProps, clickableProps);
+            case 'countdown':
+                 return renderCountdown(data, animateProps, clickableProps);
             case 'form':
                 return renderForm(data, animateProps, renderChildren, clickableProps);
             default:

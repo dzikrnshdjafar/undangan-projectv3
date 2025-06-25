@@ -16,7 +16,8 @@ import {
     renderTextarea,
     renderList,
     renderForm,
-    renderWrapper
+    renderWrapper,
+    renderCountdown
 } from '../../../../Utils/elementRenderers';
 
 export default function PreviewElement({ data, path }) {
@@ -73,6 +74,8 @@ export default function PreviewElement({ data, path }) {
                 return renderList(data, animateProps);
             case 'form':
                 return renderForm(data, animateProps, renderChildren);
+                case 'countdown':
+                return renderCountdown(data, animateProps);
             default:
                 return renderWrapper(data, animateProps, elementType, storage_path, theme?.slug, renderChildren);
         }

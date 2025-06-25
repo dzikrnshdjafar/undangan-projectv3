@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-
+import Countdown from '../Components/Countdown';
 // Utility function untuk membersihkan properti undefined
 export const cleanStyle = (style) => {
     const cleanedStyle = { ...style };
@@ -304,6 +304,22 @@ export const renderWrapper = (data, animateProps, elementType, storage_path, the
 
             {/* Render Child Elements */}
             {renderChildrenFn()}
+        </motion.div>
+    );
+};
+
+export const renderCountdown = (data, animateProps, additionalProps = {}) => {
+    // Gunakan countdownStyle, bukan wrapperStyle
+    const countdownStyle = cleanStyle({ ...data.countdownStyle });
+
+    return (
+        <motion.div style={countdownStyle} animate={animateProps} {...additionalProps}>
+            <Countdown
+                datetime={data.datetime}
+                titleStyle={cleanStyle({ ...data.titleStyle })}
+                timerStyle={cleanStyle({ ...data.timerStyle })}
+                unitStyle={cleanStyle({ ...data.unitStyle })}
+            />
         </motion.div>
     );
 };

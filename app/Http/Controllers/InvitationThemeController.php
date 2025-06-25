@@ -36,13 +36,14 @@ class InvitationThemeController extends Controller
         $theme = InvitationTheme::findOrFail($themeId);
         $sections = json_decode($theme->sections_json, true);
 
-        // Validasi yang diperluas untuk mendukung semua tipe element
+        // Validasi yang diperluas untuk mendukung elemen countdown
         $request->validate([
             'fieldName' => 'required|string',
             'data' => 'required|array',
 
             // Properti umum
-            'data.type' => 'nullable|string|in:wrapper,text,image,button,video,iframe,form,input,select,textarea,list',
+            // Menambahkan 'countdown' sebagai tipe yang valid
+            'data.type' => 'nullable|string|in:wrapper,text,image,button,video,iframe,form,input,select,textarea,list,countdown',
             'data.order' => 'nullable|integer',
             'data.animation' => 'nullable|string',
 
@@ -80,7 +81,11 @@ class InvitationThemeController extends Controller
             'data.ordered' => 'nullable|boolean',
             'data.items' => 'nullable|array',
 
+            // Countdown properties
+            'data.datetime' => 'nullable|date_format:Y-m-d H:i:s', // Validasi format datetime
+
             // Style objects
+            // Menambahkan style untuk countdown
             'data.textStyle' => 'nullable|array',
             'data.imageStyle' => 'nullable|array',
             'data.wrapperStyle' => 'nullable|array',
@@ -93,6 +98,10 @@ class InvitationThemeController extends Controller
             'data.textareaStyle' => 'nullable|array',
             'data.listStyle' => 'nullable|array',
             'data.itemStyle' => 'nullable|array',
+            'data.countdownStyle' => 'nullable|array', // Style untuk countdown container
+            'data.titleStyle' => 'nullable|array',    // Style untuk judul countdown
+            'data.timerStyle' => 'nullable|array',    // Style untuk angka timer
+            'data.unitStyle' => 'nullable|array',     // Style untuk unit waktu (Hari, Jam)
         ]);
 
         $fieldName = $request->input('fieldName');
@@ -108,7 +117,8 @@ class InvitationThemeController extends Controller
             // Traverse ke parent element
             for ($i = 0; $i < count($fieldParts) - 1; $i++) {
                 if (!isset($current[$fieldParts[$i]])) {
-                    $current[$fieldParts[$i]] = [];
+                    // Jika path tidak ada, hentikan untuk menghindari error
+                    return back()->with('error', 'Invalid element path!');
                 }
                 $current = &$current[$fieldParts[$i]];
             }
@@ -120,15 +130,15 @@ class InvitationThemeController extends Controller
             }
 
             // Merge dengan data yang sudah ada (untuk mempertahankan properti lain)
-            $current[$finalKey] = array_merge($current[$finalKey], $cleanData);
+            $current[$finalKey] = array_merge($current[$finalKey] ?? [], $cleanData);
         } else {
             return back()->with('error', 'Section not found!');
         }
 
-        $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
         $theme->save();
 
-        return back()->with('success', ucfirst($fieldName) . ' updated successfully!');
+        return back()->with('success', ucfirst(str_replace('.', ' > ', $fieldName)) . ' updated successfully!');
     }
 
     /**
@@ -139,119 +149,47 @@ class InvitationThemeController extends Controller
         $cleanData = [];
 
         // 1. Properti umum untuk semua element
-        if (isset($data['type'])) {
-            $cleanData['type'] = $data['type'];
-        }
-
-        if (isset($data['order'])) {
-            $cleanData['order'] = (int) $data['order'];
-        }
-
-        if (isset($data['animation']) && !empty($data['animation'])) {
-            $cleanData['animation'] = $data['animation'];
-        }
+        if (isset($data['type'])) $cleanData['type'] = $data['type'];
+        if (isset($data['order'])) $cleanData['order'] = (int) $data['order'];
+        if (isset($data['animation']) && !empty($data['animation'])) $cleanData['animation'] = $data['animation'];
 
         // 2. Content properties
-        if (isset($data['text'])) {
-            $cleanData['text'] = $data['text'];
-        }
-
-        if (isset($data['path'])) {
-            $cleanData['path'] = $data['path'];
-        }
-
-        if (isset($data['src'])) {
-            $cleanData['src'] = $data['src'];
-        }
-
-        if (isset($data['href'])) {
-            $cleanData['href'] = $data['href'];
-        }
-
-        if (isset($data['target'])) {
-            $cleanData['target'] = $data['target'];
-        }
-
-        if (isset($data['onClick'])) {
-            $cleanData['onClick'] = $data['onClick'];
-        }
-
-        if (isset($data['alt'])) {
-            $cleanData['alt'] = $data['alt'];
-        }
-
-        if (isset($data['title'])) {
-            $cleanData['title'] = $data['title'];
-        }
+        if (isset($data['text'])) $cleanData['text'] = $data['text'];
+        if (isset($data['path'])) $cleanData['path'] = $data['path'];
+        if (isset($data['src'])) $cleanData['src'] = $data['src'];
+        if (isset($data['href'])) $cleanData['href'] = $data['href'];
+        if (isset($data['target'])) $cleanData['target'] = $data['target'];
+        if (isset($data['onClick'])) $cleanData['onClick'] = $data['onClick'];
+        if (isset($data['alt'])) $cleanData['alt'] = $data['alt'];
+        // Note: titleStyle ditangani di section style, tapi title (string) ada di sini
+        if (isset($data['title']) && is_string($data['title'])) $cleanData['title'] = $data['title'];
 
         // 3. Form properties
-        if (isset($data['action'])) {
-            $cleanData['action'] = $data['action'];
-        }
-
-        if (isset($data['method'])) {
-            $cleanData['method'] = $data['method'];
-        }
-
-        if (isset($data['name'])) {
-            $cleanData['name'] = $data['name'];
-        }
-
-        if (isset($data['id'])) {
-            $cleanData['id'] = $data['id'];
-        }
-
-        if (isset($data['placeholder'])) {
-            $cleanData['placeholder'] = $data['placeholder'];
-        }
-
-        if (isset($data['required'])) {
-            $cleanData['required'] = (bool) $data['required'];
-        }
-
-        if (isset($data['inputType'])) {
-            $cleanData['inputType'] = $data['inputType'];
-        }
-
-        if (isset($data['rows'])) {
-            $cleanData['rows'] = (int) $data['rows'];
-        }
-
-        if (isset($data['options']) && is_array($data['options'])) {
-            $cleanData['options'] = $data['options'];
-        }
+        if (isset($data['action'])) $cleanData['action'] = $data['action'];
+        if (isset($data['method'])) $cleanData['method'] = $data['method'];
+        if (isset($data['name'])) $cleanData['name'] = $data['name'];
+        if (isset($data['id'])) $cleanData['id'] = $data['id'];
+        if (isset($data['placeholder'])) $cleanData['placeholder'] = $data['placeholder'];
+        if (isset($data['required'])) $cleanData['required'] = (bool) $data['required'];
+        if (isset($data['inputType'])) $cleanData['inputType'] = $data['inputType'];
+        if (isset($data['rows'])) $cleanData['rows'] = (int) $data['rows'];
+        if (isset($data['options']) && is_array($data['options'])) $cleanData['options'] = $data['options'];
 
         // 4. Video properties
-        if (isset($data['controls'])) {
-            $cleanData['controls'] = (bool) $data['controls'];
-        }
-
-        if (isset($data['autoPlay'])) {
-            $cleanData['autoPlay'] = (bool) $data['autoPlay'];
-        }
-
-        if (isset($data['muted'])) {
-            $cleanData['muted'] = (bool) $data['muted'];
-        }
-
-        if (isset($data['loop'])) {
-            $cleanData['loop'] = (bool) $data['loop'];
-        }
-
-        if (isset($data['allowFullScreen'])) {
-            $cleanData['allowFullScreen'] = (bool) $data['allowFullScreen'];
-        }
+        if (isset($data['controls'])) $cleanData['controls'] = (bool) $data['controls'];
+        if (isset($data['autoPlay'])) $cleanData['autoPlay'] = (bool) $data['autoPlay'];
+        if (isset($data['muted'])) $cleanData['muted'] = (bool) $data['muted'];
+        if (isset($data['loop'])) $cleanData['loop'] = (bool) $data['loop'];
+        if (isset($data['allowFullScreen'])) $cleanData['allowFullScreen'] = (bool) $data['allowFullScreen'];
 
         // 5. List properties
-        if (isset($data['ordered'])) {
-            $cleanData['ordered'] = (bool) $data['ordered'];
-        }
+        if (isset($data['ordered'])) $cleanData['ordered'] = (bool) $data['ordered'];
+        if (isset($data['items']) && is_array($data['items'])) $cleanData['items'] = $data['items'];
 
-        if (isset($data['items']) && is_array($data['items'])) {
-            $cleanData['items'] = $data['items'];
-        }
+        // 6. Countdown properties
+        if (isset($data['datetime'])) $cleanData['datetime'] = $data['datetime'];
 
-        // 6. Style objects - semua tipe style yang didukung
+        // 7. Style objects - semua tipe style yang didukung
         $styleTypes = [
             'textStyle',
             'imageStyle',
@@ -264,12 +202,24 @@ class InvitationThemeController extends Controller
             'selectStyle',
             'textareaStyle',
             'listStyle',
-            'itemStyle'
+            'itemStyle',
+            'countdownStyle',
+            'titleStyle',
+            'timerStyle',
+            'unitStyle' // Menambahkan style untuk countdown
         ];
 
         foreach ($styleTypes as $styleType) {
-            if (isset($data[$styleType]) && is_array($data[$styleType])) {
-                $cleanData[$styleType] = $data[$styleType];
+            // Memeriksa apakah style dikirimkan sebagai array (dari editor) atau string JSON (jika ada fallback)
+            if (isset($data[$styleType])) {
+                if (is_array($data[$styleType])) {
+                    $cleanData[$styleType] = $data[$styleType];
+                } elseif (is_string($data[$styleType])) {
+                    $decoded = json_decode($data[$styleType], true);
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        $cleanData[$styleType] = $decoded;
+                    }
+                }
             }
         }
 

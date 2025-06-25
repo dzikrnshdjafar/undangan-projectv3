@@ -519,7 +519,7 @@ class InvitationThemeSeeder extends Seeder
                                         ]
                                     ]
                                 ]
-                            ]
+                            ],
                         ],
                         [
                             'type' => 'gallery',

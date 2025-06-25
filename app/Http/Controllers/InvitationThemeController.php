@@ -292,89 +292,158 @@ class InvitationThemeController extends Controller
     /**
      * Add new element to a section
      */
-    public function addElement(Request $request, $themeId, $index)
+    public function addSection(Request $request, $themeId)
     {
         $theme = InvitationTheme::findOrFail($themeId);
-        $sections = json_decode($theme->sections_json, true);
+        $sections = json_decode($theme->sections_json, true) ?? [];
+
+        $request->validate([
+            'type' => 'required|string',
+            'minHeight' => 'nullable|string',
+            'wrapperStyle' => 'nullable|array',
+        ]);
+
+        // Create new section
+        $newSection = [
+            'type' => $request->input('type'),
+            'minHeight' => $request->input('minHeight', '100vh'),
+            'wrapperStyle' => $request->input('wrapperStyle', [
+                'position' => 'relative',
+                'overflow' => 'hidden'
+            ])
+        ];
+
+        // Add to sections array
+        $sections[] = $newSection;
+
+        // Save to database
+        $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $theme->save();
+
+        return back()->with('success', 'Section added successfully!');
+    }
+
+    /**
+     * Add new element to section
+     */
+    public function addElement(Request $request, $themeId, $sectionIndex)
+    {
+        $theme = InvitationTheme::findOrFail($themeId);
+        $sections = json_decode($theme->sections_json, true) ?? [];
 
         $request->validate([
             'parentPath' => 'nullable|string',
             'elementKey' => 'required|string',
-            'elementType' => 'required|string|in:wrapper,text,image,button,video,iframe,form,input,select,textarea,list',
             'elementData' => 'required|array',
         ]);
 
-        if (isset($sections[$index])) {
-            $parentPath = $request->input('parentPath');
-            $elementKey = $request->input('elementKey');
-            $elementData = $this->prepareElementData($request->input('elementData'));
-
-            if ($parentPath) {
-                // Add to nested element
-                $pathParts = explode('.', $parentPath);
-                $current = &$sections[$index];
-
-                foreach ($pathParts as $part) {
-                    if (!isset($current[$part])) {
-                        $current[$part] = [];
-                    }
-                    $current = &$current[$part];
-                }
-
-                $current[$elementKey] = $elementData;
-            } else {
-                // Add to section root
-                $sections[$index][$elementKey] = $elementData;
-            }
-
-            $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-            $theme->save();
-
-            return back()->with('success', 'Element added successfully!');
+        if (!isset($sections[$sectionIndex])) {
+            return back()->with('error', 'Section not found!');
         }
 
-        return back()->with('error', 'Section not found!');
+        $parentPath = $request->input('parentPath');
+        $elementKey = $request->input('elementKey');
+        $elementData = $this->prepareElementData($request->input('elementData'));
+
+        if ($parentPath) {
+            // Add to nested element
+            $pathParts = explode('.', $parentPath);
+            $current = &$sections[$sectionIndex];
+
+            foreach ($pathParts as $part) {
+                if (!isset($current[$part])) {
+                    $current[$part] = [];
+                }
+                $current = &$current[$part];
+            }
+
+            $current[$elementKey] = $elementData;
+        } else {
+            // Add to section root
+            $sections[$sectionIndex][$elementKey] = $elementData;
+        }
+
+        // Save to database
+        $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $theme->save();
+
+        return back()->with('success', 'Element added successfully!');
+    }
+
+    /**
+     * Delete section
+     */
+    public function deleteSection(Request $request, $themeId, $sectionIndex)
+    {
+        $theme = InvitationTheme::findOrFail($themeId);
+        $sections = json_decode($theme->sections_json, true) ?? [];
+
+        if (!isset($sections[$sectionIndex])) {
+            return back()->with('error', 'Section not found!');
+        }
+
+        // Remove section
+        array_splice($sections, $sectionIndex, 1);
+
+        // Save to database
+        $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $theme->save();
+
+        return back()->with('success', 'Section deleted successfully!');
     }
 
     /**
      * Delete element from a section
      */
-    public function deleteElement(Request $request, $themeId, $index)
+    public function deleteElement(Request $request, $themeId, $sectionIndex)
     {
         $theme = InvitationTheme::findOrFail($themeId);
-        $sections = json_decode($theme->sections_json, true);
+        $sections = json_decode($theme->sections_json, true) ?? [];
 
         $request->validate([
-            'elementPath' => 'required|string',
+            'parentPath' => 'nullable|string',
+            'elementKey' => 'required|string',
         ]);
 
-        if (isset($sections[$index])) {
-            $elementPath = $request->input('elementPath');
-            $pathParts = explode('.', $elementPath);
-            $current = &$sections[$index];
-
-            // Navigate to parent
-            for ($i = 0; $i < count($pathParts) - 1; $i++) {
-                if (!isset($current[$pathParts[$i]])) {
-                    return back()->with('error', 'Element path not found!');
-                }
-                $current = &$current[$pathParts[$i]];
-            }
-
-            // Delete final element
-            $finalKey = end($pathParts);
-            if (isset($current[$finalKey])) {
-                unset($current[$finalKey]);
-
-                $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                $theme->save();
-
-                return back()->with('success', 'Element deleted successfully!');
-            }
-
-            return back()->with('error', 'Element not found!');
+        if (!isset($sections[$sectionIndex])) {
+            return back()->with('error', 'Section not found!');
         }
 
-        return back()->with('error', 'Section not found!');
+        $parentPath = $request->input('parentPath');
+        $elementKey = $request->input('elementKey');
+
+        if ($parentPath) {
+            // Delete from nested element
+            $pathParts = explode('.', $parentPath);
+            $current = &$sections[$sectionIndex];
+
+            foreach ($pathParts as $part) {
+                if (!isset($current[$part])) {
+                    return back()->with('error', 'Parent element not found!');
+                }
+                $current = &$current[$part];
+            }
+
+            if (!isset($current[$elementKey])) {
+                return back()->with('error', 'Element not found!');
+            }
+
+            // Delete element (cascade delete children automatically)
+            unset($current[$elementKey]);
+        } else {
+            // Delete from section root
+            if (!isset($sections[$sectionIndex][$elementKey])) {
+                return back()->with('error', 'Element not found!');
+            }
+
+            // Delete element (cascade delete children automatically)
+            unset($sections[$sectionIndex][$elementKey]);
+        }
+
+        // Save to database
+        $theme->sections_json = json_encode($sections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $theme->save();
+
+        return back()->with('success', 'Element deleted successfully!');
     }
 }

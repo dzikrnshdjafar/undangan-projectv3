@@ -78,7 +78,6 @@ export const renderButton = (data, animateProps, additionalProps = {}) => {
         border: 'none',
         padding: '10px 20px',
         borderRadius: '5px',
-        backgroundColor: '#007bff',
         color: 'white',
     });
 
@@ -152,9 +151,6 @@ export const renderInput = (data, animateProps, additionalProps = {}) => {
     const inputStyle = cleanStyle({
         ...data.inputStyle,
         width: '100%',
-        padding: '10px',
-        border: '1px solid #ddd',
-        borderRadius: '4px',
     });
 
     return (
@@ -177,8 +173,6 @@ export const renderSelect = (data, animateProps, additionalProps = {}) => {
         ...data.selectStyle,
         width: '100%',
         padding: '10px',
-        border: '1px solid #ddd',
-        borderRadius: '4px',
     });
 
     return (
@@ -205,8 +199,6 @@ export const renderTextarea = (data, animateProps, additionalProps = {}) => {
         ...data.textareaStyle,
         width: '100%',
         padding: '10px',
-        border: '1px solid #ddd',
-        borderRadius: '4px',
         minHeight: '100px',
     });
 

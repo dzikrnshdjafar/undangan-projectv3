@@ -131,23 +131,230 @@ export default function Editor() {
         }));
     }, []);
 
+     React.useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                setSelectedElementPath(null);
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
+    const handleAddSection = useCallback((sectionData) => {
+        // Optimistic update - update state dulu
+        setThemeData(prevTheme => {
+            const newTheme = { ...prevTheme };
+            const sections = newTheme.sections || JSON.parse(newTheme.sections_json || '[]');
+            
+            sections.push(sectionData);
+            
+            if (newTheme.sections) {
+                newTheme.sections = sections;
+            } else {
+                newTheme.sections_json = JSON.stringify(sections);
+            }
+            
+            return newTheme;
+        });
+
+        // Kirim ke server
+        router.post(`/themes/${themeData.id}/sections`, sectionData, {
+            preserveScroll: true,
+            onSuccess: () => {
+                console.log('Section added successfully!');
+            },
+            onError: (errors) => {
+                console.error('Failed to add section:', errors);
+                // Rollback state jika gagal
+                setThemeData(initialTheme);
+                alert('Failed to add section. Please try again.');
+            }
+        });
+    }, [themeData.id, initialTheme]);
+
+    // Handler untuk menambah element baru - UPDATE DENGAN API CALL
+    const handleAddElement = useCallback((sectionIndex, parentPath, elementData) => {
+        // Optimistic update - update state dulu
+        setThemeData(prevTheme => {
+            const newTheme = { ...prevTheme };
+            const sections = newTheme.sections || JSON.parse(newTheme.sections_json || '[]');
+            
+            if (!sections[sectionIndex]) return prevTheme;
+            
+            // Navigate to parent
+            let current = sections[sectionIndex];
+            for (const key of parentPath) {
+                if (!current[key]) current[key] = {};
+                current = current[key];
+            }
+            
+            // Add new element
+            current[elementData.key] = elementData.data;
+            
+            if (newTheme.sections) {
+                newTheme.sections = sections;
+            } else {
+                newTheme.sections_json = JSON.stringify(sections);
+            }
+            
+            return newTheme;
+        });
+
+        // Kirim ke server
+        const requestData = {
+            parentPath: parentPath.length > 0 ? parentPath.join('.') : null,
+            elementKey: elementData.key,
+            elementData: elementData.data
+        };
+
+        router.post(`/themes/${themeData.id}/sections/${sectionIndex}/elements`, requestData, {
+            preserveScroll: true,
+            onSuccess: () => {
+                console.log('Element added successfully!');
+            },
+            onError: (errors) => {
+                console.error('Failed to add element:', errors);
+                // Rollback state jika gagal
+                setThemeData(initialTheme);
+                alert('Failed to add element. Please try again.');
+            }
+        });
+    }, [themeData.id, initialTheme]);
+
+    // Handler untuk menghapus section - NEW
+    const handleDeleteSection = useCallback((sectionIndex) => {
+        if (!confirm('Are you sure you want to delete this section?')) {
+            return;
+        }
+
+        // Optimistic update
+        setThemeData(prevTheme => {
+            const newTheme = { ...prevTheme };
+            const sections = newTheme.sections || JSON.parse(newTheme.sections_json || '[]');
+            
+            sections.splice(sectionIndex, 1);
+            
+            if (newTheme.sections) {
+                newTheme.sections = sections;
+            } else {
+                newTheme.sections_json = JSON.stringify(sections);
+            }
+            
+            return newTheme;
+        });
+
+        // Clear selection if affected
+        if (selectedElementPath && selectedElementPath[0] === sectionIndex) {
+            setSelectedElementPath(null);
+        }
+
+        // Kirim ke server
+        router.delete(`/themes/${themeData.id}/sections/${sectionIndex}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                console.log('Section deleted successfully!');
+            },
+            onError: (errors) => {
+                console.error('Failed to delete section:', errors);
+                // Rollback state jika gagal
+                setThemeData(initialTheme);
+                alert('Failed to delete section. Please try again.');
+            }
+        });
+    }, [themeData.id, initialTheme, selectedElementPath]);
+
+    const handleDeleteElement = useCallback((sectionIndex, parentPath, elementKey) => {
+    // Optimistic update
+    setThemeData(prevTheme => {
+        const newTheme = { ...prevTheme };
+        const sections = newTheme.sections || JSON.parse(newTheme.sections_json || '[]');
+        
+        if (!sections[sectionIndex]) return prevTheme;
+        
+        // Navigate to parent
+        let current = sections[sectionIndex];
+        for (const key of parentPath) {
+            if (!current[key]) return prevTheme;
+            current = current[key];
+        }
+        
+        // Delete element (ini akan otomatis menghapus semua children juga)
+        delete current[elementKey];
+        
+        if (newTheme.sections) {
+            newTheme.sections = sections;
+        } else {
+            newTheme.sections_json = JSON.stringify(sections);
+        }
+        
+        return newTheme;
+    });
+
+    // Clear selection jika element yang dipilih atau parent-nya dihapus
+    if (selectedElementPath) {
+        const selectedPath = selectedElementPath.slice();
+        const deletedPath = [sectionIndex, ...parentPath, elementKey];
+        
+        // Check if selected element is the deleted element or its child
+        if (selectedPath.length >= deletedPath.length) {
+            let isAffected = true;
+            for (let i = 0; i < deletedPath.length; i++) {
+                if (selectedPath[i] !== deletedPath[i]) {
+                    isAffected = false;
+                    break;
+                }
+            }
+            if (isAffected) {
+                setSelectedElementPath(null);
+            }
+        }
+    }
+
+    // Kirim ke server
+    const requestData = {
+        parentPath: parentPath.length > 0 ? parentPath.join('.') : null,
+        elementKey: elementKey
+    };
+
+    router.delete(`/themes/${themeData.id}/sections/${sectionIndex}/elements`, {
+        data: requestData,
+        preserveScroll: true,
+        onSuccess: () => {
+            console.log('Element deleted successfully!');
+        },
+        onError: (errors) => {
+            console.error('Failed to delete element:', errors);
+            // Rollback state jika gagal
+            setThemeData(initialTheme);
+            alert('Failed to delete element. Please try again.');
+        }
+    });
+}, [themeData.id, initialTheme, selectedElementPath]);
+
+
     return (
         <div className="flex h-screen w-full bg-gray-200">
             {/* Panel Kiri: Daftar Section */}
             <div className="w-1/5 bg-white shadow-md overflow-y-auto relative z-20">
                 <SectionList
-                    sections={themeData.sections || JSON.parse(themeData.sections_json || '[]')}
-                    onSelectSection={(index) => {
-                        const element = document.getElementById(`section-${index}`);
-                        if (element) {
-                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    }}
-                    onSelectElement={handleSelectElement}
-                    selectedElementPath={selectedElementPath}
-                    onToggleElementVisibility={handleToggleElementVisibility}
-                    hiddenElements={hiddenElements}
-                />
+    sections={themeData.sections || JSON.parse(themeData.sections_json || '[]')}
+    onSelectSection={(index) => {
+        const element = document.getElementById(`section-${index}`);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }}
+    onSelectElement={handleSelectElement}
+    selectedElementPath={selectedElementPath}
+    onAddSection={handleAddSection}
+    onAddElement={handleAddElement}
+    onDeleteSection={handleDeleteSection}
+    onDeleteElement={handleDeleteElement} // NEW PROP
+    onToggleElementVisibility={handleToggleElementVisibility}
+    hiddenElements={hiddenElements}
+/>
             </div>
 
             {/* Panel Tengah: Preview Undangan */}

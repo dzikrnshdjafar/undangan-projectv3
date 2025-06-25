@@ -21,6 +21,11 @@ Route::get('/themes/{slug}', [InvitationThemeController::class, 'show'])->name('
 
 Route::get('/themes/{slug}/edit', [InvitationThemeController::class, 'edit'])->name('themes.edit'); // Pastikan hanya user terautentikasi yang bisa edit
 Route::put('/themes/{theme}/sections/{index}', [InvitationThemeController::class, 'updateSection']);
+Route::post('/themes/{themeId}/sections', [InvitationThemeController::class, 'addSection'])->name('themes.sections.add');
+Route::post('/themes/{themeId}/sections/{sectionIndex}/elements', [InvitationThemeController::class, 'addElement'])->name('themes.sections.elements.add');
+Route::delete('/themes/{themeId}/sections/{sectionIndex}/elements', [InvitationThemeController::class, 'deleteElement'])->name('themes.sections.elements.delete');
+Route::delete('/themes/{themeId}/sections/{sectionIndex}', [InvitationThemeController::class, 'deleteSection'])->name('themes.sections.delete');
+
 
 Route::get('/themes', [InvitationThemeController::class, 'index'])->name('themes.index');
 Route::get('/plans', [PlanController::class, 'index'])->name('plans.inertia');

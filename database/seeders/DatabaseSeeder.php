@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             PlanSeeder::class,
             InvitationCategorySeeder::class,
             InvitationThemeSeeder::class,
-            InvitationSeeder::class,
+            // InvitationSeeder::class,
         ]);
     }
 }

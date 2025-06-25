@@ -691,12 +691,28 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
 }`)}
 
                 {/* Input Style */}
-                {(['input', 'select', 'textarea'].includes(elementType) || data.inputStyle) && 
+                {(elementType === 'input' || data.inputStyle) && 
                     renderStyleEditor('inputStyle', `{
   "width": "100%",
   "padding": "10px",
   "border": "1px solid #ddd",
   "borderRadius": "4px"
+}`)}
+                {/* Select Style */}
+                {(elementType === 'select' || data.selectStyle) && 
+                    renderStyleEditor('selectStyle', `{
+              "width": "100%",
+              "padding": "10px",
+              "border": "1px solid #ddd",
+              "borderRadius": "4px"
+              }`)}
+
+                {/* Textarea Style */}
+                {(elementType === 'textarea' || data.textareaStyle) && 
+                    renderStyleEditor('textareaStyle', `{
+  "width": "100%",
+  "padding": "10px",
+  "border": "1px solid #ddd",
 }`)}
 
                 {/* List Style */}

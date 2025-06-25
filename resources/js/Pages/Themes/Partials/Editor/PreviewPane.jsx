@@ -5,7 +5,15 @@ import DynamicSection from './DynamicSection';
 export default function PreviewPane({ theme, onSelectElement, selectedElementPath }) {
     const { theme: pageTheme } = usePage().props;
     
-    const backgroundImageUrl = pageTheme.background_image_url; 
+    const backgroundImageUrl = pageTheme.background_image_url;
+
+    // Handler untuk membatalkan seleksi ketika klik di luar element
+    const handleBackgroundClick = (e) => {
+        // Hanya jalankan jika klik langsung di background, bukan dari bubbling
+        if (e.target === e.currentTarget) {
+            onSelectElement(null, null); // Batalkan seleksi
+        }
+    };
     
     return (
         <div className="relative h-full w-3/5 mx-auto overflow-hidden">
@@ -14,20 +22,20 @@ export default function PreviewPane({ theme, onSelectElement, selectedElementPat
                 className="absolute inset-0 z-0"
                 style={{
                     backgroundImage: `url(${backgroundImageUrl})`,
-                    backgroundSize: 'cover', // Ubah ke cover agar memenuhi container
+                    backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
-                    // Hapus background-attachment: fixed
                 }}
+                onClick={handleBackgroundClick} // Handler untuk deselect
             />
 
-            {/* Scrollable Content */}
             <div className="relative z-10 h-full overflow-y-auto">
-                <div className="w-full mx-auto bg-transparent shadow-lg relative">
-                    {/* Overlay */}
+                <div 
+                    className="w-full mx-auto bg-transparent shadow-lg relative"
+                    onClick={handleBackgroundClick} // Handler untuk deselect pada content area
+                >
                     <div className="absolute inset-0 bg-red-100 bg-opacity-50 backdrop-saturate-50 z-0"></div>
 
-                    {/* Sections */}
                     <div className="relative z-10">
                         {theme.sections && theme.sections.map((section, idx) => (
                             <DynamicSection

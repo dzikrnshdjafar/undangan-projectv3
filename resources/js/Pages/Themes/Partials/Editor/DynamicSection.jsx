@@ -21,19 +21,31 @@ export default function DynamicSection({ section, sectionIndex, onSelectElement,
     });
 
     const sectionStyle = {
-        minHeight: section.minHeight || '100vh',
+        minHeight: section.minHeight || '100vh',    
         position: 'relative',
         overflow: 'hidden',
         ...section.wrapperStyle
     };
 
+    // Handler untuk membatalkan seleksi ketika klik di area kosong section
+    const handleSectionClick = (e) => {
+        // Hanya jalankan jika klik langsung di section, bukan dari bubbling
+        if (e.target === e.currentTarget) {
+            onSelectElement(null, null); // Batalkan seleksi
+        }
+    };
+
     return (
-        <section id={`section-${sectionIndex}`} style={sectionStyle}>
+        <section 
+            id={`section-${sectionIndex}`} 
+            style={sectionStyle}
+            onClick={handleSectionClick} // Handler untuk deselect
+        >
             {sortedElementKeys.map((elementKey) => (
                 <RecursiveElement
                     key={elementKey}
                     data={section[elementKey]}
-                    path={[sectionIndex, elementKey]} // Path awal: [indexSection, namaElemen]
+                    path={[sectionIndex, elementKey]}
                     onSelectElement={onSelectElement}
                     selectedElementPath={selectedElementPath}
                     isEditing={isEditing}

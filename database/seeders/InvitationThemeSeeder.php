@@ -380,22 +380,155 @@ class InvitationThemeSeeder extends Seeder
                             ]
                         ],
 
-                        // [
-                        //     'type' => 'event',
-                        //     'title' => 'Waktu & Tempat',
-                        //     'date' => Carbon::create(2025, 6, 15)->format('Y-m-d'),
-                        //     'time' => Carbon::createFromTime(9, 0, 0)->format('H:i:s'),
-                        //     'place' => 'Gedung Serbaguna',
-                        //     'content' => 'Sabtu, 10 Juni 2025, 10:00 WIB di Gedung Serbaguna'
-                        // ],
-                        // [
-                        //     'type' => 'gallery',
-                        //     'title' => 'Galeri',
-                        //     'images' => [
-                        //         '/images/gallery/1.jpg',
-                        //         '/images/gallery/2.jpg'
-                        //     ]
-                        // ],
+                        [
+                            'type' => 'event',
+                            'minHeight' => 'clamp(50rem, 100vh, 80rem)',
+                            'title' => [
+                                'type' => 'text',
+                                'text' => 'Waktu & Tempat',
+                                'order' => 1,
+                                'textStyle' => [
+                                    'fontSize' => '2.5rem',
+                                    'color' => '#F08080',
+                                    'textAlign' => 'center',
+                                    'fontWeight' => 'bold',
+                                    'marginBottom' => '30px',
+                                    'position' => 'relative',
+                                    'top' => '20px',
+                                    'left' => '50%',
+                                    'transform' => 'translateX(-50%)',
+                                    'width' => '100%',
+                                    'zIndex' => 2
+                                ]
+                            ],
+                            'event_wrapper' => [
+                                'type' => 'wrapper',
+                                'order' => 2,
+                                'wrapperStyle' => [
+                                    'position' => 'relative',
+                                    'width' => '90%',
+                                    'maxWidth' => '600px',
+                                    'margin' => '0 auto',
+                                    'top' => '40px',
+                                    'padding' => '30px',
+                                    'backgroundColor' => 'rgba(255, 255, 255, 0.9)',
+                                    'borderRadius' => '15px',
+                                    'boxShadow' => '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                    'zIndex' => 2
+                                ],
+                                'akad_section' => [
+                                    'type' => 'wrapper',
+                                    'order' => 1,
+                                    'wrapperStyle' => [
+                                        'marginBottom' => '40px',
+                                        'textAlign' => 'center',
+                                        'padding' => '20px',
+                                        'borderRadius' => '10px',
+                                        'backgroundColor' => 'rgba(240, 128, 128, 0.1)'
+                                    ],
+                                    'akad_title' => [
+                                        'type' => 'text',
+                                        'text' => 'Akad Nikah',
+                                        'order' => 1,
+                                        'textStyle' => [
+                                            'fontSize' => '1.8rem',
+                                            'color' => '#F08080',
+                                            'fontWeight' => 'bold',
+                                            'marginBottom' => '15px'
+                                        ]
+                                    ],
+                                    'akad_date' => [
+                                        'type' => 'text',
+                                        'text' => 'Sabtu, 15 Juni 2025',
+                                        'order' => 2,
+                                        'textStyle' => [
+                                            'fontSize' => '1.3rem',
+                                            'color' => '#333',
+                                            'marginBottom' => '10px'
+                                        ]
+                                    ],
+                                    'akad_time' => [
+                                        'type' => 'text',
+                                        'text' => '09:00 - 10:00 WIB',
+                                        'order' => 3,
+                                        'textStyle' => [
+                                            'fontSize' => '1.2rem',
+                                            'color' => '#666',
+                                            'marginBottom' => '10px'
+                                        ]
+                                    ],
+                                    'akad_place' => [
+                                        'type' => 'text',
+                                        'text' => 'Masjid Al-Ikhlas<br>Jl. Merdeka No. 123, Jakarta',
+                                        'order' => 4,
+                                        'textStyle' => [
+                                            'fontSize' => '1.1rem',
+                                            'color' => '#666',
+                                            'lineHeight' => '1.5'
+                                        ]
+                                    ]
+                                ],
+                                'resepsi_section' => [
+                                    'type' => 'wrapper',
+                                    'order' => 2,
+                                    'wrapperStyle' => [
+                                        'textAlign' => 'center',
+                                        'padding' => '20px',
+                                        'borderRadius' => '10px',
+                                        'backgroundColor' => 'rgba(240, 128, 128, 0.1)'
+                                    ],
+                                    'resepsi_title' => [
+                                        'type' => 'text',
+                                        'text' => 'Resepsi Pernikahan',
+                                        'order' => 1,
+                                        'textStyle' => [
+                                            'fontSize' => '1.8rem',
+                                            'color' => '#F08080',
+                                            'fontWeight' => 'bold',
+                                            'marginBottom' => '15px'
+                                        ]
+                                    ],
+                                    'resepsi_date' => [
+                                        'type' => 'text',
+                                        'text' => 'Sabtu, 15 Juni 2025',
+                                        'order' => 2,
+                                        'textStyle' => [
+                                            'fontSize' => '1.3rem',
+                                            'color' => '#333',
+                                            'marginBottom' => '10px'
+                                        ]
+                                    ],
+                                    'resepsi_time' => [
+                                        'type' => 'text',
+                                        'text' => '11:00 - 15:00 WIB',
+                                        'order' => 3,
+                                        'textStyle' => [
+                                            'fontSize' => '1.2rem',
+                                            'color' => '#666',
+                                            'marginBottom' => '10px'
+                                        ]
+                                    ],
+                                    'resepsi_place' => [
+                                        'type' => 'text',
+                                        'text' => 'Gedung Serbaguna<br>Jl. Sudirman No. 456, Jakarta',
+                                        'order' => 4,
+                                        'textStyle' => [
+                                            'fontSize' => '1.1rem',
+                                            'color' => '#666',
+                                            'lineHeight' => '1.5'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            'type' => 'gallery',
+                            'title' => 'Galeri',
+                            'images' => [
+                                '/images/gallery/1.jpg',
+                                '/images/gallery/2.jpg'
+                            ]
+                        ],
                         [
                             'type' => 'rsvp',
                             'minHeight' => '100vh',
@@ -443,7 +576,10 @@ class InvitationThemeSeeder extends Seeder
                                     'placeholder' => 'Pesan untuk mempelai...',
                                     'name' => 'message',
                                     'rows' => 4,
-                                    'order' => 3
+                                    'order' => 3,
+                                    'textareaStyle' => [
+                                        'backgroundColor' => '#00ffff'
+                                    ]
                                 ],
                                 'submit_button' => [
                                     'type' => 'button',

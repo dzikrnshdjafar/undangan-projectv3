@@ -557,95 +557,114 @@ class InvitationThemeSeeder extends Seeder
                             ]
                         ],
                         [
-                            'type' => 'gallery',
-                            'title' => 'Galeri',
-                            'images' => [
-                                '/images/gallery/1.jpg',
-                                '/images/gallery/2.jpg'
-                            ]
-                        ],
-                        [
                             'type' => 'rsvp',
                             'minHeight' => '100vh',
-                            'title' => [
-                                'type' => 'text',
-                                'text' => 'RSVP Form',
+                            'rsvp' => [
+                                'type' => 'rsvp', // Tipe elemen
                                 'order' => 1,
-                                'textStyle' => [
-                                    'fontSize' => '2rem',
-                                    'textAlign' => 'center',
-                                    'marginBottom' => '20px',
-                                    'color' => '#F08080',
-                                ]
-                            ],
-                            'rsvp_form' => [
-                                'type' => 'form',
-                                'order' => 2,
-                                'action' => '/rsvp/submit',
-                                'method' => 'POST',
-                                'formStyle' => [
-                                    'maxWidth' => '400px',
-                                    'margin' => '0 auto',
-                                    'padding' => '20px'
-                                ],
-                                'name_input' => [
-                                    'type' => 'input',
-                                    'inputType' => 'text',
-                                    'placeholder' => 'Nama Lengkap',
-                                    'name' => 'name',
-                                    'required' => true,
-                                    'order' => 1
-                                ],
-                                'attendance_select' => [
-                                    'type' => 'select',
-                                    'name' => 'attendance',
-                                    'required' => true,
-                                    'order' => 2,
-                                    'options' => [
-                                        ['value' => 'yes', 'label' => 'Hadir'],
-                                        ['value' => 'no', 'label' => 'Tidak Hadir']
-                                    ]
-                                ],
-                                'message_textarea' => [
-                                    'type' => 'textarea',
-                                    'placeholder' => 'Pesan untuk mempelai...',
-                                    'name' => 'message',
-                                    'rows' => 4,
-                                    'order' => 3,
-                                    'textareaStyle' => [
-                                        'backgroundColor' => '#00ffff'
-                                    ]
-                                ],
-                                'submit_button' => [
-                                    'type' => 'button',
-                                    'text' => 'Kirim RSVP',
-                                    'onClick' => 'submitRSVP()',
-                                    'order' => 4,
-                                    'buttonStyle' => [
-                                        'backgroundColor' => '#7FFF00',
-                                        'color' => 'white',
-                                        'padding' => '12px 24px',
-                                        'borderRadius' => '8px',
-                                        'width' => '100%'
-                                    ]
-                                ]
-                            ],
-                            'video_section' => [
-                                'type' => 'video',
-                                'order' => 3,
-                                'src' => '/videos/wedding-video.mp4',
-                                'controls' => true,
-                                'videoStyle' => [
+                                'rsvpStyle' => [
+                                    'position' => 'relative',
+                                    'width' => '90%',
                                     'maxWidth' => '600px',
-                                    'margin' => '20px auto'
-                                ]
-                            ]
+                                    'margin' => '40px auto',
+                                    'padding' => '30px',
+                                    'backgroundColor' => 'rgba(255, 255, 255, 0.95)',
+                                    'borderRadius' => '15px',
+                                    'boxShadow' => '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                    'textAlign' => 'center',
+                                ],
+                                'rsvpTitleStyle' => [
+                                    'fontSize' => '2rem',
+                                    'color' => '#333',
+                                    'marginBottom' => '15px',
+                                ],
+                                'rsvpDescriptionStyle' => [
+                                    'fontSize' => '1rem',
+                                    'color' => '#666',
+                                    'marginBottom' => '30px',
+                                ],
+                                'rsvpFormStyle' => [
+                                    'display' => 'flex',
+                                    'flexDirection' => 'column',
+                                    'gap' => '15px',
+                                ],
+                                'rsvpInputStyle' => [
+                                    'padding' => '12px',
+                                    'border' => '1px solid #ccc',
+                                    'borderRadius' => '8px',
+                                    'fontSize' => '1rem',
+                                ],
+                                'rsvpButtonStyle' => [
+                                    'padding' => '12px',
+                                    'border' => 'none',
+                                    'borderRadius' => '8px',
+                                    'backgroundColor' => '#F08080',
+                                    'color' => 'white',
+                                    'fontSize' => '1rem',
+                                    'cursor' => 'pointer',
+                                    'marginTop' => '10px',
+                                ],
+                                'title' => 'Konfirmasi Kehadiran',
+                                'description' => 'Mohon konfirmasi kehadiran Anda untuk membantu kami mempersiapkan acara ini dengan lebih baik.',
+                                'buttonText' => 'Kirim Konfirmasi',
+                            ],
                         ],
-                        // [
-                        //     'type' => 'closing',
-                        //     'title' => 'Salam Penutup',
-                        //     'content' => 'Terima kasih atas doa dan restunya.'
-                        // ]
+                        [
+                            'type' => 'weddingGift',
+                            'minHeight' => 'clamp(40rem, 100vh, 60rem)',
+                            'gift' => [
+                                'type' => 'gift',
+                                'order' => 1,
+                                'giftStyle' => [
+                                    'position' => 'relative',
+                                    'width' => '90%',
+                                    'maxWidth' => '700px',
+                                    'margin' => '40px auto',
+                                    'padding' => '30px',
+                                    'backgroundColor' => 'rgba(255, 255, 255, 0.95)',
+                                    'borderRadius' => '15px',
+                                    'boxShadow' => '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                    'textAlign' => 'center',
+                                ],
+
+                                'giftBoxStyle' => [ // Style untuk setiap kotak rekening/wallet
+                                    'border' => '1px solid #ddd',
+                                    'borderRadius' => '10px',
+                                    'padding' => '20px',
+                                    'marginBottom' => '20px',
+                                    'backgroundColor' => '#fafafa',
+                                ],
+                                'giftBankNameStyle' => [
+                                    'fontSize' => '1.2rem',
+                                    'fontWeight' => 'bold',
+                                    'color' => '#333',
+                                ],
+                                'giftAccountNameStyle' => [
+                                    'fontSize' => '1.2rem',
+                                    'fontWeight' => 'bold',
+                                    'color' => '#333',
+                                ],
+                                'giftAccountNumberStyle' => [
+                                    'fontSize' => '1.1rem',
+                                    'color' => '#555',
+                                    'marginTop' => '5px',
+                                ],
+                                'giftButtonStyle' => [
+                                    'padding' => '8px 15px',
+                                    'border' => 'none',
+                                    'borderRadius' => '8px',
+                                    'backgroundColor' => '#F08080',
+                                    'color' => 'white',
+                                    'fontSize' => '0.9rem',
+                                    'cursor' => 'pointer',
+                                    'marginTop' => '15px',
+                                ],
+                                'buttonText' => 'Salin No. Rekening',
+                                'bankName' => 'BCA',
+                                'accountNumber' => '1234567890',
+                                'accountName' => 'John Doe',
+                            ],
+                        ],
                     ]),
                 ]
             );

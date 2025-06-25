@@ -17,7 +17,9 @@ import {
     renderList,
     renderForm,
     renderWrapper,
-    renderCountdown
+    renderCountdown,
+    renderRsvp,
+    renderGift
 } from '../../../../Utils/elementRenderers';
 
 export default function PreviewElement({ data, path }) {
@@ -76,6 +78,10 @@ export default function PreviewElement({ data, path }) {
                 return renderForm(data, animateProps, renderChildren);
                 case 'countdown':
                 return renderCountdown(data, animateProps);
+                case 'rsvp':
+                    return renderRsvp(data, animateProps);
+                    case 'gift':
+    return renderGift(data, animateProps);
             default:
                 return renderWrapper(data, animateProps, elementType, storage_path, theme?.slug, renderChildren);
         }

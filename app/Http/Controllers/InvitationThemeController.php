@@ -43,7 +43,7 @@ class InvitationThemeController extends Controller
 
             // Properti umum
             // Menambahkan 'countdown' sebagai tipe yang valid
-            'data.type' => 'nullable|string|in:wrapper,text,image,button,video,iframe,form,input,select,textarea,list,countdown',
+            'data.type' => 'nullable|string|in:wrapper,text,image,button,video,iframe,form,input,select,textarea,list,countdown,rsvp,gift',
             'data.order' => 'nullable|integer',
             'data.animation' => 'nullable|string',
 
@@ -84,6 +84,16 @@ class InvitationThemeController extends Controller
             // Countdown properties
             'data.datetime' => 'nullable|date_format:Y-m-d H:i:s', // Validasi format datetime
 
+            // RSVP properties (text-based)
+            'data.description' => 'nullable|string',
+            'data.buttonText' => 'nullable|string',
+
+            // Properti untuk Gift
+            'data.bankName' => 'nullable|string',
+            'data.accountNumber' => 'nullable|string',
+            'data.accountName' => 'nullable|string',
+
+
             // Style objects
             // Menambahkan style untuk countdown
             'data.textStyle' => 'nullable|array',
@@ -102,6 +112,19 @@ class InvitationThemeController extends Controller
             'data.titleStyle' => 'nullable|array',    // Style untuk judul countdown
             'data.timerStyle' => 'nullable|array',    // Style untuk angka timer
             'data.unitStyle' => 'nullable|array',     // Style untuk unit waktu (Hari, Jam)
+            'data.rsvpStyle' => 'nullable|array',
+            'data.rsvpTitleStyle' => 'nullable|array',       // Nama baru
+            'data.rsvpDescriptionStyle' => 'nullable|array', // Nama baru
+            'data.rsvpFormStyle' => 'nullable|array',        // Nama baru
+            'data.rsvpInputStyle' => 'nullable|array',       // Nama baru
+            'data.rsvpButtonStyle' => 'nullable|array',      // Nama baru
+            'data.giftStyle' => 'nullable|array',
+            'data.giftBoxStyle' => 'nullable|array',
+            'data.giftBankNameStyle' => 'nullable|array',
+            'data.giftAccountNameStyle' => 'nullable|array',
+            'data.giftAccountNumberStyle' => 'nullable|array',
+            'data.giftButtonStyle' => 'nullable|array',
+
         ]);
 
         $fieldName = $request->input('fieldName');
@@ -189,6 +212,15 @@ class InvitationThemeController extends Controller
         // 6. Countdown properties
         if (isset($data['datetime'])) $cleanData['datetime'] = $data['datetime'];
 
+        // RSVP text properties
+        if (isset($data['description'])) $cleanData['description'] = $data['description'];
+        if (isset($data['buttonText'])) $cleanData['buttonText'] = $data['buttonText'];
+
+        // Properti untuk Gift
+        if (isset($data['bankName'])) $cleanData['bankName'] = $data['bankName'];
+        if (isset($data['accountNumber'])) $cleanData['accountNumber'] = $data['accountNumber'];
+        if (isset($data['accountName'])) $cleanData['accountName'] = $data['accountName'];
+
         // 7. Style objects - semua tipe style yang didukung
         $styleTypes = [
             'textStyle',
@@ -206,7 +238,19 @@ class InvitationThemeController extends Controller
             'countdownStyle',
             'titleStyle',
             'timerStyle',
-            'unitStyle' // Menambahkan style untuk countdown
+            'unitStyle',
+            'rsvpStyle',
+            'rsvpTitleStyle',
+            'rsvpDescriptionStyle',
+            'rsvpFormStyle',
+            'rsvpInputStyle',
+            'rsvpButtonStyle',
+            'giftStyle',
+            'giftBoxStyle',
+            'giftBankNameStyle',
+            'giftAccountNameStyle',
+            'giftAccountNumberStyle',
+            'giftButtonStyle'
         ];
 
         foreach ($styleTypes as $styleType) {

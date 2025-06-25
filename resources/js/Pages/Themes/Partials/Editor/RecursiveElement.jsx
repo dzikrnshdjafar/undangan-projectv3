@@ -17,7 +17,9 @@ import {
     renderList,
     renderForm,
     renderWrapper,
-    renderCountdown
+    renderCountdown,
+    renderRsvp,
+    renderGift
 } from '../../../../Utils/elementRenderers';
 
 export default function RecursiveElement({ data, path, onSelectElement, selectedElementPath, isEditing = false }) {
@@ -90,6 +92,10 @@ export default function RecursiveElement({ data, path, onSelectElement, selected
                  return renderCountdown(data, animateProps, clickableProps);
             case 'form':
                 return renderForm(data, animateProps, renderChildren, clickableProps);
+                case 'rsvp':
+    return renderRsvp(data, animateProps, clickableProps);
+    case 'gift':
+        return renderGift(data, animateProps, clickableProps);
             default:
                 return renderWrapper(data, animateProps, elementType, storage_path, theme?.slug, renderChildren, clickableProps);
         }

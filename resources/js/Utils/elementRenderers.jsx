@@ -1,6 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Countdown from '../Components/Countdown';
+import Rsvp from '../Components/Rsvp';
+import Gift from '../Components/Gift';
+
 // Utility function untuk membersihkan properti undefined
 export const cleanStyle = (style) => {
     const cleanedStyle = { ...style };
@@ -319,6 +322,47 @@ export const renderCountdown = (data, animateProps, additionalProps = {}) => {
                 titleStyle={cleanStyle({ ...data.titleStyle })}
                 timerStyle={cleanStyle({ ...data.timerStyle })}
                 unitStyle={cleanStyle({ ...data.unitStyle })}
+            />
+        </motion.div>
+    );
+};
+
+export const renderRsvp = (data, animateProps, additionalProps = {}) => {
+    const rsvpStyle = cleanStyle({ ...data.rsvpStyle });
+
+    return (
+        <motion.div style={rsvpStyle} animate={animateProps} {...additionalProps}>
+            <Rsvp
+                // Teruskan semua properti dengan nama yang sudah diubah
+                rsvpTitleStyle={cleanStyle({ ...data.rsvpTitleStyle })}
+                rsvpDescriptionStyle={cleanStyle({ ...data.rsvpDescriptionStyle })}
+                rsvpFormStyle={cleanStyle({ ...data.rsvpFormStyle })}
+                rsvpInputStyle={cleanStyle({ ...data.rsvpInputStyle })}
+                rsvpButtonStyle={cleanStyle({ ...data.rsvpButtonStyle })}
+                title={data.title}
+                description={data.description}
+                buttonText={data.buttonText}
+            />
+        </motion.div>
+    );
+};
+
+export const renderGift = (data, animateProps, additionalProps = {}) => {
+    // giftStyle diterapkan pada div pembungkus utama
+    const giftContainerStyle = cleanStyle({ ...data.giftStyle });
+
+    return (
+        <motion.div style={giftContainerStyle} animate={animateProps} {...additionalProps}>
+            <Gift
+                giftBoxStyle={cleanStyle({ ...data.giftBoxStyle })}
+                giftBankNameStyle={cleanStyle({ ...data.giftBankNameStyle })}
+                giftAccountNameStyle={cleanStyle({ ...data.giftAccountNameStyle })}
+                giftAccountNumberStyle={cleanStyle({ ...data.giftAccountNumberStyle })}
+                giftButtonStyle={cleanStyle({ ...data.giftButtonStyle })}
+                buttonText={data.buttonText}
+                bankName={data.bankName}
+                accountNumber={data.accountNumber}
+                accountName={data.accountName}
             />
         </motion.div>
     );

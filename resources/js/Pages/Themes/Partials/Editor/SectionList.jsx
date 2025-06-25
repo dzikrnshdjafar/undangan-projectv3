@@ -657,6 +657,7 @@ function AddElementModal({ onAdd, onCancel }) {
                             <option value="textarea">Textarea</option>
                             <option value="list">List</option>
                             <option value="countdown">Countdown</option>
+                            <option value="rsvp">RSVP</option>
                         </select>
                     </div>
                     <div>

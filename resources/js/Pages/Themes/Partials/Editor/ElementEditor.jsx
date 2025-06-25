@@ -171,6 +171,8 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
         if ('src' in data) return 'video';
         if ('placeholder' in data) return 'input';
         if ('options' in data) return 'select';
+        if ('rsvpStyle' in data) return 'rsvp';
+        if ('giftStyle' in data && 'giftBoxStyle' in data) return 'gift';
         return 'wrapper';
     };
 
@@ -214,6 +216,7 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                     <option value="textarea">Textarea</option>
                     <option value="list">List</option>
                     <option value="countdown">Countdown</option>
+                    <option value="rsvp">RSVP</option>
                 </select>
             </div>
 
@@ -403,7 +406,7 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                 </div>
             )}
 
-            {/* Form Properties */}
+            Form Properties
             {elementType === 'form' && (
                 <div className="space-y-2">
                     <div>
@@ -724,6 +727,58 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
   "margin": 0
 }`)}
 
+{elementType === 'rsvp' && (
+    <div className="space-y-4">
+        {/* ... Editor untuk Teks (title, description, buttonText) tidak berubah ... */}
+        <div>
+            <label className="block text-sm font-medium mb-1">Judul</label>
+            <input
+                type="text"
+                value={data.title || ''}
+                onChange={(e) => handleChange('title', e.target.value)}
+                className="w-full p-2 border rounded bg-gray-700 text-white"
+            />
+        </div>
+         <div>
+            <label className="block text-sm font-medium mb-1">Deskripsi</label>
+            <textarea
+                value={data.description || ''}
+                onChange={(e) => handleChange('description', e.target.value)}
+                className="w-full p-2 border rounded bg-gray-700 text-white"
+                rows="3"
+            ></textarea>
+        </div>
+         <div>
+            <label className="block text-sm font-medium mb-1">Teks Tombol</label>
+            <input
+                type="text"
+                value={data.buttonText || ''}
+                onChange={(e) => handleChange('buttonText', e.target.value)}
+                className="w-full p-2 border rounded bg-gray-700 text-white"
+            />
+        </div>
+
+        {/* Editor untuk Style dengan nama baru */}
+        <h4 className="text-lg font-semibold mt-4 mb-2">RSVP Container Style</h4>
+        {renderStyleEditor('rsvpStyle', `{ "textAlign": "center" }`)}
+
+        <h4 className="text-lg font-semibold mt-4 mb-2">Title Style</h4>
+        {renderStyleEditor('rsvpTitleStyle', `{ "fontSize": "2rem" }`)}
+
+        <h4 className="text-lg font-semibold mt-4 mb-2">Description Style</h4>
+        {renderStyleEditor('rsvpDescriptionStyle', `{ "fontSize": "1rem" }`)}
+
+        <h4 className="text-lg font-semibold mt-4 mb-2">Form Style</h4>
+        {renderStyleEditor('rsvpFormStyle', `{ "display": "flex" }`)}
+
+        <h4 className="text-lg font-semibold mt-4 mb-2">Input & Select Style</h4>
+        {renderStyleEditor('rsvpInputStyle', `{ "padding": "12px" }`)}
+
+        <h4 className="text-lg font-semibold mt-4 mb-2">Button Style</h4>
+        {renderStyleEditor('rsvpButtonStyle', `{ "backgroundColor": "#F08080" }`)}
+    </div>
+)}
+
                 {elementType === 'countdown' && (
     <div className="space-y-4">
         <div>
@@ -787,6 +842,56 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
         </div>
     </div>
 )}
+
+           {/* Gift Editor (Struktur Baru) */}
+{elementType === 'gift' && (
+    <div className="space-y-4">
+        <h3 className="text-xl font-bold text-white mb-4">Edit Wedding Gift</h3>
+
+        {/* Input untuk data teks */}
+        <div className="space-y-2">
+            <div>
+                <label className="block text-sm font-medium mb-1">Bank / E-Wallet</label>
+                <input type="text" value={data.bankName || ''} onChange={e => handleChange('bankName', e.target.value)} className="w-full p-2 border rounded bg-gray-700 text-white" />
+            </div>
+            <div>
+                <label className="block text-sm font-medium mb-1">Nomor Rekening</label>
+                <input type="text" value={data.accountNumber || ''} onChange={e => handleChange('accountNumber', e.target.value)} className="w-full p-2 border rounded bg-gray-700 text-white" />
+            </div>
+            <div>
+                <label className="block text-sm font-medium mb-1">Nama Pemilik Akun</label>
+                <input type="text" value={data.accountName || ''} onChange={e => handleChange('accountName', e.target.value)} className="w-full p-2 border rounded bg-gray-700 text-white" />
+            </div>
+             <div>
+                <label className="block text-sm font-medium mb-1">Teks Tombol</label>
+                <input type="text" value={data.buttonText || ''} onChange={e => handleChange('buttonText', e.target.value)} className="w-full p-2 border rounded bg-gray-700 text-white" />
+            </div>
+        </div>
+
+        {/* Editor untuk semua style */}
+        <div className="space-y-3 pt-4 border-t border-gray-600">
+            <h4 className="text-lg font-semibold mt-2 mb-2">Container Style</h4>
+            {renderStyleEditor('giftStyle', `{ "textAlign": "center" }`)}
+
+            <h4 className="text-lg font-semibold mt-2 mb-2">Gift Box Style</h4>
+            {renderStyleEditor('giftBoxStyle', `{ "padding": "20px" }`)}
+
+            <h4 className="text-lg font-semibold mt-2 mb-2">Bank Name Style</h4>
+            {renderStyleEditor('giftBankNameStyle', `{ "fontWeight": "bold" }`)}
+
+            <h4 className="text-lg font-semibold mt-2 mb-2">Account Name Style</h4>
+            {renderStyleEditor('giftAccountNameStyle', `{ "fontWeight": "bold" }`)}
+
+            <h4 className="text-lg font-semibold mt-2 mb-2">Account Number Style</h4>
+            {renderStyleEditor('giftAccountNumberStyle', `{ "color": "#555" }`)}
+
+            <h4 className="text-lg font-semibold mt-2 mb-2">Button Style</h4>
+            {renderStyleEditor('giftButtonStyle', `{ "backgroundColor": "#F08080" }`)}
+        </div>
+    </div>
+)}
+
+            
             </div>
 
             <button

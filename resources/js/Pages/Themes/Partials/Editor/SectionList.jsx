@@ -607,7 +607,28 @@ function AddElementModal({ onAdd, onCancel }) {
                     gap: '15px'
                 };
                 break;
-            case 'wrapper':
+                case 'gift':
+                    elementData.giftStyle = {
+                    width: "90%",
+                    margin: "40px auto",
+                    padding: "30px",
+                    maxWidth: "700px",
+                    position: "relative",
+                    boxShadow: "0 8px 32px rgba(24, 20, 20, 0.1)",
+                    textAlign: "center",
+                    borderRadius: "15px",
+                    backgroundColor: "rgba(255, 255, 255, 0.95)"
+                    };
+                    elementData.giftBoxStyle = 
+                        {
+  border: "1px solid #ddd",
+  padding: "20px",
+  borderRadius: "10px",
+  marginBottom: "20px",
+  backgroundColor: "#fafafa"
+};
+                    break;
+                    case 'wrapper':
             default:
                 elementData.wrapperStyle = {
                     position: 'relative',
@@ -658,6 +679,7 @@ function AddElementModal({ onAdd, onCancel }) {
                             <option value="list">List</option>
                             <option value="countdown">Countdown</option>
                             <option value="rsvp">RSVP</option>
+                            <option value="gift">Gift</option>
                         </select>
                     </div>
                     <div>

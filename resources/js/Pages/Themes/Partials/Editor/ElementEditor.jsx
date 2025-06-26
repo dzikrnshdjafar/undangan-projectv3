@@ -217,6 +217,7 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                     <option value="list">List</option>
                     <option value="countdown">Countdown</option>
                     <option value="rsvp">RSVP</option>
+                    <option value="gift">Gift</option>
                 </select>
             </div>
 
@@ -846,7 +847,7 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
            {/* Gift Editor (Struktur Baru) */}
 {elementType === 'gift' && (
     <div className="space-y-4">
-        <h3 className="text-xl font-bold text-white mb-4">Edit Wedding Gift</h3>
+        <h3 className="text-xl font-bold mb-4">Edit Wedding Gift</h3>
 
         {/* Input untuk data teks */}
         <div className="space-y-2">

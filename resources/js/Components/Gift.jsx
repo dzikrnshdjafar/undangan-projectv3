@@ -24,7 +24,7 @@ const Gift = ({
         <div style={giftBoxStyle}>
             <div style={giftBankNameStyle}>{bankName}</div>
             <div style={giftAccountNumberStyle}>{accountNumber}</div>
-            <div style={giftAccountNameStyle}>{accountName}</div>
+            <div style={giftAccountNameStyle}>A.n. {accountName}</div>
             <button 
                 style={giftButtonStyle} 
                 onClick={copyToClipboard}

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 // Helper function yang sama seperti di DynamicSection - ditambahkan style properties
-const isElementKey = (key) => !['type', 'order', 'minHeight', 'wrapperStyle', 'buttonStyle', 'videoStyle', 'formStyle', 'inputStyle', 'selectStyle', 'textareaStyle', 'listStyle', 'itemStyle', 'imageStyle', 'textStyle', 'text', 'path', 'animation', 'src', 'href', 'action', 'method', 'placeholder', 'required', 'options', 'controls', 'autoPlay', 'muted', 'loop', 'allowFullScreen', 'ordered', 'items'].includes(key);
+const isElementKey = (key) => !['type', 'order', 'minHeight', 'wrapperStyle', 'buttonStyle', 'videoStyle', 'inputStyle', 'selectStyle', 'textareaStyle', 'listStyle', 'itemStyle', 'imageStyle', 'textStyle', 'text', 'path', 'animation', 'src', 'href', 'action', 'method', 'placeholder', 'required', 'options', 'controls', 'autoPlay', 'muted', 'loop', 'allowFullScreen', 'ordered', 'items'].includes(key);
 
 // Helper function untuk menentukan apakah element bisa memiliki children
 const canHaveChildren = (elementType) => {
-    return elementType === 'wrapper' || elementType === 'form';
+    return elementType === 'wrapper';
 };
 
 export default function SectionList({ sections, onSelectSection, onSelectElement, selectedElementPath, onAddSection, onAddElement, onDeleteSection, onDeleteElement }) {
@@ -104,7 +104,6 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                         else if ('src' in element) elementType = 'video';
                         else if ('placeholder' in element) elementType = 'input';
                         else if ('options' in element) elementType = 'select';
-                        else if ('action' in element) elementType = 'form';
                     }
 
                     const hasChildren = Object.keys(element).some(key => 
@@ -156,7 +155,7 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                                 </button>
 
                                 <div className="flex opacity-0 group-hover:opacity-100 transition-opacity">
-                                    {/* Add Element Button - HANYA untuk wrapper dan form */}
+                                    {/* Add Element Button - HANYA untuk wrapper*/}
                                     {elementCanHaveChildren && (
                                         <button
                                             onClick={() => {
@@ -185,7 +184,7 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                                 </div>
                             </div>
 
-                            {/* Render children elements recursively - HANYA untuk wrapper dan form */}
+                            {/* Render children elements recursively - HANYA untuk wrapper */}
                             {hasChildren && elementCanHaveChildren && (
                                 <div className="ml-2 border-l border-gray-200">
                                     {renderChildElements(element, sectionIndex, currentPath)}
@@ -244,7 +243,6 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                         else if ('src' in child) elementType = 'video';
                         else if ('placeholder' in child) elementType = 'input';
                         else if ('options' in child) elementType = 'select';
-                        else if ('action' in child) elementType = 'form';
                     }
 
                     const hasChildren = Object.keys(child).some(key => 
@@ -300,7 +298,7 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
 
                                {/* Action Buttons Container */}
                                 <div className="flex opacity-0 group-hover:opacity-100 transition-opacity">
-                                    {/* Add Child Element Button - HANYA untuk wrapper dan form */}
+                                    {/* Add Child Element Button - HANYA untuk wrapper */}
                                     {childCanHaveChildren && (
                                         <button
                                             onClick={() => {
@@ -329,7 +327,7 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                                 </div>
                             </div>
 
-                            {/* Recursive rendering untuk nested children - HANYA untuk wrapper dan form */}
+                            {/* Recursive rendering untuk nested children - HANYA untuk wrapper */}
                             {hasChildren && childCanHaveChildren && (
                                 <div className="ml-2 border-l border-gray-200">
                                     {renderChildElements(child, sectionIndex, currentPath)}
@@ -339,7 +337,7 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                     );
                 })}
 
-                {/* Add Child Element Button - Hanya tampil jika parent adalah wrapper atau form */}
+                {/* Add Child Element Button - Hanya tampil jika parent adalah wrapper */}
                 {(() => {
                     // Get parent element type
                     let current = sections[sectionIndex];
@@ -598,15 +596,6 @@ function AddElementModal({ onAdd, onCancel }) {
                     borderRadius: '4px'
                 };
                 break;
-            case 'form':
-                elementData.action = '/submit';
-                elementData.method = 'POST';
-                elementData.formStyle = {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '15px'
-                };
-                break;
                 case 'gift':
                     elementData.giftStyle = {
                     width: "90%",
@@ -667,7 +656,6 @@ function AddElementModal({ onAdd, onCancel }) {
                             required
                         >
                             <option value="wrapper">Wrapper (Can have children)</option>
-                            <option value="form">Form (Can have children)</option>
                             <option value="text">Text</option>
                             <option value="image">Image</option>
                             <option value="button">Button</option>

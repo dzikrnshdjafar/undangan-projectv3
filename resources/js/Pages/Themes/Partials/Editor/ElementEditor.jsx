@@ -210,7 +210,6 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                     <option value="button">Button</option>
                     <option value="video">Video</option>
                     <option value="iframe">Iframe</option>
-                    <option value="form">Form</option>
                     <option value="input">Input</option>
                     <option value="select">Select</option>
                     <option value="textarea">Textarea</option>
@@ -407,34 +406,6 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                 </div>
             )}
 
-            Form Properties
-            {elementType === 'form' && (
-                <div className="space-y-2">
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Action URL</label>
-                        <input
-                            type="text"
-                            value={data.action || ''}
-                            onChange={(e) => handleChange('action', e.target.value)}
-                            className="w-full p-2 border rounded"
-                            placeholder="/submit-form"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Method</label>
-                        <select
-                            value={data.method || 'POST'}
-                            onChange={(e) => handleChange('method', e.target.value)}
-                            className="w-full p-2 border rounded"
-                        >
-                            <option value="GET">GET</option>
-                            <option value="POST">POST</option>
-                            <option value="PUT">PUT</option>
-                            <option value="DELETE">DELETE</option>
-                        </select>
-                    </div>
-                </div>
-            )}
 
             {/* Input Properties */}
             {(elementType === 'input' || data.placeholder !== undefined) && (
@@ -685,14 +656,6 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
   "width": "100%",
   "height": "auto",
   "borderRadius": "8px"
-}`)}
-
-                {/* Form Style */}
-                {(elementType === 'form' || data.formStyle) && 
-                    renderStyleEditor('formStyle', `{
-  "display": "flex",
-  "flexDirection": "column",
-  "gap": "15px"
 }`)}
 
                 {/* Input Style */}

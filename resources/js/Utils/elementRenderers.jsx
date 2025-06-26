@@ -27,7 +27,7 @@ export const detectElementType = (data, hasChildren) => {
 };
 
 // Check if key is element key
-export const isElementKey = (key) => !['type', 'order', 'minHeight', 'wrapperStyle', 'textStyle', 'imageStyle', 'buttonStyle', 'videoStyle', 'formStyle', 'text', 'path', 'animation', 'src', 'href', 'onClick', 'placeholder', 'required', 'options'].includes(key);
+export const isElementKey = (key) => !['type', 'order', 'minHeight', 'wrapperStyle', 'textStyle', 'imageStyle', 'buttonStyle', 'videoStyle', 'text', 'path', 'animation', 'src', 'href', 'onClick', 'placeholder', 'required', 'options'].includes(key);
 
 // Render image element
 export const renderImage = (data, animateProps, storage_path, themeSlug, additionalProps = {}) => {
@@ -240,27 +240,6 @@ export const renderList = (data, animateProps, additionalProps = {}) => {
                 ))}
             </ListTag>
         </motion.div>
-    );
-};
-
-export const renderForm = (data, animateProps, renderChildrenFn, additionalProps = {}) => {
-    const formStyle = cleanStyle({
-        ...data.formStyle,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '15px',
-    });
-
-    return (
-        <motion.form
-            style={formStyle}
-            animate={animateProps}
-            action={data.action}
-            method={data.method || 'POST'}
-            {...additionalProps}
-        >
-            {renderChildrenFn()}
-        </motion.form>
     );
 };
 

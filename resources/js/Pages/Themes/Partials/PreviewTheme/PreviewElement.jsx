@@ -15,7 +15,6 @@ import {
     renderSelect,
     renderTextarea,
     renderList,
-    renderForm,
     renderWrapper,
     renderCountdown,
     renderRsvp,
@@ -74,8 +73,6 @@ export default function PreviewElement({ data, path }) {
                 return renderTextarea(data, animateProps);
             case 'list':
                 return renderList(data, animateProps);
-            case 'form':
-                return renderForm(data, animateProps, renderChildren);
                 case 'countdown':
                 return renderCountdown(data, animateProps);
                 case 'rsvp':

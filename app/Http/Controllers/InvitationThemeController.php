@@ -43,7 +43,7 @@ class InvitationThemeController extends Controller
 
             // Properti umum
             // Menambahkan 'countdown' sebagai tipe yang valid
-            'data.type' => 'nullable|string|in:wrapper,text,image,button,video,iframe,form,input,select,textarea,list,countdown,rsvp,gift',
+            'data.type' => 'nullable|string|in:wrapper,text,image,button,video,iframe,input,select,textarea,list,countdown,rsvp,gift',
             'data.order' => 'nullable|integer',
             'data.animation' => 'nullable|string',
 
@@ -56,19 +56,6 @@ class InvitationThemeController extends Controller
             'data.onClick' => 'nullable|string',
             'data.alt' => 'nullable|string',
             'data.title' => 'nullable|string',
-
-            // Form properties
-            'data.action' => 'nullable|string',
-            'data.method' => 'nullable|string|in:GET,POST,PUT,DELETE,PATCH',
-            'data.name' => 'nullable|string',
-            'data.id' => 'nullable|string',
-            'data.placeholder' => 'nullable|string',
-            'data.required' => 'nullable|boolean',
-            'data.inputType' => 'nullable|string',
-            'data.rows' => 'nullable|integer|min:1',
-            'data.options' => 'nullable|array',
-            'data.options.*.value' => 'nullable|string',
-            'data.options.*.label' => 'nullable|string',
 
             // Video properties
             'data.controls' => 'nullable|boolean',
@@ -102,7 +89,6 @@ class InvitationThemeController extends Controller
             'data.buttonStyle' => 'nullable|array',
             'data.videoStyle' => 'nullable|array',
             'data.iframeStyle' => 'nullable|array',
-            'data.formStyle' => 'nullable|array',
             'data.inputStyle' => 'nullable|array',
             'data.selectStyle' => 'nullable|array',
             'data.textareaStyle' => 'nullable|array',
@@ -187,16 +173,6 @@ class InvitationThemeController extends Controller
         // Note: titleStyle ditangani di section style, tapi title (string) ada di sini
         if (isset($data['title']) && is_string($data['title'])) $cleanData['title'] = $data['title'];
 
-        // 3. Form properties
-        if (isset($data['action'])) $cleanData['action'] = $data['action'];
-        if (isset($data['method'])) $cleanData['method'] = $data['method'];
-        if (isset($data['name'])) $cleanData['name'] = $data['name'];
-        if (isset($data['id'])) $cleanData['id'] = $data['id'];
-        if (isset($data['placeholder'])) $cleanData['placeholder'] = $data['placeholder'];
-        if (isset($data['required'])) $cleanData['required'] = (bool) $data['required'];
-        if (isset($data['inputType'])) $cleanData['inputType'] = $data['inputType'];
-        if (isset($data['rows'])) $cleanData['rows'] = (int) $data['rows'];
-        if (isset($data['options']) && is_array($data['options'])) $cleanData['options'] = $data['options'];
 
         // 4. Video properties
         if (isset($data['controls'])) $cleanData['controls'] = (bool) $data['controls'];
@@ -229,7 +205,6 @@ class InvitationThemeController extends Controller
             'buttonStyle',
             'videoStyle',
             'iframeStyle',
-            'formStyle',
             'inputStyle',
             'selectStyle',
             'textareaStyle',

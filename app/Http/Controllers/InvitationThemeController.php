@@ -43,7 +43,7 @@ class InvitationThemeController extends Controller
 
             // Properti umum
             // Menambahkan 'countdown' sebagai tipe yang valid
-            'data.type' => 'nullable|string|in:wrapper,text,image,button,video,iframe,input,select,textarea,list,countdown,rsvp,gift',
+            'data.type' => 'nullable|string|in:wrapper,text,image,button,video,iframe,countdown,rsvp,gift',
             'data.order' => 'nullable|integer',
             'data.animation' => 'nullable|string',
 
@@ -63,10 +63,6 @@ class InvitationThemeController extends Controller
             'data.muted' => 'nullable|boolean',
             'data.loop' => 'nullable|boolean',
             'data.allowFullScreen' => 'nullable|boolean',
-
-            // List properties
-            'data.ordered' => 'nullable|boolean',
-            'data.items' => 'nullable|array',
 
             // Countdown properties
             'data.datetime' => 'nullable|date_format:Y-m-d H:i:s', // Validasi format datetime
@@ -89,10 +85,6 @@ class InvitationThemeController extends Controller
             'data.buttonStyle' => 'nullable|array',
             'data.videoStyle' => 'nullable|array',
             'data.iframeStyle' => 'nullable|array',
-            'data.inputStyle' => 'nullable|array',
-            'data.selectStyle' => 'nullable|array',
-            'data.textareaStyle' => 'nullable|array',
-            'data.listStyle' => 'nullable|array',
             'data.itemStyle' => 'nullable|array',
             'data.countdownStyle' => 'nullable|array', // Style untuk countdown container
             'data.titleStyle' => 'nullable|array',    // Style untuk judul countdown
@@ -181,10 +173,6 @@ class InvitationThemeController extends Controller
         if (isset($data['loop'])) $cleanData['loop'] = (bool) $data['loop'];
         if (isset($data['allowFullScreen'])) $cleanData['allowFullScreen'] = (bool) $data['allowFullScreen'];
 
-        // 5. List properties
-        if (isset($data['ordered'])) $cleanData['ordered'] = (bool) $data['ordered'];
-        if (isset($data['items']) && is_array($data['items'])) $cleanData['items'] = $data['items'];
-
         // 6. Countdown properties
         if (isset($data['datetime'])) $cleanData['datetime'] = $data['datetime'];
 
@@ -205,10 +193,6 @@ class InvitationThemeController extends Controller
             'buttonStyle',
             'videoStyle',
             'iframeStyle',
-            'inputStyle',
-            'selectStyle',
-            'textareaStyle',
-            'listStyle',
             'itemStyle',
             'countdownStyle',
             'titleStyle',

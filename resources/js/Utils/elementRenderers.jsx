@@ -21,8 +21,6 @@ export const detectElementType = (data, hasChildren) => {
     if ('text' in data && !hasChildren) return 'text';
     if ('href' in data) return 'button';
     if ('src' in data) return 'video';
-    if ('placeholder' in data) return 'input';
-    if ('options' in data) return 'select';
     return 'wrapper';
 };
 
@@ -146,100 +144,6 @@ export const renderIframe = (data, animateProps, additionalProps = {}) => {
             allowFullScreen={data.allowFullScreen || false}
             {...additionalProps}
         />
-    );
-};
-
-// Render input element
-export const renderInput = (data, animateProps, additionalProps = {}) => {
-    const inputStyle = cleanStyle({
-        ...data.inputStyle,
-        width: '100%',
-    });
-
-    return (
-        <motion.input
-            style={inputStyle}
-            animate={animateProps}
-            type={data.inputType || 'text'}
-            placeholder={data.placeholder}
-            required={data.required || false}
-            name={data.name}
-            id={data.id}
-            {...additionalProps}
-        />
-    );
-};
-
-// Render select element
-export const renderSelect = (data, animateProps, additionalProps = {}) => {
-    const selectStyle = cleanStyle({
-        ...data.selectStyle,
-        width: '100%',
-        padding: '10px',
-    });
-
-    return (
-        <motion.select
-            style={selectStyle}
-            animate={animateProps}
-            name={data.name}
-            id={data.id}
-            required={data.required || false}
-            {...additionalProps}
-        >
-            {data.options && data.options.map((option, index) => (
-                <option key={index} value={option.value}>
-                    {option.label}
-                </option>
-            ))}
-        </motion.select>
-    );
-};
-
-// Render textarea element
-export const renderTextarea = (data, animateProps, additionalProps = {}) => {
-    const textareaStyle = cleanStyle({
-        ...data.textareaStyle,
-        width: '100%',
-        padding: '10px',
-        minHeight: '100px',
-    });
-
-    return (
-        <motion.textarea
-            style={textareaStyle}
-            animate={animateProps}
-            placeholder={data.placeholder}
-            required={data.required || false}
-            name={data.name}
-            id={data.id}
-            rows={data.rows || 4}
-            {...additionalProps}
-        />
-    );
-};
-
-// Render list element
-export const renderList = (data, animateProps, additionalProps = {}) => {
-    const listStyle = cleanStyle({
-        ...data.listStyle,
-        listStyle: 'none',
-        padding: 0,
-        margin: 0,
-    });
-
-    const ListTag = data.ordered ? 'ol' : 'ul';
-
-    return (
-        <motion.div animate={animateProps} {...additionalProps}>
-            <ListTag style={listStyle}>
-                {data.items && data.items.map((item, index) => (
-                    <li key={index} style={data.itemStyle}>
-                        {typeof item === 'string' ? item : item.text}
-                    </li>
-                ))}
-            </ListTag>
-        </motion.div>
     );
 };
 

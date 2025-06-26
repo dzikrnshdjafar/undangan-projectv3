@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // Helper function yang sama seperti di DynamicSection - ditambahkan style properties
-const isElementKey = (key) => !['type', 'order', 'minHeight', 'wrapperStyle', 'buttonStyle', 'videoStyle', 'inputStyle', 'selectStyle', 'textareaStyle', 'listStyle', 'itemStyle', 'imageStyle', 'textStyle', 'text', 'path', 'animation', 'src', 'href', 'action', 'method', 'placeholder', 'required', 'options', 'controls', 'autoPlay', 'muted', 'loop', 'allowFullScreen', 'ordered', 'items'].includes(key);
+const isElementKey = (key) => !['type', 'order', 'minHeight', 'wrapperStyle', 'buttonStyle', 'videoStyle', 'itemStyle', 'imageStyle', 'textStyle', 'text', 'path', 'animation', 'src', 'href', 'action', 'method', 'placeholder', 'required', 'options', 'controls', 'autoPlay', 'muted', 'loop', 'allowFullScreen', 'ordered', 'items'].includes(key);
 
 // Helper function untuk menentukan apakah element bisa memiliki children
 const canHaveChildren = (elementType) => {
@@ -102,8 +102,6 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                         else if ('text' in element) elementType = 'text';
                         else if ('href' in element) elementType = 'button';
                         else if ('src' in element) elementType = 'video';
-                        else if ('placeholder' in element) elementType = 'input';
-                        else if ('options' in element) elementType = 'select';
                     }
 
                     const hasChildren = Object.keys(element).some(key => 
@@ -241,8 +239,6 @@ export default function SectionList({ sections, onSelectSection, onSelectElement
                         else if ('text' in child) elementType = 'text';
                         else if ('href' in child) elementType = 'button';
                         else if ('src' in child) elementType = 'video';
-                        else if ('placeholder' in child) elementType = 'input';
-                        else if ('options' in child) elementType = 'select';
                     }
 
                     const hasChildren = Object.keys(child).some(key => 
@@ -586,16 +582,6 @@ function AddElementModal({ onAdd, onCancel }) {
                     height: 'auto'
                 };
                 break;
-            case 'input':
-                elementData.inputType = 'text';
-                elementData.placeholder = 'Enter text...';
-                elementData.inputStyle = {
-                    width: '100%',
-                    padding: '10px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px'
-                };
-                break;
                 case 'gift':
                     elementData.giftStyle = {
                     width: "90%",
@@ -661,10 +647,6 @@ function AddElementModal({ onAdd, onCancel }) {
                             <option value="button">Button</option>
                             <option value="video">Video</option>
                             <option value="iframe">Iframe</option>
-                            <option value="input">Input</option>
-                            <option value="select">Select</option>
-                            <option value="textarea">Textarea</option>
-                            <option value="list">List</option>
                             <option value="countdown">Countdown</option>
                             <option value="rsvp">RSVP</option>
                             <option value="gift">Gift</option>

@@ -5,16 +5,11 @@ import { usePage } from '@inertiajs/react';
 import {
     detectElementType,
     isElementKey,
-    cleanStyle,
     renderImage,
     renderText,
     renderButton,
     renderVideo,
     renderIframe,
-    renderInput,
-    renderSelect,
-    renderTextarea,
-    renderList,
     renderWrapper,
     renderCountdown,
     renderRsvp,
@@ -79,14 +74,6 @@ export default function RecursiveElement({ data, path, onSelectElement, selected
                 return renderVideo(data, animateProps, clickableProps);
             case 'iframe':
                 return renderIframe(data, animateProps, clickableProps);
-            case 'input':
-                return renderInput(data, animateProps, clickableProps);
-            case 'select':
-                return renderSelect(data, animateProps, clickableProps);
-            case 'textarea':
-                return renderTextarea(data, animateProps, clickableProps);
-            case 'list':
-                return renderList(data, animateProps, clickableProps);
             case 'countdown':
                  return renderCountdown(data, animateProps, clickableProps);
                 case 'rsvp':

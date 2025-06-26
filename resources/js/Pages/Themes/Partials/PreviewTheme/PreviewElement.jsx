@@ -5,16 +5,11 @@ import { usePage } from '@inertiajs/react';
 import {
     detectElementType,
     isElementKey,
-    cleanStyle,
     renderImage,
     renderText,
     renderButton,
     renderVideo,
     renderIframe,
-    renderInput,
-    renderSelect,
-    renderTextarea,
-    renderList,
     renderWrapper,
     renderCountdown,
     renderRsvp,
@@ -65,14 +60,6 @@ export default function PreviewElement({ data, path }) {
                 return renderVideo(data, animateProps);
             case 'iframe':
                 return renderIframe(data, animateProps);
-            case 'input':
-                return renderInput(data, animateProps);
-            case 'select':
-                return renderSelect(data, animateProps);
-            case 'textarea':
-                return renderTextarea(data, animateProps);
-            case 'list':
-                return renderList(data, animateProps);
                 case 'countdown':
                 return renderCountdown(data, animateProps);
                 case 'rsvp':

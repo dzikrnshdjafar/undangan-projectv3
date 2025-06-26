@@ -169,8 +169,6 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
         if ('text' in data) return 'text';
         if ('href' in data) return 'button';
         if ('src' in data) return 'video';
-        if ('placeholder' in data) return 'input';
-        if ('options' in data) return 'select';
         if ('rsvpStyle' in data) return 'rsvp';
         if ('giftStyle' in data && 'giftBoxStyle' in data) return 'gift';
         return 'wrapper';
@@ -210,10 +208,6 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                     <option value="button">Button</option>
                     <option value="video">Video</option>
                     <option value="iframe">Iframe</option>
-                    <option value="input">Input</option>
-                    <option value="select">Select</option>
-                    <option value="textarea">Textarea</option>
-                    <option value="list">List</option>
                     <option value="countdown">Countdown</option>
                     <option value="rsvp">RSVP</option>
                     <option value="gift">Gift</option>
@@ -406,210 +400,6 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                 </div>
             )}
 
-
-            {/* Input Properties */}
-            {(elementType === 'input' || data.placeholder !== undefined) && (
-                <div className="space-y-2">
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Input Type</label>
-                        <select
-                            value={data.inputType || 'text'}
-                            onChange={(e) => handleChange('inputType', e.target.value)}
-                            className="w-full p-2 border rounded"
-                        >
-                            <option value="text">Text</option>
-                            <option value="email">Email</option>
-                            <option value="password">Password</option>
-                            <option value="number">Number</option>
-                            <option value="tel">Phone</option>
-                            <option value="url">URL</option>
-                            <option value="date">Date</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Placeholder</label>
-                        <input
-                            type="text"
-                            value={data.placeholder || ''}
-                            onChange={(e) => handleChange('placeholder', e.target.value)}
-                            className="w-full p-2 border rounded"
-                            placeholder="Enter placeholder text..."
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Name</label>
-                        <input
-                            type="text"
-                            value={data.name || ''}
-                            onChange={(e) => handleChange('name', e.target.value)}
-                            className="w-full p-2 border rounded"
-                            placeholder="input_name"
-                        />
-                    </div>
-                    <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={data.required || false}
-                            onChange={(e) => handleChange('required', e.target.checked)}
-                            className="mr-2"
-                        />
-                        Required
-                    </label>
-                </div>
-            )}
-
-            {/* Select Properties */}
-            {(elementType === 'select' || data.options !== undefined) && (
-                <div className="space-y-2">
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Name</label>
-                        <input
-                            type="text"
-                            value={data.name || ''}
-                            onChange={(e) => handleChange('name', e.target.value)}
-                            className="w-full p-2 border rounded"
-                            placeholder="select_name"
-                        />
-                    </div>
-                    <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={data.required || false}
-                            onChange={(e) => handleChange('required', e.target.checked)}
-                            className="mr-2"
-                        />
-                        Required
-                    </label>
-                    
-                    {/* Options Editor */}
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Options</label>
-                        {(data.options || []).map((option, index) => (
-                            <div key={index} className="flex gap-2 mb-2">
-                                <input
-                                    type="text"
-                                    value={option.value || ''}
-                                    onChange={(e) => handleArrayChange('options', index, { ...option, value: e.target.value })}
-                                    className="flex-1 p-1 border rounded text-sm"
-                                    placeholder="Value"
-                                />
-                                <input
-                                    type="text"
-                                    value={option.label || ''}
-                                    onChange={(e) => handleArrayChange('options', index, { ...option, label: e.target.value })}
-                                    className="flex-1 p-1 border rounded text-sm"
-                                    placeholder="Label"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => handleArrayChange('options', index, null, 'remove')}
-                                    className="px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
-                                >
-                                    Remove
-                                </button>
-                            </div>
-                        ))}
-                        <button
-                            type="button"
-                            onClick={() => handleArrayChange('options', 0, { value: '', label: '' }, 'add')}
-                            className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600"
-                        >
-                            Add Option
-                        </button>
-                    </div>
-                </div>
-            )}
-
-            {/* Textarea Properties */}
-            {elementType === 'textarea' && (
-                <div className="space-y-2">
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Placeholder</label>
-                        <input
-                            type="text"
-                            value={data.placeholder || ''}
-                            onChange={(e) => handleChange('placeholder', e.target.value)}
-                            className="w-full p-2 border rounded"
-                            placeholder="Enter placeholder text..."
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Name</label>
-                        <input
-                            type="text"
-                            value={data.name || ''}
-                            onChange={(e) => handleChange('name', e.target.value)}
-                            className="w-full p-2 border rounded"
-                            placeholder="textarea_name"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Rows</label>
-                        <input
-                            type="number"
-                            value={data.rows || 4}
-                            onChange={(e) => handleChange('rows', parseInt(e.target.value, 10))}
-                            className="w-full p-2 border rounded"
-                            min="1"
-                        />
-                    </div>
-                    <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={data.required || false}
-                            onChange={(e) => handleChange('required', e.target.checked)}
-                            className="mr-2"
-                        />
-                        Required
-                    </label>
-                </div>
-            )}
-
-            {/* List Properties */}
-            {elementType === 'list' && (
-                <div className="space-y-2">
-                    <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={data.ordered || false}
-                            onChange={(e) => handleChange('ordered', e.target.checked)}
-                            className="mr-2"
-                        />
-                        Ordered List (ol)
-                    </label>
-                    
-                    {/* List Items Editor */}
-                    <div>
-                        <label className="block text-sm font-medium mb-1">List Items</label>
-                        {(data.items || []).map((item, index) => (
-                            <div key={index} className="flex gap-2 mb-2">
-                                <input
-                                    type="text"
-                                    value={typeof item === 'string' ? item : item.text || ''}
-                                    onChange={(e) => handleArrayChange('items', index, e.target.value)}
-                                    className="flex-1 p-1 border rounded text-sm"
-                                    placeholder="List item text"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => handleArrayChange('items', index, null, 'remove')}
-                                    className="px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
-                                >
-                                    Remove
-                                </button>
-                            </div>
-                        ))}
-                        <button
-                            type="button"
-                            onClick={() => handleArrayChange('items', 0, '', 'add')}
-                            className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600"
-                        >
-                            Add Item
-                        </button>
-                    </div>
-                </div>
-            )}
-
             {/* Style Editors */}
             <div className="border-t pt-4 space-y-4">
                 <h4 className="font-medium text-gray-800">Styles</h4>
@@ -656,39 +446,6 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
   "width": "100%",
   "height": "auto",
   "borderRadius": "8px"
-}`)}
-
-                {/* Input Style */}
-                {(elementType === 'input' || data.inputStyle) && 
-                    renderStyleEditor('inputStyle', `{
-  "width": "100%",
-  "padding": "10px",
-  "border": "1px solid #ddd",
-  "borderRadius": "4px"
-}`)}
-                {/* Select Style */}
-                {(elementType === 'select' || data.selectStyle) && 
-                    renderStyleEditor('selectStyle', `{
-              "width": "100%",
-              "padding": "10px",
-              "border": "1px solid #ddd",
-              "borderRadius": "4px"
-              }`)}
-
-                {/* Textarea Style */}
-                {(elementType === 'textarea' || data.textareaStyle) && 
-                    renderStyleEditor('textareaStyle', `{
-  "width": "100%",
-  "padding": "10px",
-  "border": "1px solid #ddd",
-}`)}
-
-                {/* List Style */}
-                {(elementType === 'list' || data.listStyle) && 
-                    renderStyleEditor('listStyle', `{
-  "listStyle": "none",
-  "padding": 0,
-  "margin": 0
 }`)}
 
 {elementType === 'rsvp' && (

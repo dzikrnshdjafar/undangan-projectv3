@@ -34,6 +34,7 @@ class InvitationThemeSeeder extends Seeder
                             'heroWrapper' => [
                                 'type' => 'wrapper',
                                 'order' => 1,
+                                'modifiable' => false, // Wrapper tidak bisa diedit strukturnya
                                 'wrapperStyle' => [
                                     'position' => 'absolute',
                                     'bottom' => '0%',
@@ -51,6 +52,7 @@ class InvitationThemeSeeder extends Seeder
                                     'type' => 'text',
                                     'text' => 'Wedding Invitation',
                                     'order' => 1,
+                                    'modifiable' => true, // Teks bisa diedit
                                     'textStyle' => [
                                         'position' => 'relative',
                                         'left' => '50%',
@@ -67,6 +69,7 @@ class InvitationThemeSeeder extends Seeder
                                     'type' => 'text',
                                     'text' => 'Adam & Eve',
                                     'order' => 2,
+                                    'modifiable' => true, // Nama pasangan bisa diedit
                                     'textStyle' => [
                                         'position' => 'relative',
                                         'left' => '50%',
@@ -82,6 +85,7 @@ class InvitationThemeSeeder extends Seeder
                                     'type' => 'text',
                                     'text' => 'July 04th, 2025',
                                     'order' => 3,
+                                    'modifiable' => true, // Tanggal bisa diedit
                                     'textStyle' => [
                                         'position' => 'relative',
                                         'left' => '50%',
@@ -97,6 +101,7 @@ class InvitationThemeSeeder extends Seeder
                                     'type' => 'image',
                                     'path' => "/images/themes/{$slug}/photo.webp",
                                     'order' => 4,
+                                    'modifiable' => true, // Foto bisa diganti
                                     'imageStyle' => [
                                         'position' => 'relative',
                                         'bottom' => '0%',
@@ -117,6 +122,7 @@ class InvitationThemeSeeder extends Seeder
                                 'path' => "/images/themes/{$slug}/ranting-pohon.webp",
                                 'animation' => 'waveOut',
                                 'order' => 2,
+                                'modifiable' => false, // Ornamen tidak bisa diedit
                                 'imageStyle' => [
                                     'position' => 'absolute',
                                     'top' => '-2%',
@@ -131,6 +137,7 @@ class InvitationThemeSeeder extends Seeder
                                 'type' => 'wrapper',
                                 'animation' => 'marquee',
                                 'order' => 3,
+                                'modifiable' => false, // Wrapper ornamen tidak bisa diedit
                                 'wrapperStyle' => [
                                     'position' => 'absolute',
                                     'top' => '10%',
@@ -141,6 +148,7 @@ class InvitationThemeSeeder extends Seeder
                                     'type' => 'image',
                                     'path' => "/images/themes/{$slug}/awan1.webp",
                                     'order' => 1,
+                                    'modifiable' => true,
                                     'imageStyle' => [
                                         'position' => 'relative',
                                         'top' => '20%',
@@ -154,6 +162,7 @@ class InvitationThemeSeeder extends Seeder
                                     'type' => 'image',
                                     'path' => "/images/themes/{$slug}/awan2.webp",
                                     'order' => 2,
+                                    'modifiable' => false,
                                     'imageStyle' => [
                                         'position' => 'relative',
                                         'left' => '10rem',
@@ -166,6 +175,7 @@ class InvitationThemeSeeder extends Seeder
                             'ornamentbottom_wrapper' => [
                                 'type' => 'wrapper',
                                 'order' => 4,
+                                'modifiable' => false,
                                 'wrapperStyle' => [
                                     'position' => 'absolute',
                                     'bottom' => '-1%',
@@ -177,6 +187,7 @@ class InvitationThemeSeeder extends Seeder
                                     'type' => 'image',
                                     'path' => "/images/themes/{$slug}/daun4.webp",
                                     'order' => 1,
+                                    'modifiable' => false,
                                     'imageStyle' => [
                                         'position' => 'relative',
                                         'display' => 'block',
@@ -190,6 +201,7 @@ class InvitationThemeSeeder extends Seeder
                                     'path' => "/images/themes/{$slug}/bunga2.webp",
                                     'animation' => 'waveOut',
                                     'order' => 2,
+                                    'modifiable' => false,
                                     'imageStyle' => [
                                         'position' => 'absolute',
                                         'bottom' => '-2%',
@@ -205,6 +217,7 @@ class InvitationThemeSeeder extends Seeder
                                     'path' => "/images/themes/{$slug}/bunga3.webp",
                                     'animation' => 'waveOut',
                                     'order' => 3,
+                                    'modifiable' => false,
                                     'imageStyle' => [
                                         'position' => 'absolute',
                                         'bottom' => '-2%',
@@ -219,6 +232,7 @@ class InvitationThemeSeeder extends Seeder
                                     'path' => "/images/themes/{$slug}/bunga1.webp",
                                     'animation' => 'waveOut',
                                     'order' => 4,
+                                    'modifiable' => false,
                                     'imageStyle' => [
                                         'position' => 'absolute',
                                         'bottom' => '0%',
@@ -237,6 +251,7 @@ class InvitationThemeSeeder extends Seeder
                                 "type" => "text",
                                 "text" => "Pasangan Mempelai",
                                 "order" => 1,
+                                "modifiable" => true, // Judul bisa diedit
                                 "textStyle" => [
                                     "fontSize" => "2rem",
                                     "color" => "#333",
@@ -252,6 +267,7 @@ class InvitationThemeSeeder extends Seeder
                             "bride_wrapper" => [
                                 "type" => "wrapper",
                                 "order" => 2,
+                                "modifiable" => false,
                                 "wrapperStyle" => [
                                     "position" => "relative",
                                     "width" => "70%",
@@ -266,6 +282,7 @@ class InvitationThemeSeeder extends Seeder
                                     "type" => "image",
                                     "path" => "/images/themes/{$slug}/wanita.webp",
                                     "order" => 1,
+                                    "modifiable" => true, // Foto mempelai wanita bisa diganti
                                     "imageStyle" => [
                                         "width" => "100%",
                                         "height" => "auto",
@@ -280,6 +297,7 @@ class InvitationThemeSeeder extends Seeder
                                     "type" => "image",
                                     "path" => "/images/themes/{$slug}/kupupink.webp",
                                     "order" => 2,
+                                    "modifiable" => false, // Ornamen tidak bisa diedit
                                     "imageStyle" => [
                                         "width" => "20%",
                                         "height" => "auto",
@@ -293,6 +311,7 @@ class InvitationThemeSeeder extends Seeder
                                     "type" => "text",
                                     "text" => "Eve",
                                     "order" => 3,
+                                    "modifiable" => true, // Nama mempelai wanita bisa diedit
                                     "textStyle" => [
                                         "fontSize" => "clamp(20px, 3vw, 32px)",
                                         "color" => "#F08080",
@@ -310,6 +329,7 @@ class InvitationThemeSeeder extends Seeder
                                 "type" => "text",
                                 "text" => "Akan Menikah Dengan",
                                 "order" => 3,
+                                "modifiable" => true, // Teks penghubung bisa diedit
                                 "textStyle" => [
                                     "fontSize" => "2rem",
                                     "color" => "#333",
@@ -325,6 +345,7 @@ class InvitationThemeSeeder extends Seeder
                             "groom_wrapper" => [
                                 "type" => "wrapper",
                                 "order" => 4,
+                                "modifiable" => false,
                                 "wrapperStyle" => [
                                     "position" => "relative",
                                     "zIndex" => 2,
@@ -338,6 +359,7 @@ class InvitationThemeSeeder extends Seeder
                                     "type" => "image",
                                     "path" => "/images/themes/{$slug}/pria.webp",
                                     "order" => 1,
+                                    "modifiable" => true, // Foto mempelai pria bisa diganti
                                     "imageStyle" => [
                                         "width" => "100%",
                                         "height" => "auto",
@@ -352,6 +374,7 @@ class InvitationThemeSeeder extends Seeder
                                     "type" => "image",
                                     "path" => "/images/themes/{$slug}/kupuputih.webp",
                                     "order" => 2,
+                                    "modifiable" => false,
                                     "imageStyle" => [
                                         "width" => "20%",
                                         "height" => "auto",
@@ -365,6 +388,7 @@ class InvitationThemeSeeder extends Seeder
                                     "type" => "text",
                                     "text" => "Adam",
                                     "order" => 3,
+                                    "modifiable" => true, // Nama mempelai pria bisa diedit
                                     "textStyle" => [
                                         "fontSize" => "clamp(20px, 3vw, 32px)",
                                         "color" => "#F08080",
@@ -379,7 +403,6 @@ class InvitationThemeSeeder extends Seeder
                                 ]
                             ]
                         ],
-
                         [
                             'type' => 'event',
                             'minHeight' => 'clamp(50rem, 100vh, 80rem)',
@@ -387,6 +410,7 @@ class InvitationThemeSeeder extends Seeder
                                 'type' => 'text',
                                 'text' => 'Waktu & Tempat',
                                 'order' => 1,
+                                'modifiable' => true, // Judul event bisa diedit
                                 'textStyle' => [
                                     'fontSize' => '2.5rem',
                                     'color' => '#F08080',
@@ -404,6 +428,7 @@ class InvitationThemeSeeder extends Seeder
                             'event_wrapper' => [
                                 'type' => 'wrapper',
                                 'order' => 2,
+                                'modifiable' => false,
                                 'wrapperStyle' => [
                                     'position' => 'relative',
                                     'width' => '90%',
@@ -419,6 +444,7 @@ class InvitationThemeSeeder extends Seeder
                                 'akad_section' => [
                                     'type' => 'wrapper',
                                     'order' => 1,
+                                    'modifiable' => false,
                                     'wrapperStyle' => [
                                         'marginBottom' => '40px',
                                         'textAlign' => 'center',
@@ -430,6 +456,7 @@ class InvitationThemeSeeder extends Seeder
                                         'type' => 'text',
                                         'text' => 'Akad Nikah',
                                         'order' => 1,
+                                        'modifiable' => true, // Judul akad bisa diedit
                                         'textStyle' => [
                                             'fontSize' => '1.8rem',
                                             'color' => '#F08080',
@@ -441,6 +468,7 @@ class InvitationThemeSeeder extends Seeder
                                         'type' => 'text',
                                         'text' => 'Sabtu, 15 Juni 2025',
                                         'order' => 2,
+                                        'modifiable' => true, // Tanggal akad bisa diedit
                                         'textStyle' => [
                                             'fontSize' => '1.3rem',
                                             'color' => '#333',
@@ -451,6 +479,7 @@ class InvitationThemeSeeder extends Seeder
                                         'type' => 'text',
                                         'text' => '09:00 - 10:00 WIB',
                                         'order' => 3,
+                                        'modifiable' => true, // Waktu akad bisa diedit
                                         'textStyle' => [
                                             'fontSize' => '1.2rem',
                                             'color' => '#666',
@@ -461,6 +490,7 @@ class InvitationThemeSeeder extends Seeder
                                         'type' => 'text',
                                         'text' => 'Masjid Al-Ikhlas<br>Jl. Merdeka No. 123, Jakarta',
                                         'order' => 4,
+                                        'modifiable' => true, // Tempat akad bisa diedit
                                         'textStyle' => [
                                             'fontSize' => '1.1rem',
                                             'color' => '#666',
@@ -471,6 +501,7 @@ class InvitationThemeSeeder extends Seeder
                                 'resepsi_section' => [
                                     'type' => 'wrapper',
                                     'order' => 2,
+                                    'modifiable' => false,
                                     'wrapperStyle' => [
                                         'textAlign' => 'center',
                                         'padding' => '20px',
@@ -481,6 +512,7 @@ class InvitationThemeSeeder extends Seeder
                                         'type' => 'text',
                                         'text' => 'Resepsi Pernikahan',
                                         'order' => 1,
+                                        'modifiable' => true,
                                         'textStyle' => [
                                             'fontSize' => '1.8rem',
                                             'color' => '#F08080',
@@ -492,6 +524,7 @@ class InvitationThemeSeeder extends Seeder
                                         'type' => 'text',
                                         'text' => 'Sabtu, 15 Juni 2025',
                                         'order' => 2,
+                                        'modifiable' => true,
                                         'textStyle' => [
                                             'fontSize' => '1.3rem',
                                             'color' => '#333',
@@ -502,6 +535,7 @@ class InvitationThemeSeeder extends Seeder
                                         'type' => 'text',
                                         'text' => '11:00 - 15:00 WIB',
                                         'order' => 3,
+                                        'modifiable' => true,
                                         'textStyle' => [
                                             'fontSize' => '1.2rem',
                                             'color' => '#666',
@@ -512,6 +546,7 @@ class InvitationThemeSeeder extends Seeder
                                         'type' => 'text',
                                         'text' => 'Gedung Serbaguna<br>Jl. Sudirman No. 456, Jakarta',
                                         'order' => 4,
+                                        'modifiable' => true,
                                         'textStyle' => [
                                             'fontSize' => '1.1rem',
                                             'color' => '#666',
@@ -522,8 +557,9 @@ class InvitationThemeSeeder extends Seeder
                             ],
                             'countdown' => [
                                 'type' => 'countdown',
-                                'order' => 3, // Urutan setelah event_wrapper
-                                'datetime' => '2026-06-15 09:00:00', // Sesuaikan dengan tanggal dan waktu acara
+                                'order' => 3,
+                                'datetime' => '2026-06-15 09:00:00',
+                                'modifiable' => true, // Countdown bisa diedit waktu dan stylenya
                                 'countdownStyle' => [
                                     'position' => 'relative',
                                     'width' => '90%',
@@ -560,8 +596,9 @@ class InvitationThemeSeeder extends Seeder
                             'type' => 'rsvp',
                             'minHeight' => '100vh',
                             'rsvp' => [
-                                'type' => 'rsvp', // Tipe elemen
+                                'type' => 'rsvp',
                                 'order' => 1,
+                                'modifiable' => true, // RSVP bisa diedit teks dan stylenya
                                 'rsvpStyle' => [
                                     'position' => 'relative',
                                     'width' => '90%',
@@ -615,6 +652,7 @@ class InvitationThemeSeeder extends Seeder
                             'gift' => [
                                 'type' => 'gift',
                                 'order' => 1,
+                                'modifiable' => true, // Gift section bisa diedit
                                 'giftStyle' => [
                                     'position' => 'relative',
                                     'width' => '90%',
@@ -626,8 +664,7 @@ class InvitationThemeSeeder extends Seeder
                                     'boxShadow' => '0 8px 32px rgba(0, 0, 0, 0.1)',
                                     'textAlign' => 'center',
                                 ],
-
-                                'giftBoxStyle' => [ // Style untuk setiap kotak rekening/wallet
+                                'giftBoxStyle' => [
                                     'border' => '1px solid #ddd',
                                     'borderRadius' => '10px',
                                     'padding' => '20px',
@@ -659,6 +696,8 @@ class InvitationThemeSeeder extends Seeder
                                     'cursor' => 'pointer',
                                     'marginTop' => '15px',
                                 ],
+                                'title' => 'Wedding Gift',
+                                'description' => 'Doa restu Anda adalah hadiah yang paling berharga bagi kami. Namun jika Anda ingin memberikan hadiah, Anda dapat mengirimkannya melalui:',
                                 'buttonText' => 'Salin No. Rekening',
                                 'bankName' => 'BCA',
                                 'accountNumber' => '1234567890',

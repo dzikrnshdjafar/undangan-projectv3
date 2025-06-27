@@ -38,6 +38,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // --- Invitation Routes ---
+    Route::get('/my-invitations', [InvitationController::class, 'index'])->name('invitations.index');
+    Route::post('/invitations/create-from-theme', [InvitationController::class, 'store'])->name('invitations.store');
+    Route::get('/invitations/{invitation:slug}/edit', [InvitationController::class, 'edit'])->name('invitations.edit');
+    Route::put('/invitations/{invitation:slug}/sections/{index}', [InvitationController::class, 'updateSection'])->name('invitations.sections.update');
+    Route::post('/invitations/{invitation:slug}/sections', [InvitationController::class, 'addSection'])->name('invitations.sections.add');
+    Route::delete('/invitations/{invitation:slug}/sections/{sectionIndex}', [InvitationController::class, 'deleteSection'])->name('invitations.sections.delete');
+    Route::post('/invitations/{invitation:slug}/sections/{sectionIndex}/elements', [InvitationController::class, 'addElement'])->name('invitations.elements.add');
+    Route::delete('/invitations/{invitation:slug}/sections/{sectionIndex}/elements', [InvitationController::class, 'deleteElement'])->name('invitations.elements.delete');
 });
+
+Route::get('/invitation/{slug}', [InvitationController::class, 'show'])->name('invitations.show');
 
 require __DIR__ . '/auth.php';

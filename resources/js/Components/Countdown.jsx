@@ -45,7 +45,7 @@ const Countdown = ({ datetime, titleStyle, timerStyle, unitStyle }) => {
     return (
         <div>
             <h3 style={titleStyle}>Menuju Hari Bahagia</h3>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', }}>
                 {timerComponents.length ? timerComponents : <span>Waktu Telah Tiba!</span>}
             </div>
         </div>

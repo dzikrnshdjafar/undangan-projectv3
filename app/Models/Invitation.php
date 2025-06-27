@@ -10,64 +10,47 @@ class Invitation extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'user_id',
         'invitation_theme_id',
         'slug',
         'title',
-        'cover_image_path',
-        'event_name',
-        'event_date',
-        'event_time_start',
-        'event_time_end',
-        'venue_name',
-        'venue_address',
-        'venue_maps_link',
-        'secondary_event_name',
-        'secondary_event_date',
-        'secondary_event_time_start',
-        'secondary_event_time_end',
-        'secondary_venue_name',
-        'secondary_venue_address',
-        'secondary_venue_maps_link',
-        'greeting_message',
-        'closing_message',
-        'details', // <--- Kolom ini akan menyimpan struktur section
-        'rsvp_contact_name',
-        'rsvp_contact_phone',
+        'background_image_path',
+        'sections_json', // <-- PERBAIKAN: Menggunakan sections_json
         'is_published',
         'published_at',
         'view_count',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
-        'event_date' => 'date',
-        'event_time_start' => 'datetime:H:i',
-        'event_time_end' => 'datetime:H:i',
-        'secondary_event_date' => 'date',
-        'secondary_event_time_start' => 'datetime:H:i',
-        'secondary_event_time_end' => 'datetime:H:i',
-        'details' => 'array', // Penting untuk cast ke array
+        'sections_json' => 'array', // <-- PERBAIKAN: Cast sections_json ke array
         'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];
 
-    // ... (relasi dan method lainnya tetap sama)
-
     /**
-     * Helper untuk mengambil data section tertentu dari 'details'.
-     *
-     * @param string $sectionName Nama section (e.g., 'opening', 'mempelai')
-     * @param mixed $default Nilai default jika section tidak ditemukan
-     * @return mixed
+     * Get the theme that the invitation belongs to.
      */
-    public function getSectionDetails(string $sectionName, $default = null)
-    {
-        return $this->details[$sectionName] ?? $default;
-    }
-
-    public function theme()
+    public function theme(): BelongsTo
     {
         return $this->belongsTo(InvitationTheme::class, 'invitation_theme_id');
+    }
+
+    /**
+     * Get the user that owns the invitation.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

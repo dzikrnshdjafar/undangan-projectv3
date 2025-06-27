@@ -154,6 +154,9 @@ class InvitationThemeController extends Controller
         if (isset($data['order'])) $cleanData['order'] = (int) $data['order'];
         if (isset($data['animation']) && !empty($data['animation'])) $cleanData['animation'] = $data['animation'];
 
+        // Simpan properti modifiable
+        if (isset($data['modifiable'])) $cleanData['modifiable'] = (bool) $data['modifiable'];
+
         // 2. Content properties
         if (isset($data['text'])) $cleanData['text'] = $data['text'];
         if (isset($data['path'])) $cleanData['path'] = $data['path'];

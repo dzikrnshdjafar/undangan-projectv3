@@ -20,12 +20,17 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('asdasdasd'),
         ]);
+        User::factory()->create([
+            'name' => 'Test aaUser',
+            'email' => 'admina@gmail.com',
+            'password' => bcrypt('asdasdasd'),
+        ]);
 
         $this->call([
             PlanSeeder::class,
             InvitationCategorySeeder::class,
             InvitationThemeSeeder::class,
-            // InvitationSeeder::class,
+            InvitationSeeder::class,
         ]);
     }
 }

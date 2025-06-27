@@ -226,6 +226,28 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                 />
             </div>
 
+            <div className="border border-orange-300 bg-orange-50 p-3 rounded">
+                <label className="flex items-center">
+                    <input
+                        type="checkbox"
+                        checked={data.modifiable !== false} // Default true jika tidak ada
+                        onChange={(e) => handleChange('modifiable', e.target.checked)}
+                        className="mr-3 h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                    />
+                    <div>
+                        <span className="text-sm font-medium text-orange-800">
+                            User dapat mengedit element ini
+                        </span>
+                        <p className="text-xs text-orange-600 mt-1">
+                            {data.modifiable !== false 
+                                ? "✓ Element ini bisa diedit oleh user di invitation editor" 
+                                : "✗ Element ini tidak bisa diedit oleh user (hanya ornamen/struktur)"
+                            }
+                        </p>
+                    </div>
+                </label>
+            </div>
+
             {/* Editor untuk Animasi */}
             <div>
                 <label className="block text-sm font-medium mb-1">Animasi</label>

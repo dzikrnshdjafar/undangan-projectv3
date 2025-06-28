@@ -16,7 +16,8 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/themes/{slug}', [InvitationThemeController::class, 'show'])->name('themes.show');
+Route::get('/themes', [InvitationThemeController::class, 'index'])->name('themes.index');
+Route::get('/theme-preview/{slug}', [InvitationThemeController::class, 'show'])->name('themes.show');
 
 Route::get('/themes/{slug}/edit', [InvitationThemeController::class, 'edit'])->name('themes.edit'); // Pastikan hanya user terautentikasi yang bisa edit
 Route::put('/themes/{theme}/sections/{index}', [InvitationThemeController::class, 'updateSection']);
@@ -27,7 +28,6 @@ Route::delete('/themes/{themeId}/sections/{sectionIndex}', [InvitationThemeContr
 
 
 
-Route::get('/themes', [InvitationThemeController::class, 'index'])->name('themes.index');
 Route::get('/plans', [PlanController::class, 'index'])->name('plans.inertia');
 
 Route::get('/dashboard', function () {

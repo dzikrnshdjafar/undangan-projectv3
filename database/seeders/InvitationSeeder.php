@@ -17,7 +17,7 @@ class InvitationSeeder extends Seeder
     {
         // Get the theme and user
         $elegantBlueTheme = InvitationTheme::where('slug', 'elegant-blue-wedding')->first();
-        $user = User::first();
+        $user = User::where('name', 'User1')->first();
 
         if ($elegantBlueTheme && $user) {
             // Copy sections from theme and inherit modifiable settings

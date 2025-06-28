@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             InvitationCategorySeeder::class,
             InvitationThemeSeeder::class,
             InvitationSeeder::class,
+            RolesAndPermissionsSeeder::class,
         ]);
     }
 }

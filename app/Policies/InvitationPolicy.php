@@ -2,50 +2,36 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Invitation;
+use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 class InvitationPolicy
 {
     /**
-     * Determine if the user can edit the invitation.
-     */
-    public function edit(User $user, Invitation $invitation): bool
-    {
-        // Admin bisa edit semua invitation
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        // User hanya bisa edit invitation miliknya sendiri
-        return $user->id === $invitation->user_id;
-    }
-
-    /**
-     * Determine if the user can view the invitation.
+     * Determine whether the user can view the model.
      */
     public function view(User $user, Invitation $invitation): bool
     {
-        // Admin bisa view semua
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        // User hanya bisa view miliknya sendiri
-        return $user->id === $invitation->user_id;
+        // Izinkan jika user adalah pemilik ATAU seorang admin
+        return $user->id === $invitation->user_id || $user->hasRole('admin');
     }
 
     /**
-     * Determine if the user can delete the invitation.
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Invitation $invitation): bool
+    {
+        // Izinkan jika user adalah pemilik ATAU seorang admin
+        return $user->id === $invitation->user_id || $user->hasRole('admin');
+    }
+
+    /**
+     * Determine whether the user can delete the model.
      */
     public function delete(User $user, Invitation $invitation): bool
     {
-        // Admin bisa delete semua
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        // User hanya bisa delete miliknya sendiri
-        return $user->id === $invitation->user_id;
+        // Izinkan jika user adalah pemilik ATAU seorang admin
+        return $user->id === $invitation->user_id || $user->hasRole('admin');
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invitation;
-use App\Models\InvitationTheme;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
+use App\Models\Invitation;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\InvitationTheme;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class InvitationController extends Controller
 {
@@ -20,13 +21,23 @@ class InvitationController extends Controller
 
     public function index()
     {
-        $invitations = Auth::user()
-            ->invitations()
-            ->with('theme:id,name,preview_image_path') // Eager load theme info
+        $user = Auth::user();
+
+        // Mulai query builder untuk model Invitation
+        $query = Invitation::query();
+
+        // Jika pengguna yang login BUKAN admin, filter undangan berdasarkan user_id
+        if (!$user->hasRole('admin')) {
+            $query->where('user_id', $user->id);
+        }
+
+        // Lanjutkan query untuk mengambil data yang diperlukan
+        $invitations = $query->with('theme:id,name,preview_image_path') // Eager load theme info
+            ->with('user:id,name') // Tambahkan ini untuk melihat pemilik undangan (opsional)
             ->latest()
             ->get()
             ->map(function ($invitation) {
-                // Add the preview image URL directly
+                // Tambahkan URL gambar pratinjau
                 $invitation->preview_image_url = $invitation->theme->preview_image_path
                     ? asset('storage' . $invitation->theme->preview_image_path)
                     : null;
@@ -37,12 +48,12 @@ class InvitationController extends Controller
             'invitations' => $invitations,
         ]);
     }
-
     /**
      * Show the form for editing the specified invitation.
      */
     public function edit(Invitation $invitation)
     {
+        Gate::authorize('update', $invitation);
         // Authorize that the user owns the invitation
         $invitation->background_image_url = $invitation->background_image_path
             ? asset('storage' . $invitation->background_image_path)
@@ -57,6 +68,7 @@ class InvitationController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             'theme_id' => 'required|exists:invitation_themes,id',
         ]);
@@ -109,6 +121,8 @@ class InvitationController extends Controller
 
     public function updateSection(Request $request, Invitation $invitation)
     {
+        Gate::authorize('update', $invitation);
+
         if ($invitation->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }

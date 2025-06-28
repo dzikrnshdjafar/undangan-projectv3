@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Invitation;
+use App\Policies\InvitationPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 

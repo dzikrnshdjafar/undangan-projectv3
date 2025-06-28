@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
-import { ThemePreview } from './Partials/PreviewTheme';
-import DesktopPreview from './Partials/DesktopPreview'; 
+import { Preview } from '../Previews';
+import DesktopPreview from '../Previews/DesktopPreview'; 
 import LoadingSpinner from '../../Components/LoadingSpinner';
 
 export default function Show() {
@@ -81,7 +81,7 @@ export default function Show() {
 
             {/* Kolom Kanan: Preview Undangan */}
             <div className="w-full md:w-3/4 lg:w-6/12 xl:w-1/2">
-                <ThemePreview theme={theme} />
+                <Preview theme={theme} />
             </div>
         </div>
     );

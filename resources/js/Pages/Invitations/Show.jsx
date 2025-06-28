@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePage } from '@inertiajs/react';
-import { ThemePreview } from '../Themes/Partials/PreviewTheme';
-import DesktopPreview from '../Themes/Partials/DesktopPreview';
+import { Preview } from '../Previews';
+import DesktopPreview from '../Previews/DesktopPreview';
 import LoadingSpinner from '../../Components/LoadingSpinner';
 
 export default function Show() {
@@ -32,7 +32,7 @@ export default function Show() {
 
             {/* Preview Undangan untuk tampilan mobile */}
             <div className="w-full md:w-3/4 lg:w-6/12 xl:w-1/2">
-                <ThemePreview theme={theme} />
+                <Preview theme={theme} />
             </div>
         </div>
     );

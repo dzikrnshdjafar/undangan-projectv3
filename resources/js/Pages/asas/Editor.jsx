@@ -8,6 +8,8 @@ import ElementEditor from './Partials/Editor/ElementEditor.jsx';
 export default function Editor() {
     const { theme: initialTheme } = usePage().props;
 
+    const editorContext = initialTheme.editor_context || 'theme';
+
     // State utama untuk seluruh data tema yang sedang diedit
     const [themeData, setThemeData] = useState(initialTheme);
     // State untuk mengetahui elemen mana yang sedang dipilih
@@ -97,29 +99,25 @@ export default function Editor() {
     }, [selectedElementPath]);
 
     // Fungsi untuk menyimpan perubahan ke backend
-    const handleSave = () => {
+     const handleSave = () => {
         if (!selectedElementPath || !selectedElementData || selectedElementPath.length < 2) return;
 
         const [sectionIndex, ...elementPath] = selectedElementPath;
-        const fieldName = elementPath.join('.'); // e.g., heroTextWrapper.title
+        const fieldName = elementPath.join('.');
         const dataToSave = selectedElementData;
 
-        console.log('Saving:', { sectionIndex, fieldName, dataToSave }); // DEBUG
+        // Tentukan URL berdasarkan konteks
+        const url = editorContext === 'invitation'
+            ? `/invitations/${themeData.slug}/sections/${sectionIndex}`
+            : `/themes/${themeData.id}/sections/${sectionIndex}`;
 
         router.put(
-            `/themes/${themeData.id}/sections/${sectionIndex}`,
-            {
-                fieldName: fieldName,
-                data: dataToSave,
-            },
+            url,
+            { fieldName: fieldName, data: dataToSave },
             {
                 preserveScroll: true,
-                onSuccess: () => {
-                    console.log('Berhasil disimpan!');
-                },
-                onError: (errors) => {
-                    console.error('Gagal menyimpan:', errors);
-                }
+                onSuccess: () => console.log('Berhasil disimpan!'),
+                onError: (errors) => console.error('Gagal menyimpan:', errors),
             }
         );
     };

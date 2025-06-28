@@ -3,7 +3,7 @@ import { usePage, router } from '@inertiajs/react';
 
 // Ganti komponen yang di-import
 import PreviewPane from '../Themes/Partials/Editor/PreviewPane';
-import EditModal from './Editor/EditModal';
+import EditModal from './Partials/EditModal';
 
 export default function Editor() {
     const { invitation: initialInvitation } = usePage().props;

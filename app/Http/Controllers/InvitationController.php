@@ -54,16 +54,39 @@ class InvitationController extends Controller
     public function edit(Invitation $invitation)
     {
         Gate::authorize('update', $invitation);
-        // Authorize that the user owns the invitation
-        $invitation->background_image_url = $invitation->background_image_path
-            ? asset('storage' . $invitation->background_image_path)
-            : null;
-        // --- END TAMBAHAN ---
+        $user = Auth::user();
 
-        return Inertia::render('Invitations/Editor', [
-            'invitation' => $invitation,
-            'storage_path' => asset('storage')
-        ]);
+        // Periksa apakah pengguna adalah admin
+        if ($user->hasRole('admin')) {
+            // Jika admin, siapkan data untuk editor tema dan render view 'Themes/Editor'
+            // Kita "menyamarkan" data undangan agar terlihat seperti data tema
+            $themeData = (object) [
+                'id' => $invitation->id,
+                'slug' => $invitation->slug,
+                'name' => $invitation->title,
+                'sections' => json_decode($invitation->sections_json, true),
+                'sections_json' => $invitation->sections_json,
+                'background_image_path' => $invitation->background_image_path,
+                'background_image_url' => $invitation->background_image_path ? asset('storage' . $invitation->background_image_path) : null,
+                // Tambahkan properti untuk menandakan konteks pengeditan
+                'editor_context' => 'invitation'
+            ];
+
+            return Inertia::render('Editors/AdvancedEditor', [
+                'theme' => $themeData,
+                'storage_path' => asset('storage')
+            ]);
+        } else {
+            // Jika bukan admin, gunakan editor undangan yang sudah ada
+            $invitation->background_image_url = $invitation->background_image_path
+                ? asset('storage' . $invitation->background_image_path)
+                : null;
+
+            return Inertia::render('Editors/SimpleEditor', [
+                'invitation' => $invitation,
+                'storage_path' => asset('storage')
+            ]);
+        }
     }
 
     public function store(Request $request)
@@ -122,10 +145,6 @@ class InvitationController extends Controller
     public function updateSection(Request $request, Invitation $invitation)
     {
         Gate::authorize('update', $invitation);
-
-        if ($invitation->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized action.');
-        }
 
         // Validasi yang sama dengan di Theme Editor - lengkap seperti di InvitationThemeController
         $request->validate([

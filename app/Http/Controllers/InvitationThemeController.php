@@ -25,7 +25,7 @@ class InvitationThemeController extends Controller
 
         $theme->background_image_url = asset("storage" . $theme->background_image_path);
 
-        return Inertia::render('Themes/Editor', [
+        return Inertia::render('Editors/AdvancedEditor', [
             'theme' => $theme,
             'storage_path' => asset('storage')
         ]);

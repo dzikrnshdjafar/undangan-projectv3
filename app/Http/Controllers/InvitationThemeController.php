@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\InvitationTheme;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class InvitationThemeController extends Controller
 {
@@ -16,24 +18,55 @@ class InvitationThemeController extends Controller
         ]);
     }
 
+    public function themesForEditor()
+    {
+        // Otorisasi menggunakan policy yang sudah dibuat
+        Gate::authorize('viewAny', InvitationTheme::class);
+
+        $user = Auth::user();
+
+        // Query untuk mengambil tema
+        $query = InvitationTheme::query();
+
+        // Jika user bukan admin, hanya ambil tema milik user tersebut
+        if (!$user->hasRole('admin')) {
+            $query->where('user_id', $user->id);
+        }
+
+        $themes = $query->latest()->get()->map(function ($theme) {
+            $theme->preview_image_url = $theme->preview_image_path
+                ? asset('storage' . $theme->preview_image_path)
+                : null;
+            return $theme;
+        });
+
+        return Inertia::render('Themes/MyThemes', [
+            'themes' => $themes
+        ]);
+    }
+
     public function edit($slug)
     {
         $theme = InvitationTheme::where('slug', $slug)->firstOrFail();
 
+        Gate::authorize('update', $theme);
+
         $theme->sections = json_decode($theme->sections_json, true);
         $theme->theme_config = json_decode($theme->theme_config, true);
 
-        $theme->background_image_url = asset("storage" . $theme->background_image_path);
+        // $theme->background_image_url = asset("storage/" . $theme->background_image_path);
 
         return Inertia::render('Editors/AdvancedEditor', [
             'theme' => $theme,
-            'storage_path' => asset('storage')
+            // 'storage_path' => asset('storage')
         ]);
     }
 
     public function updateSection(Request $request, $themeId, $index)
     {
         $theme = InvitationTheme::findOrFail($themeId);
+        Gate::authorize('update', $theme);
+
         $sections = json_decode($theme->sections_json, true);
 
         // Validasi yang diperluas untuk mendukung elemen countdown

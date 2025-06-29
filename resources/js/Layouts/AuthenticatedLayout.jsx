@@ -6,7 +6,9 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    const { auth } = usePage().props; // Ubah ini untuk mendapatkan semua data auth
+    const user = auth.user;
+    const roles = auth.roles || [];
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -30,12 +32,22 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
+                                {(roles.includes('admin') || roles.includes('user')) && (
                                 <NavLink
                                     href={route('invitations.index')}
                                     active={route().current('invitations.index')}
                                 >
                                     Undangan Saya
                                 </NavLink>
+                                )}
+                                {(roles.includes('admin') || roles.includes('editor')) && (
+                                     <NavLink
+                                        href={route('editor.themes.index')}
+                                        active={route().current('editor.themes.index')}
+                                    >
+                                        Tema Saya
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 

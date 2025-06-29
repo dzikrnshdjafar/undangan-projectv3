@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { animationVariants } from '@/Utils/animations';
+import ImageUploadModal from './ImageUploadModal';
 
 export default function ElementEditor({ elementData, onUpdate, onSave }) {
     const [data, setData] = useState(elementData || {});
     const [jsonErrors, setJsonErrors] = useState({}); // State untuk error JSON
+    const [isUploadModalOpen, setUploadModalOpen] = useState(false);
 
     useEffect(() => {
         console.log('ElementEditor received data:', elementData); // DEBUG
@@ -16,6 +18,17 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
         setData(updatedData);
         onUpdate(updatedData);
     };
+
+     const handleUploadComplete = (imagePath) => {
+        // Update path gambar di state dan panggil onUpdate
+        handleChange('path', imagePath);
+
+        // Salin path ke clipboard agar mudah digunakan
+        navigator.clipboard.writeText(imagePath).then(() => {
+            alert(`Path gambar berhasil disalin ke clipboard:\n${imagePath}`);
+        });
+    };
+
 
     const handleStyleChange = (styleType, value) => {
         try {
@@ -213,6 +226,12 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
     }
 
     return (
+        <>
+        <ImageUploadModal
+                show={isUploadModalOpen}
+                onClose={() => setUploadModalOpen(false)}
+                onUploadComplete={handleUploadComplete}
+            />
         <div className="p-4 space-y-4 max-h-screen overflow-y-auto">
             <h3 className="text-lg font-bold border-b pb-2">Element Editor</h3>
 
@@ -310,19 +329,31 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
             )}
 
             {/* Image Path */}
-            {(elementType === 'image' || data.path !== undefined) && (
-                <div>
-                    <label className="block text-sm font-medium mb-1">Path Gambar</label>
-                    <input
-                        type="text"
-                        value={data.path || ''}
-                        onChange={(e) => handleChange('path', e.target.value)}
-                        className="w-full p-2 border rounded"
-                        placeholder="/images/themes/theme-name/image.webp"
-                    />
-                    <small className="text-gray-500">Gunakan {'{$slug}'} untuk placeholder nama theme</small>
-                </div>
-            )}
+            {/* Modifikasi Editor untuk Path Gambar */}
+                {(elementType === 'image' || data.path !== undefined) && (
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Path Gambar</label>
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="text"
+                                value={data.path || ''}
+                                onChange={(e) => handleChange('path', e.target.value)}
+                                className="w-full p-2 border rounded"
+                                placeholder="/storage/uploads/image.webp"
+                            />
+                            {/* <-- 6. Tambahkan tombol untuk membuka modal --> */}
+                            <button
+                                type="button"
+                                onClick={() => setUploadModalOpen(true)}
+                                className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition text-sm"
+                                title="Unggah Gambar Baru"
+                            >
+                                Unggah
+                            </button>
+                        </div>
+                        <small className="text-gray-500">Klik "Unggah" atau masukkan path manual.</small>
+                    </div>
+                )}
 
             {/* Button/Link Properties */}
             {(elementType === 'button' || data.href !== undefined) && (
@@ -680,5 +711,6 @@ export default function ElementEditor({ elementData, onUpdate, onSave }) {
                 </pre>
             </div>
         </div>
+    </>
     );
 }

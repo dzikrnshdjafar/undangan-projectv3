@@ -51,9 +51,9 @@ export default function PreviewElement({ data, path }) {
     const renderElement = () => {
         switch (elementType) {
             case 'image':
-                return hasChildren ? null : renderImage(data, animateProps, storage_path, theme?.slug);
+                return renderImage(data, animateProps, theme?.slug);
             case 'text':
-                return hasChildren ? null : renderText(data, animateProps);
+                return renderText(data, animateProps);
             case 'button':
                 return renderButton(data, animateProps);
             case 'video':
@@ -67,7 +67,7 @@ export default function PreviewElement({ data, path }) {
                     case 'gift':
     return renderGift(data, animateProps);
             default:
-                return renderWrapper(data, animateProps, elementType, storage_path, theme?.slug, renderChildren);
+                return renderWrapper(data, animateProps, renderChildren);
         }
     };
 

@@ -17,7 +17,7 @@ import {
 } from '@/Utils/elementRenderers';
 
 export default function RecursiveElement({ data, path, onSelectElement, selectedElementPath, isEditing = false }) {
-    const { storage_path, theme } = usePage().props;
+    const { theme } = usePage().props;
 
     if (!data || typeof data !== 'object') {
         return null;
@@ -65,9 +65,9 @@ export default function RecursiveElement({ data, path, onSelectElement, selected
     const renderElement = () => {
         switch (elementType) {
             case 'image':
-                return hasChildren ? renderWrapper(data, animateProps, elementType, storage_path, theme?.slug, renderChildren, clickableProps) : renderImage(data, animateProps, storage_path, theme?.slug, clickableProps);
+                return renderImage(data, animateProps, theme?.slug, clickableProps);
             case 'text':
-                return hasChildren ? renderWrapper(data, animateProps, elementType, storage_path, theme?.slug, renderChildren, clickableProps) : renderText(data, animateProps, clickableProps);
+                return renderText(data, animateProps, clickableProps);
             case 'button':
                 return renderButton(data, animateProps, clickableProps);
             case 'video':
@@ -81,7 +81,7 @@ export default function RecursiveElement({ data, path, onSelectElement, selected
     case 'gift':
         return renderGift(data, animateProps, clickableProps);
             default:
-                return renderWrapper(data, animateProps, elementType, storage_path, theme?.slug, renderChildren, clickableProps);
+                return renderWrapper(data, animateProps, renderChildren, clickableProps);
         }
     };
 

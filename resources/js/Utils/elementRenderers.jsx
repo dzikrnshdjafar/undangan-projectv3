@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Countdown from '../Components/Countdown';
 import Rsvp from '../Components/Rsvp';
 import Gift from '../Components/Gift';
+import { getImageUrl } from '@/Utils/imageHelper';
 
 // Utility function untuk membersihkan properti undefined
 export const cleanStyle = (style) => {
@@ -28,7 +29,7 @@ export const detectElementType = (data, hasChildren) => {
 export const isElementKey = (key) => !['type', 'order', 'minHeight', 'wrapperStyle', 'textStyle', 'imageStyle', 'buttonStyle', 'videoStyle', 'text', 'path', 'animation', 'src', 'href', 'onClick', 'placeholder', 'required', 'options'].includes(key);
 
 // Render image element
-export const renderImage = (data, animateProps, storage_path, themeSlug, additionalProps = {}) => {
+export const renderImage = (data, animateProps, themeSlug, additionalProps = {}) => {
     const imageStyle = cleanStyle({
         ...data.imageStyle,
         width: data.imageStyle?.width || '100%',
@@ -40,7 +41,7 @@ export const renderImage = (data, animateProps, storage_path, themeSlug, additio
     return (
         <div style={imageStyle}>
             <motion.img 
-                src={`${storage_path}${data.path.replace('{$slug}', themeSlug || '')}`} 
+                src={getImageUrl(data.path.replace('{$slug}', themeSlug || ''))}
                 animate={animateProps}
                 alt={data.alt || ""} 
                 style={{borderRadius: 'inherit'}}
@@ -148,7 +149,7 @@ export const renderIframe = (data, animateProps, additionalProps = {}) => {
 };
 
 // Render wrapper element
-export const renderWrapper = (data, animateProps, elementType, storage_path, themeSlug, renderChildrenFn, additionalProps = {}) => {
+export const renderWrapper = (data, animateProps, renderChildrenFn, additionalProps = {}) => {
     const wrapperStyle = cleanStyle({
         ...data.wrapperStyle,
     });
@@ -159,35 +160,7 @@ export const renderWrapper = (data, animateProps, elementType, storage_path, the
             animate={animateProps}
             {...additionalProps}
         >
-            {/* Render Image di dalam wrapper jika ada */}
-            {elementType === 'image' && data.path && (
-                <img 
-                    src={`${storage_path}${data.path.replace('{$slug}', themeSlug || '')}`} 
-                    alt={data.alt || ""} 
-                    style={cleanStyle({
-                        ...data.imageStyle,
-                        width: data.imageStyle?.width || '100%',
-                        height: data.imageStyle?.height || '100%',
-                        objectFit: data.imageStyle?.objectFit || 'cover',
-                        display: 'block',
-                    })}
-                    loading="lazy"
-                />
-            )}
-
-            {/* Render Text di dalam wrapper jika ada */}
-            {elementType === 'text' && data.text && (
-                <div 
-                    style={cleanStyle({
-                        ...data.textStyle,
-                        width: '100%',
-                        background: 'transparent',
-                        wordBreak: 'break-word'
-                    })} 
-                    dangerouslySetInnerHTML={{ __html: data.text }} 
-                />
-            )}
-
+           
             {/* Render Child Elements */}
             {renderChildrenFn()}
         </motion.div>

@@ -1,18 +1,17 @@
+// resources/js/Pages/Previews/Preview.jsx
+
 import React from 'react';
-import { usePage } from '@inertiajs/react';
 import PreviewSection from './PreviewSection';
 
-export default function Preview({ theme }) {
-    const { theme: pageTheme } = usePage().props;
-    
-    const backgroundImageUrl = theme?.background_image_url || pageTheme?.background_image_url;
-
+// 1. Terima `fullBackgroundImageUrl` dan `getImageUrl` dari props
+export default function Preview({ theme, fullBackgroundImageUrl, getImageUrl }) {
     return (
         <div className="relative w-full mx-auto shadow-lg overflow-hidden">
             {/* Background Image */}
             <div className="fixed top-0 w-fit h-screen z-0">
                 <img
-                    src={backgroundImageUrl}
+                    // 2. Langsung gunakan prop URL yang sudah jadi
+                    src={fullBackgroundImageUrl}
                     className="w-screen h-full object-cover"
                     style={{ imageRendering: 'optimizeQuality' }}
                     alt="Background"
@@ -24,12 +23,14 @@ export default function Preview({ theme }) {
             
             {/* Content Container */}
             <div className="relative z-10">
-                {/* Render sections secara dinamis */}
                 {theme.sections && theme.sections.map((section, idx) => (
                     <PreviewSection
                         key={idx}
                         section={section}
                         sectionIndex={idx}
+                        // 3. Teruskan helper `getImageUrl` ke komponen section
+                        // agar ia bisa merender gambar-gambar di dalamnya
+                        getImageUrl={getImageUrl} 
                     />
                 ))}
             </div>

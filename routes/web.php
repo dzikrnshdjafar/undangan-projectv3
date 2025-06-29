@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\InvitationThemeController;
 
 Route::get('/', function () {
@@ -20,6 +21,7 @@ Route::get('/themes', [InvitationThemeController::class, 'index'])->name('themes
 Route::get('/theme-preview/{slug}', [InvitationThemeController::class, 'show'])->name('themes.show');
 
 Route::middleware(['auth', 'role:editor,admin'])->group(function () {
+    Route::get('/editor/my-themes', [InvitationThemeController::class, 'themesForEditor'])->name('editor.themes.index');
     Route::get('/themes/{slug}/edit', [InvitationThemeController::class, 'edit'])->name('themes.edit');
     Route::put('/themes/{theme}/sections/{index}', [InvitationThemeController::class, 'updateSection']);
     Route::post('/themes/{themeId}/sections', [InvitationThemeController::class, 'addSection'])->name('themes.sections.add');
@@ -51,6 +53,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/invitations/{invitation:slug}/sections/{sectionIndex}/elements', [InvitationController::class, 'addElement'])->name('invitations.elements.add');
         Route::delete('/invitations/{invitation:slug}/sections/{sectionIndex}/elements', [InvitationController::class, 'deleteElement'])->name('invitations.elements.delete');
     });
+
+    Route::get('/editor/my-images', [ImageUploadController::class, 'index'])->name('editor.image.index'); // <-- Tambahkan route ini
+    Route::post('/editor/upload-image', [ImageUploadController::class, 'store'])->name('editor.image.store');
 });
 
 Route::get('/invitation/{slug}', [InvitationController::class, 'show'])->name('invitations.show');

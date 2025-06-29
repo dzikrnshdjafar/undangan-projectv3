@@ -4,6 +4,7 @@ import { usePage, router } from '@inertiajs/react';
 import SectionList from './Partials/SectionList';
 import PreviewPane from './Partials/PreviewPane';
 import ElementEditor from './Partials/ElementEditor.jsx';
+import UploadsTab from './Partials/UploadsTab';
 
 export default function AdvancedEditor() {
     const { theme: initialTheme } = usePage().props;
@@ -16,6 +17,9 @@ export default function AdvancedEditor() {
     const [selectedElementPath, setSelectedElementPath] = useState(null);
 
     const [hiddenElements, setHiddenElements] = useState({});
+
+    // <-- 2. Tambahkan state untuk tab aktif
+    const [activeTab, setActiveTab] = useState('sections');
 
     // Memoize data elemen yang dipilih dengan perbaikan path
     const selectedElementData = useMemo(() => {
@@ -53,6 +57,25 @@ export default function AdvancedEditor() {
             return null;
         }
     }, [selectedElementPath, themeData]);
+
+     const handleImageSelectFromGallery = (imagePath) => {
+        if (!selectedElementPath) {
+            alert('Pilih elemen gambar di editor terlebih dahulu untuk menempatkan gambar ini.');
+            navigator.clipboard.writeText(imagePath); // Salin path jika tidak ada elemen dipilih
+            alert('Path gambar telah disalin ke clipboard.');
+            return;
+        }
+
+        // Cek jika elemen yang dipilih adalah elemen gambar
+        const selectedElement = selectedElementData; // Gunakan memoized data
+        if (selectedElement && 'path' in selectedElement) {
+             handleUpdateElement({ path: imagePath });
+             alert(`Gambar telah diterapkan pada elemen yang dipilih.`);
+        } else {
+            alert('Elemen yang dipilih bukan elemen gambar. Path telah disalin ke clipboard.');
+            navigator.clipboard.writeText(imagePath);
+        }
+    };
 
     // Callback untuk memilih elemen dari PreviewPane
     const handleSelectElement = useCallback((path, elementData) => {
@@ -334,25 +357,53 @@ export default function AdvancedEditor() {
 
     return (
         <div className="flex h-screen w-full bg-gray-200">
-            {/* Panel Kiri: Daftar Section */}
-            <div className="w-1/5 bg-white shadow-md overflow-y-auto relative z-20 my-1  rounded-xl">
-                <SectionList
-    sections={themeData.sections || JSON.parse(themeData.sections_json || '[]')}
-    onSelectSection={(index) => {
-        const element = document.getElementById(`section-${index}`);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }}
-    onSelectElement={handleSelectElement}
-    selectedElementPath={selectedElementPath}
-    onAddSection={handleAddSection}
-    onAddElement={handleAddElement}
-    onDeleteSection={handleDeleteSection}
-    onDeleteElement={handleDeleteElement} // NEW PROP
-    onToggleElementVisibility={handleToggleElementVisibility}
-    hiddenElements={hiddenElements}
-/>
+            {/* Panel Kiri: Diubah menjadi Tabbed Interface */}
+            <div className="w-1/5 bg-white shadow-md flex flex-col my-1 rounded-xl overflow-hidden">
+                {/* Tombol Tab */}
+                <div className="flex border-b">
+                    <button
+                        onClick={() => setActiveTab('sections')}
+                        className={`flex-1 p-3 text-sm font-semibold transition-colors focus:outline-none ${
+                            activeTab === 'sections' 
+                            ? 'bg-blue-600 text-white' 
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                    >
+                        Sections
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('uploads')}
+                        className={`flex-1 p-3 text-sm font-semibold transition-colors focus:outline-none ${
+                            activeTab === 'uploads' 
+                            ? 'bg-blue-600 text-white' 
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                    >
+                        Unggahan
+                    </button>
+                </div>
+                
+                {/* Konten Tab */}
+                <div className="flex-1 overflow-y-auto">
+                    {activeTab === 'sections' && (
+                        <SectionList
+                            sections={themeData.sections || JSON.parse(themeData.sections_json || '[]')}
+                            onSelectSection={(index) => {
+                                const element = document.getElementById(`section-${index}`);
+                                if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }}
+                            onSelectElement={handleSelectElement}
+                            selectedElementPath={selectedElementPath}
+                            onAddSection={handleAddSection}
+                            onAddElement={handleAddElement}
+                            onDeleteSection={handleDeleteSection}
+                            onDeleteElement={handleDeleteElement}
+                        />
+                    )}
+                    {activeTab === 'uploads' && (
+                        <UploadsTab onImageSelect={handleImageSelectFromGallery} />
+                    )}
+                </div>
             </div>
 
             {/* Panel Tengah: Preview Undangan */}

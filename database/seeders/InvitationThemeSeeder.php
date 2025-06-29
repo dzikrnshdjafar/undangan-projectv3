@@ -28,8 +28,8 @@ class InvitationThemeSeeder extends Seeder
                     'invitation_category_id' => $weddingCategory->id,
                     'name' => 'Elegant Blue Wedding',
                     'description' => 'Tema pernikahan elegan dengan nuansa biru dan emas.',
-                    'preview_image_path' => "/images/themes/{$slug}/preview.webp",
-                    'background_image_path' => "/images/themes/{$slug}/bg.webp",
+                    'preview_image_path' => "images/themes/{$slug}/preview.webp",
+                    'background_image_path' => "images/themes/{$slug}/bg.webp",
                     'sections_json' => json_encode([
                         [
                             'type' => 'opening',
@@ -102,7 +102,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 'photo' => [
                                     'type' => 'image',
-                                    'path' => "/images/themes/{$slug}/photo.webp",
+                                    'path' => "images/themes/{$slug}/photo.webp",
                                     'order' => 4,
                                     'modifiable' => true, // Foto bisa diganti
                                     'imageStyle' => [
@@ -122,7 +122,7 @@ class InvitationThemeSeeder extends Seeder
                             ],
                             'ornamentRanting' => [
                                 'type' => 'image',
-                                'path' => "/images/themes/{$slug}/ranting-pohon.webp",
+                                'path' => "images/themes/{$slug}/ranting-pohon.webp",
                                 'animation' => 'waveOut',
                                 'order' => 2,
                                 'modifiable' => false, // Ornamen tidak bisa diedit
@@ -149,7 +149,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 'awan1' => [
                                     'type' => 'image',
-                                    'path' => "/images/themes/{$slug}/awan1.webp",
+                                    'path' => "images/themes/{$slug}/awan1.webp",
                                     'order' => 1,
                                     'modifiable' => true,
                                     'imageStyle' => [
@@ -163,7 +163,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 'awan2' => [
                                     'type' => 'image',
-                                    'path' => "/images/themes/{$slug}/awan2.webp",
+                                    'path' => "images/themes/{$slug}/awan2.webp",
                                     'order' => 2,
                                     'modifiable' => false,
                                     'imageStyle' => [
@@ -188,7 +188,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 'ornamentbottom1' => [
                                     'type' => 'image',
-                                    'path' => "/images/themes/{$slug}/daun4.webp",
+                                    'path' => "images/themes/{$slug}/daun4.webp",
                                     'order' => 1,
                                     'modifiable' => false,
                                     'imageStyle' => [
@@ -201,7 +201,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 'ornamentbottom2' => [
                                     'type' => 'image',
-                                    'path' => "/images/themes/{$slug}/bunga2.webp",
+                                    'path' => "images/themes/{$slug}/bunga2.webp",
                                     'animation' => 'waveOut',
                                     'order' => 2,
                                     'modifiable' => false,
@@ -217,7 +217,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 'ornamentbottom3' => [
                                     'type' => 'image',
-                                    'path' => "/images/themes/{$slug}/bunga3.webp",
+                                    'path' => "images/themes/{$slug}/bunga3.webp",
                                     'animation' => 'waveOut',
                                     'order' => 3,
                                     'modifiable' => false,
@@ -232,7 +232,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 'ornamentbottom4' => [
                                     'type' => 'image',
-                                    'path' => "/images/themes/{$slug}/bunga1.webp",
+                                    'path' => "images/themes/{$slug}/bunga1.webp",
                                     'animation' => 'waveOut',
                                     'order' => 4,
                                     'modifiable' => false,
@@ -283,7 +283,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 "wanita" => [
                                     "type" => "image",
-                                    "path" => "/images/themes/{$slug}/wanita.webp",
+                                    "path" => "images/themes/{$slug}/wanita.webp",
                                     "order" => 1,
                                     "modifiable" => true, // Foto mempelai wanita bisa diganti
                                     "imageStyle" => [
@@ -298,7 +298,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 "kupupink" => [
                                     "type" => "image",
-                                    "path" => "/images/themes/{$slug}/kupupink.webp",
+                                    "path" => "images/themes/{$slug}/kupupink.webp",
                                     "order" => 2,
                                     "modifiable" => false, // Ornamen tidak bisa diedit
                                     "imageStyle" => [
@@ -360,7 +360,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 "pria" => [
                                     "type" => "image",
-                                    "path" => "/images/themes/{$slug}/pria.webp",
+                                    "path" => "images/themes/{$slug}/pria.webp",
                                     "order" => 1,
                                     "modifiable" => true, // Foto mempelai pria bisa diganti
                                     "imageStyle" => [
@@ -375,7 +375,7 @@ class InvitationThemeSeeder extends Seeder
                                 ],
                                 "kupuputih" => [
                                     "type" => "image",
-                                    "path" => "/images/themes/{$slug}/kupuputih.webp",
+                                    "path" => "images/themes/{$slug}/kupuputih.webp",
                                     "order" => 2,
                                     "modifiable" => false,
                                     "imageStyle" => [
@@ -720,8 +720,8 @@ class InvitationThemeSeeder extends Seeder
                     'invitation_category_id' => $weddingCategory->id,
                     'name' => 'Tung Tung Sahur',
                     'description' => 'Tema Ulang Tahun dengan ditemani Tung Tung Sahur.',
-                    'preview_image_path' => "/images/themes/{$slug2}/elegant-blue-wedding.jpg",
-                    'background_image_path' => "/images/themes/{$slug2}/bg.webp",
+                    'preview_image_path' => "images/themes/{$slug2}/elegant-blue-wedding.jpg",
+                    'background_image_path' => "images/themes/{$slug2}/bg.webp",
                     'sections_json' => json_encode([
                         [
                             'type' => 'opening',
@@ -741,7 +741,7 @@ class InvitationThemeSeeder extends Seeder
                                     'zIndex' => 2,
                                 ],
                                 'photo' => [
-                                    'path' => "/images/themes/{$slug2}/photo.webp",
+                                    'path' => "images/themes/{$slug2}/photo.webp",
                                     'imageStyle' => [
                                         'position' => 'absolute',
                                         'top' => '20%',
@@ -812,7 +812,7 @@ class InvitationThemeSeeder extends Seeder
                                 ]
                             ],
                             'decorationTop' => [
-                                'path' => "/images/themes/{$slug2}/awan.webp",
+                                'path' => "images/themes/{$slug2}/awan.webp",
                                 'imageStyle' => [
                                     'position' => 'absolute',
                                     'top' => '0%',
@@ -833,7 +833,7 @@ class InvitationThemeSeeder extends Seeder
                                     'zIndex' => 10,
                                 ],
                                 'tungtungsahur' => [
-                                    'path' => "/images/themes/{$slug2}/tungtungsahur.webp",
+                                    'path' => "images/themes/{$slug2}/tungtungsahur.webp",
                                     'imageStyle' => [
                                         'position' => 'absolute',
                                         'bottom' => '0%',
@@ -844,7 +844,7 @@ class InvitationThemeSeeder extends Seeder
                                     ]
                                 ],
                                 'tungtungsahurbalon' => [
-                                    'path' => "/images/themes/{$slug2}/tungtungsahurbalon.webp",
+                                    'path' => "images/themes/{$slug2}/tungtungsahurbalon.webp",
                                     'imageStyle' => [
                                         'position' => 'absolute',
                                         'bottom' => '0%',
@@ -920,7 +920,7 @@ class InvitationThemeSeeder extends Seeder
                                     "zIndex" => 1,
                                 ],
                                 "flower2" => [
-                                    "path" => "/images/themes/{$slug2}/flower2.png",
+                                    "path" => "images/themes/{$slug2}/flower2.png",
                                     "imageStyle" => [
                                         "position" => "absolute",
                                         "top" => "50%",
@@ -932,7 +932,7 @@ class InvitationThemeSeeder extends Seeder
                                     ]
                                 ],
                                 "leaf" => [
-                                    "path" => "/images/themes/{$slug2}/leaf.webp",
+                                    "path" => "images/themes/{$slug2}/leaf.webp",
                                     "imageStyle" => [
                                         "position" => "absolute",
                                         "top" => "50%",
@@ -944,7 +944,7 @@ class InvitationThemeSeeder extends Seeder
                                     ]
                                 ],
                                 "leaf2" => [
-                                    "path" => "/images/themes/{$slug2}/leaf2.webp",
+                                    "path" => "images/themes/{$slug2}/leaf2.webp",
                                     "imageStyle" => [
                                         "position" => "absolute",
                                         "top" => "50%",
@@ -969,8 +969,8 @@ class InvitationThemeSeeder extends Seeder
                             'type' => 'gallery',
                             'title' => 'Galeri',
                             'images' => [
-                                '/images/gallery/1.jpg',
-                                '/images/gallery/2.jpg'
+                                'images/gallery/1.jpg',
+                                'images/gallery/2.jpg'
                             ]
                         ],
                         [

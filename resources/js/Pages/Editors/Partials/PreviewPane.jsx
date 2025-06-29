@@ -1,12 +1,11 @@
 import React from 'react';
 import { usePage } from '@inertiajs/react';
 import DynamicSection from './DynamicSection';
+import { getImageUrl } from '@/Utils/imageHelper';
 
 export default function PreviewPane({ theme, onSelectElement, selectedElementPath }) {
     // const { theme: pageTheme } = usePage().props;
     
-    const backgroundImageUrl = theme.background_image_url;
-
     // Handler untuk membatalkan seleksi ketika klik di luar element
     const handleBackgroundClick = (e) => {
         // Hanya jalankan jika klik langsung di background, bukan dari bubbling
@@ -21,7 +20,7 @@ export default function PreviewPane({ theme, onSelectElement, selectedElementPat
             <div
                 className="absolute inset-0 z-0"
                 style={{
-                    backgroundImage: `url(${backgroundImageUrl})`,
+                    backgroundImage: `url(${getImageUrl(theme.background_image_path)})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',

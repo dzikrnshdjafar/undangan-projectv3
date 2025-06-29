@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\InvitationTheme;
 use Illuminate\Database\Seeder;
@@ -19,9 +20,11 @@ class InvitationThemeSeeder extends Seeder
 
         if ($weddingCategory) {
             $slug = 'elegant-blue-wedding';
+            $editor1 = User::where('name', 'Editor1')->first();
             InvitationTheme::updateOrCreate(
                 ['slug' => $slug],
                 [
+                    'user_id' => $editor1->id,
                     'invitation_category_id' => $weddingCategory->id,
                     'name' => 'Elegant Blue Wedding',
                     'description' => 'Tema pernikahan elegan dengan nuansa biru dan emas.',
@@ -709,9 +712,11 @@ class InvitationThemeSeeder extends Seeder
             );
 
             $slug2 = 'tung-tung-sahur';
+            $editor2 = User::where('name', 'Editor2')->first();
             InvitationTheme::updateOrCreate(
                 ['slug' => $slug2],
                 [
+                    'user_id' => $editor2->id,
                     'invitation_category_id' => $weddingCategory->id,
                     'name' => 'Tung Tung Sahur',
                     'description' => 'Tema Ulang Tahun dengan ditemani Tung Tung Sahur.',

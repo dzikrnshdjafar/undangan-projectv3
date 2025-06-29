@@ -19,7 +19,7 @@ Route::get('/', function () {
 Route::get('/themes', [InvitationThemeController::class, 'index'])->name('themes.index');
 Route::get('/theme-preview/{slug}', [InvitationThemeController::class, 'show'])->name('themes.show');
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'role:editor,admin'])->group(function () {
     Route::get('/themes/{slug}/edit', [InvitationThemeController::class, 'edit'])->name('themes.edit');
     Route::put('/themes/{theme}/sections/{index}', [InvitationThemeController::class, 'updateSection']);
     Route::post('/themes/{themeId}/sections', [InvitationThemeController::class, 'addSection'])->name('themes.sections.add');

@@ -19,12 +19,18 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // create roles
         $roleAdmin = Role::create(['name' => 'admin']);
+        $roleEditor = Role::create(['name' => 'editor']);
         $roleUser = Role::create(['name' => 'user']);
 
         // Assign roles to existing users
-        $adminUser = User::where('email', 'admin@gmail.com')->first();
-        if ($adminUser) {
-            $adminUser->assignRole($roleAdmin);
+        $admin = User::where('email', 'admin@gmail.com')->first();
+        if ($admin) {
+            $admin->assignRole($roleAdmin);
+        }
+
+        $editor = User::where('email', 'editor1@gmail.com')->first();
+        if ($editor) {
+            $editor->assignRole($roleEditor);
         }
 
         $user1 = User::where('email', 'user1@gmail.com')->first();

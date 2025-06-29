@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('invitation_themes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invitation_category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->comment('User who created the theme');
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
